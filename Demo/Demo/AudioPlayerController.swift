@@ -19,7 +19,7 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
     }
     
     private let player = AudioPlayer.av.instance()
-    private lazy var remote = AudioPlayerRemote(player)
+    private lazy var remote = AudioPlayerRemoteControl(player)
     
     private var isDraging = false
     
@@ -44,6 +44,9 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
         player.allowBackgroundPlayback = false
         player.add(delegate: self)
         player.rate = 1.0
+        
+        remote.playPrev = playPrev
+        remote.playNext = playNext
         
         container.startAnmiation()
         container.pauseAnimation()
@@ -159,21 +162,28 @@ extension AudioPlayerController {
     
     private func update() {
         if let item = item, let queue = queue {
+            // 设置界面内容
             container.set(title: item.title, author: item.author)
             container.set(cover: item.cover)
             container.set(switchable: (queue.prev(of: item), queue.next(of: item)))
+            // 设置准备播放的资源
             player.prepare(url: item.resource)
+            // 设置远程控制
             remote.set(
                 title: item.title,
                 artist: item.author,
                 thumb: UIImage(named: "audio_player_cover")!,
                 url: item.resource
             )
+            remote.set(switchable: (queue.prev(of: item), queue.next(of: item)))
             
         } else {
+            // 清理界面内容
             container.set(title: nil, author: nil)
             container.set(cover: nil)
             container.set(switchable: (false, false))
+            // 清理远程控制
+            remote.clean()
         }
     }
     

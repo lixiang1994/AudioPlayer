@@ -17,6 +17,13 @@ class AudioPlayerListController: UIViewController {
                 cover: "",
                 author: "周杰伦",
                 resource: URL(string: "https://chtbl.com/track/1F1B1F/traffic.megaphone.fm/WSJ2560705456.mp3")!
+            ),
+            .init(
+                id: "2",
+                title: "烟花易冷",
+                cover: "",
+                author: "周杰伦",
+                resource: URL(string: "https://chtbl.com/track/1F1B1F/traffic.megaphone.fm/WSJ2560705456.mp3")!
             )
         ]
     )

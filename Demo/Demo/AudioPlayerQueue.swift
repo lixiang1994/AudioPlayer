@@ -45,7 +45,7 @@ class AudioPlayerQueue {
         guard let index = items.firstIndex(of: item) else {
             return nil
         }
-        return items.dropFirst(index + 1).first
+        return items.prefix(index).last
     }
     func prev(of item: Item) -> Bool {
         return prev(of: item) != nil
@@ -56,7 +56,7 @@ class AudioPlayerQueue {
         guard let index = items.firstIndex(of: item) else {
             return nil
         }
-        return items.prefix(index).last
+        return items.dropFirst(index + 1).first
     }
     func next(of item: Item) -> Bool {
         return next(of: item) != nil
