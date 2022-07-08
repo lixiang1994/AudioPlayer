@@ -30,8 +30,8 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
         }
     }
     
-    var queue: AudioPlayerQueue?
-    var item: AudioPlayerQueue.Item?
+    private var queue: AudioPlayerQueue?
+    private var item: AudioPlayerQueue.Item?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,18 +41,25 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
     }
     
     private func setup() {
-        player.allowBackgroundPlayback = false
+        // 允许后台播放
+        player.allowBackgroundPlayback = true
+        // 添加播放器代理
         player.add(delegate: self)
+        // 设置播放倍速
         player.rate = 1.0
         
+        // 设置远程控制 (上一首/下一首) 的回调
         remote.playPrev = playPrev
         remote.playNext = playNext
         
+        // 界面动画设置
         container.startAnmiation()
         container.pauseAnimation()
         
+        // 设置播放模式 顺序
         playMode = .loop
         
+        // 为Slider添加事件
         container.slider.addTarget(self, action: #selector(sliderTouchBegin), for: .touchDown)
         container.slider.addTarget(self, action: #selector(sliderTouchEnd), for: [.touchUpInside, .touchUpOutside])
         container.slider.addTarget(self, action: #selector(sliderTouchCancel), for: .touchCancel)
@@ -205,7 +212,8 @@ extension AudioPlayerController: AudioPlayerDelegate {
     func audioPlayerState(_ player: AudioPlayerable, state: AudioPlayer.State) {
         switch state {
         case .prepare:
-            // 准备播放
+            // 准备阶段
+            // 重置界面显示
             container.set(current: 0)
             container.playButton.isEnabled = false
             
@@ -220,11 +228,12 @@ extension AudioPlayerController: AudioPlayerDelegate {
             }
             
         case .playing:
-            // 播放中
+            // 播放阶段
             container.playButton.isEnabled = true
             
         case .stopped:
-            // 停止
+            // 停止阶段
+            // 重置界面显示
             container.set(current: 0)
             container.playButton.isEnabled = false
             
@@ -239,14 +248,15 @@ extension AudioPlayerController: AudioPlayerDelegate {
             }
             
         case .finished:
-            // 播放完毕
+            // 完成阶段
+            
             if playMode == .loop {
-                // 下一曲
+                // 播放下一首
                 playNext()
             }
             
         case .failure(let error):
-            // 播放失败
+            // 失败阶段
             print(error?.localizedDescription ?? "")
         }
     }
@@ -254,31 +264,35 @@ extension AudioPlayerController: AudioPlayerDelegate {
     func audioPlayerControlState(_ player: AudioPlayerable, state: AudioPlayer.ControlState) {
         switch state {
         case .playing:
+            // 播放中
             container.playButton.isSelected = true
             container.resumeAnimation()
             
         case .pausing:
+            // 暂停中
             container.playButton.isSelected = false
             container.pauseAnimation()
         }
     }
     
     func audioPlayer(_ player: AudioPlayerable, updatedDuration time: Double) {
+        // 更新总时长
         container.set(duration: time)
     }
     
     func audioPlayer(_ player: AudioPlayerable, updatedBuffer progress: Double) {
+        // 更新缓冲进度
         container.set(buffer: progress)
     }
     
     func audioPlayer(_ player: AudioPlayerable, updatedCurrent time: Double) {
         guard !isDraging else { return }
-        
+        // 为拖动Slider时 更新当前时间
         container.set(current: time)
     }
     
     func audioPlayerLoadingState(_ player: AudioPlayerable, state: AudioPlayer.LoadingState) {
-        // UI效果待优化
+        // 加载状态 UI效果待优化
         switch state {
         case .began:
             container.playButton.loading.start()
