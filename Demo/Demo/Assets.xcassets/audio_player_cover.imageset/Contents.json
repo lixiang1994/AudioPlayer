@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "audio_player_cover.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

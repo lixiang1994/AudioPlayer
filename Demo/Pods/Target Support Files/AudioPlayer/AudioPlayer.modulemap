@@ -1,0 +1,6 @@
+framework module AudioPlayer {
+  umbrella header "AudioPlayer-umbrella.h"
+
+  export *
+  module * { export * }
+}

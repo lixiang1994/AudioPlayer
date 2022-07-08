@@ -1,0 +1,6 @@
+${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks.sh
+${BUILT_PRODUCTS_DIR}/AudioPlayer/AudioPlayer.framework
+${BUILT_PRODUCTS_DIR}/Loading/Loading.framework
+${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework
+${BUILT_PRODUCTS_DIR}/UIAdapter/UIAdapter.framework
+${BUILT_PRODUCTS_DIR}/UIImageColors/UIImageColors.framework

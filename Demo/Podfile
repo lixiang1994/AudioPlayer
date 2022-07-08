@@ -1,0 +1,16 @@
+platform :ios, '11.0'
+inhibit_all_warnings!
+
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/lixiang1994/Specs.git'
+
+target 'Demo' do
+  use_frameworks!
+  
+  pod 'AudioPlayer', :path => "../"
+  pod 'SnapKit' , '~>5.0.0'
+  pod 'UIAdapter'
+  pod 'Loading'
+  pod 'UIImageColors'
+
+end

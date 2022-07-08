@@ -1,0 +1,6 @@
+framework module Loading {
+  umbrella header "Loading-umbrella.h"
+
+  export *
+  module * { export * }
+}
