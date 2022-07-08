@@ -17,15 +17,15 @@ class AudioPlayerRemoteControl: AudioPlayerRemote {
     override func setup() {
         super.setup()
         
+        // 添加上一首/下一首命令
         let remote = MPRemoteCommandCenter.shared()
         remote.previousTrackCommand.addTarget(self, action: #selector(prevCommandAction))
         remote.nextTrackCommand.addTarget(self, action: #selector(nextCommandAction))
-        
     }
     
     override func clean() {
         super.clean()
-        
+        // 移除命令
         let remote = MPRemoteCommandCenter.shared()
         remote.previousTrackCommand.removeTarget(self)
         remote.nextTrackCommand.removeTarget(self)
@@ -43,6 +43,8 @@ class AudioPlayerRemoteControl: AudioPlayerRemote {
         return .success
     }
     
+    /// 设置切换状态
+    /// - Parameter state: (上一首, 下一首)
     func set(switchable state: (Bool, Bool)) {
         let remote = MPRemoteCommandCenter.shared()
         remote.previousTrackCommand.isEnabled = state.0
