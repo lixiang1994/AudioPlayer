@@ -31,12 +31,7 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
     }
     
     var queue: AudioPlayerQueue?
-    var item: AudioPlayerQueue.Item? {
-        didSet {
-            guard item != oldValue else { return }
-            update()
-        }
-    }
+    var item: AudioPlayerQueue.Item?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -185,11 +180,13 @@ extension AudioPlayerController {
     private func playNext() {
         guard let item = item else { return }
         self.item = queue?.next(of: item)
+        update()
     }
     
     private func playPrev() {
         guard let item = item else { return }
         self.item = queue?.prev(of: item)
+        update()
     }
 }
 
