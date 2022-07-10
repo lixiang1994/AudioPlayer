@@ -11,8 +11,6 @@ import UIImageColors
 
 class AudioPlayerView: UIView {
 
-    typealias Mode = AudioPlayerController.PlayMode
-    
     /// 标题
     @IBOutlet weak var titleLabel: UILabel!
     /// 作者
@@ -140,13 +138,16 @@ extension AudioPlayerView {
     
     /// 切换播放模式
     /// - Parameter mode: 播放模式
-    func change(play mode: Mode) {
-        switch mode {
-        case .loop:
+    func set(playbackMode: AudioPlayerManager.PlaybackMode) {
+        switch playbackMode {
+        case .sequential:
             modeButton.setImage(.init(named: "audio_player_loop"), for: .normal)
             
-        case .one:
+        case .single:
             modeButton.setImage(.init(named: "audio_player_one"), for: .normal)
+            
+        default:
+            break
         }
     }
 }
@@ -188,7 +189,7 @@ fileprivate extension UIImage {
     }
 }
 
-fileprivate extension TimeInterval {
+extension TimeInterval {
     
     private static let format = DateFormatter()
     

@@ -9,6 +9,8 @@ import UIKit
 
 class AudioPlayerListController: UIViewController {
     
+    let manager = AudioPlayerManager.shared
+    
     let queue = AudioPlayerQueue(
         [
             .init(
@@ -28,15 +30,71 @@ class AudioPlayerListController: UIViewController {
         ]
     )
     
+    @IBOutlet weak var tableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        manager.add(delegate: self)
     }
     
-    @IBAction func openAction(_ sender: UIButton) {
-        let controller = AudioPlayerController.instance()
-        present(controller, animated: true)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        controller.play(queue.item(at: 0)!, for: queue)
+        tableView.reloadData()
+    }
+}
+
+extension AudioPlayerListController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return queue.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let item = queue.item(at: indexPath.row)
+        cell.textLabel?.text = item?.title ?? ""
+        cell.detailTextLabel?.text =  manager.item == item ? "播放中" : item?.state?.description ?? ""
+        cell.detailTextLabel?.textColor = manager.item == item ? .red : .lightGray
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let item = queue.item(at: indexPath.row) else { return }
+        
+        if manager.item != item {
+            manager.play(item, for: queue)
+        }
+        
+        // 打开播放器页面
+        let controller = AudioPlayerController.instance()
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true)
+    }
+}
+
+extension AudioPlayerListController: AudioPlayerManagerDelegate {
+    
+    func audioPlayerManager(_ manager: AudioPlayerManager, changed item: AudioPlayerItem?) {
+        tableView.reloadData()
+    }
+}
+
+fileprivate extension AudioPlayerItem.State {
+ 
+    var description: String {
+        switch self {
+        case .record(let time):
+            return "已播放至: \(time.toHMS)"
+            
+        case .played:
+            return "已播放完"
+        }
     }
 }

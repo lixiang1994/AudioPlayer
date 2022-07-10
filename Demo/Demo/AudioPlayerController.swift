@@ -7,57 +7,24 @@
 
 import UIKit
 import AudioPlayer
-import AVFoundation
 
 class AudioPlayerController: ViewController<AudioPlayerView> {
-
-    enum PlayMode {
-        // 单曲播放
-        case one
-        // 顺序播放
-        case loop
-    }
     
-    private let player = AudioPlayer.av.instance()
-    private lazy var remote = AudioPlayerRemoteControl(player)
+    private let manager = AudioPlayerManager.shared
     
     private var isDraging = false
-    
-    private var playMode: PlayMode = .loop {
-        didSet {
-            container.change(play: playMode)
-            player.isLoop = playMode == .one
-        }
-    }
-    
-    private var queue: AudioPlayerQueue?
-    private var item: AudioPlayerQueue.Item?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setup()
-        setupNotification()
+        setupContent()
     }
     
     private func setup() {
-        // 允许后台播放
-        player.allowBackgroundPlayback = true
-        // 添加播放器代理
-        player.add(delegate: self)
-        // 设置播放倍速
-        player.rate = 1.0
-        
-        // 设置远程控制 (上一首/下一首) 的回调
-        remote.playPrev = playPrev
-        remote.playNext = playNext
-        
         // 界面动画设置
         container.startAnmiation()
         container.pauseAnimation()
-        
-        // 设置播放模式 顺序
-        playMode = .loop
         
         // 为Slider添加事件
         container.slider.addTarget(self, action: #selector(sliderTouchBegin), for: .touchDown)
@@ -66,15 +33,19 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
         container.slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
     }
     
-    private func setupNotification() {
-        NotificationCenter.default.addObserver(
-            forName: UIApplication.willEnterForegroundNotification,
-            object: nil,
-            queue: .main
-        ) { [weak self] sender in
-            guard let self = self else { return }
-            
-        }
+    private func setupContent() {
+        // 添加代理
+        manager.add(delegate: self)
+        manager.player.add(delegate: self)
+        // 同步状态
+        audioPlayerManager(manager, changed: manager.item)
+        audioPlayerManager(manager, changed: manager.mode)
+        audioPlayerState(manager.player, state: manager.player.state)
+        audioPlayerControlState(manager.player, state: manager.player.control)
+        audioPlayerLoadingState(manager.player, state: manager.player.loading)
+        audioPlayer(manager.player, updatedDuration: manager.player.duration)
+        audioPlayer(manager.player, updatedCurrent: manager.player.current)
+        audioPlayer(manager.player, updatedBuffer: manager.player.buffer)
     }
     
     @objc
@@ -98,22 +69,22 @@ extension AudioPlayerController {
     @IBAction func playAction(_ sender: UIButton) {
         if sender.isSelected {
             // 暂停
-            player.pause()
+            manager.player.pause()
             
         } else {
             // 播放
-            player.play()
+            manager.player.play()
         }
     }
     
     /// 上一个
     @IBAction func prevAction(_ sender: Any) {
-        playPrev()
+        manager.playPrev()
     }
     
     /// 下一个
     @IBAction func nextAction(_ sender: Any) {
-        playNext()
+        manager.playNext()
     }
     
     /// 打开播放列表
@@ -123,12 +94,15 @@ extension AudioPlayerController {
     
     /// 切换播放模式
     @IBAction func modeAction(_ sender: Any) {
-        switch playMode {
-        case .one:
-            playMode = .loop
+        switch manager.mode {
+        case .sequential:
+            manager.mode = .single
             
-        case .loop:
-            playMode = .one
+        case .single:
+            manager.mode = .sequential
+            
+        default:
+            break
         }
     }
     
@@ -140,13 +114,13 @@ extension AudioPlayerController {
     @objc
     private func sliderTouchEnd(_ sender: UISlider) {
         isDraging = false
-        player.seek(to: .init(time: .init(sender.value)))
+        manager.player.seek(to: .init(time: .init(sender.value)))
     }
     
     @objc
     private func sliderTouchCancel(_ sender: UISlider) {
         isDraging = false
-        player.seek(to: .init(time: .init(sender.value)))
+        manager.player.seek(to: .init(time: .init(sender.value)))
     }
     
     @objc
@@ -155,55 +129,25 @@ extension AudioPlayerController {
     }
 }
 
-extension AudioPlayerController {
+extension AudioPlayerController: AudioPlayerManagerDelegate {
     
-    /// 播放队列的项目
-    func play(_ item: AudioPlayerQueue.Item, for queue: AudioPlayerQueue) {
-        self.item = item
-        self.queue = queue
-        update()
+    func audioPlayerManager(_ manager: AudioPlayerManager, changed mode: AudioPlayerManager.PlaybackMode) {
+        container.set(playbackMode: mode)
     }
-}
-
-extension AudioPlayerController {
     
-    private func update() {
-        if let item = item, let queue = queue {
+    func audioPlayerManager(_ manager: AudioPlayerManager, changed item: AudioPlayerItem?) {
+        if let item = item {
             // 设置界面内容
             container.set(title: item.title, author: item.author)
             container.set(cover: item.cover)
-            container.set(switchable: (queue.prev(of: item), queue.next(of: item)))
-            // 设置准备播放的资源
-            player.prepare(url: item.resource)
-            // 设置远程控制
-            remote.set(
-                title: item.title,
-                artist: item.author,
-                thumb: UIImage(named: "audio_player_cover")!,
-                url: item.resource
-            )
-            remote.set(switchable: (queue.prev(of: item), queue.next(of: item)))
+            container.set(switchable: manager.switchable)
             
         } else {
             // 清理界面内容
             container.set(title: nil, author: nil)
             container.set(cover: nil)
             container.set(switchable: (false, false))
-            // 清理远程控制
-            remote.clean()
         }
-    }
-    
-    private func playNext() {
-        guard let item = item else { return }
-        self.item = queue?.next(of: item)
-        update()
-    }
-    
-    private func playPrev() {
-        guard let item = item else { return }
-        self.item = queue?.prev(of: item)
-        update()
     }
 }
 
@@ -214,46 +158,30 @@ extension AudioPlayerController: AudioPlayerDelegate {
         case .prepare:
             // 准备阶段
             // 重置界面显示
+            container.set(buffer: 0)
             container.set(current: 0)
+            container.set(duration: 0)
+            container.slider.isEnabled = false
             container.playButton.isEnabled = false
-            
-            // 设置音频会话模式
-            UIApplication.shared.beginReceivingRemoteControlEvents()
-            do {
-                let session = AVAudioSession.sharedInstance()
-                try session.setCategory(.playback, mode: .default)
-                try session.setActive(true, options: [.notifyOthersOnDeactivation])
-            } catch {
-                print("音频会话创建失败")
-            }
             
         case .playing:
             // 播放阶段
+            container.slider.isEnabled = true
             container.playButton.isEnabled = true
             
         case .stopped:
             // 停止阶段
             // 重置界面显示
+            container.set(buffer: 0)
             container.set(current: 0)
+            container.set(duration: 0)
+            container.slider.isEnabled = false
             container.playButton.isEnabled = false
-            
-            // 设置音频会话模式
-            UIApplication.shared.endReceivingRemoteControlEvents()
-            do {
-                let session = AVAudioSession.sharedInstance()
-                try session.setCategory(.playback, mode: .default)
-                try session.setActive(false, options: [.notifyOthersOnDeactivation])
-            } catch {
-                print("音频会话释放失败")
-            }
             
         case .finished:
             // 完成阶段
-            
-            if playMode == .loop {
-                // 播放下一首
-                playNext()
-            }
+            container.slider.isEnabled = true
+            container.playButton.isEnabled = true
             
         case .failure(let error):
             // 失败阶段
@@ -275,9 +203,15 @@ extension AudioPlayerController: AudioPlayerDelegate {
         }
     }
     
-    func audioPlayer(_ player: AudioPlayerable, updatedDuration time: Double) {
-        // 更新总时长
-        container.set(duration: time)
+    func audioPlayerLoadingState(_ player: AudioPlayerable, state: AudioPlayer.LoadingState) {
+        // 加载状态 UI效果待优化
+        switch state {
+        case .began:
+            container.playButton.loading.start()
+            
+        case .ended:
+            container.playButton.loading.stop()
+        }
     }
     
     func audioPlayer(_ player: AudioPlayerable, updatedBuffer progress: Double) {
@@ -291,14 +225,8 @@ extension AudioPlayerController: AudioPlayerDelegate {
         container.set(current: time)
     }
     
-    func audioPlayerLoadingState(_ player: AudioPlayerable, state: AudioPlayer.LoadingState) {
-        // 加载状态 UI效果待优化
-        switch state {
-        case .began:
-            container.playButton.loading.start()
-            
-        case .ended:
-            container.playButton.loading.stop()
-        }
+    func audioPlayer(_ player: AudioPlayerable, updatedDuration time: Double) {
+        // 更新总时长
+        container.set(duration: time)
     }
 }

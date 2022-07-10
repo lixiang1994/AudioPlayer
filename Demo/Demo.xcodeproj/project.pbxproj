@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		680E4D07F8F2FFAD8C4F876F /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 18597030E69EA542FB9E5C5C /* Pods_Demo.framework */; };
-		9B26547328783F4700325A9E /* AudioPlayerRemoteControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B26547228783F4700325A9E /* AudioPlayerRemoteControl.swift */; };
+		9B26547328783F4700325A9E /* AudioPlayerManager.RemoteControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B26547228783F4700325A9E /* AudioPlayerManager.RemoteControl.swift */; };
+		9B2654752879A20500325A9E /* AudioPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2654742879A20500325A9E /* AudioPlayerItem.swift */; };
+		9B2654772879A2C800325A9E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2654762879A2C800325A9E /* AudioPlayerManager.swift */; };
 		9BD3F7742876D58D00015754 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7732876D58D00015754 /* AppDelegate.swift */; };
 		9BD3F7762876D58D00015754 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7752876D58D00015754 /* SceneDelegate.swift */; };
 		9BD3F7782876D58D00015754 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7772876D58D00015754 /* ViewController.swift */; };
@@ -27,7 +29,9 @@
 		18597030E69EA542FB9E5C5C /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2196F9AB8F7FFD40D56B16A9 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		30D87B82558D539A0CDF977D /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		9B26547228783F4700325A9E /* AudioPlayerRemoteControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerRemoteControl.swift; sourceTree = "<group>"; };
+		9B26547228783F4700325A9E /* AudioPlayerManager.RemoteControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.RemoteControl.swift; sourceTree = "<group>"; };
+		9B2654742879A20500325A9E /* AudioPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerItem.swift; sourceTree = "<group>"; };
+		9B2654762879A2C800325A9E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		9BD3F7702876D58D00015754 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BD3F7732876D58D00015754 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BD3F7752876D58D00015754 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -89,11 +93,13 @@
 				9BD3F7752876D58D00015754 /* SceneDelegate.swift */,
 				9BD3F7772876D58D00015754 /* ViewController.swift */,
 				9BD3F78F28780E1C00015754 /* AudioPlayerListController.swift */,
+				9B2654762879A2C800325A9E /* AudioPlayerManager.swift */,
 				9BD3F79128781C9100015754 /* AudioPlayerQueue.swift */,
+				9B2654742879A20500325A9E /* AudioPlayerItem.swift */,
 				9BD3F7872877DB8D00015754 /* AudioPlayerController.swift */,
 				9BD3F7892877DBF600015754 /* AudioPlayerView.swift */,
 				9BD3F78B2877E22B00015754 /* AudioPlayerPlanetLayer.swift */,
-				9B26547228783F4700325A9E /* AudioPlayerRemoteControl.swift */,
+				9B26547228783F4700325A9E /* AudioPlayerManager.RemoteControl.swift */,
 				9BD3F7792876D58D00015754 /* Main.storyboard */,
 				9BD3F77C2876D58E00015754 /* Assets.xcassets */,
 				9BD3F77E2876D58E00015754 /* LaunchScreen.storyboard */,
@@ -228,10 +234,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BD3F7782876D58D00015754 /* ViewController.swift in Sources */,
+				9B2654772879A2C800325A9E /* AudioPlayerManager.swift in Sources */,
 				9BD3F79028780E1C00015754 /* AudioPlayerListController.swift in Sources */,
 				9BD3F7882877DB8D00015754 /* AudioPlayerController.swift in Sources */,
-				9B26547328783F4700325A9E /* AudioPlayerRemoteControl.swift in Sources */,
+				9B26547328783F4700325A9E /* AudioPlayerManager.RemoteControl.swift in Sources */,
 				9BD3F7742876D58D00015754 /* AppDelegate.swift in Sources */,
+				9B2654752879A20500325A9E /* AudioPlayerItem.swift in Sources */,
 				9BD3F78C2877E22B00015754 /* AudioPlayerPlanetLayer.swift in Sources */,
 				9BD3F7762876D58D00015754 /* SceneDelegate.swift in Sources */,
 				9BD3F78E2878047500015754 /* Storyboard.swift in Sources */,

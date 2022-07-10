@@ -9,13 +9,7 @@ import Foundation
 
 class AudioPlayerQueue {
     
-    struct Item: Equatable {
-        let id: String
-        let title: String
-        let cover: String
-        let author: String
-        let resource: URL
-    }
+    typealias Item = AudioPlayerItem
     
     private var items: [Item] = []
     
@@ -60,5 +54,15 @@ class AudioPlayerQueue {
     }
     func next(of item: Item) -> Bool {
         return next(of: item) != nil
+    }
+    
+    /// 随机
+    /// - Parameter item: 项目
+    /// - Returns: 如果队列内项目个数仅为1个 则直接返回传入的Item, 大于1个时 随机返回一个不等于传入Item的Item
+    func random(of item: Item) -> Item? {
+        guard items.count > 1 else {
+            return item
+        }
+        return items.filter({ $0 != item }).randomElement()
     }
 }

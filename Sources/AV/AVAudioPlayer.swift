@@ -53,7 +53,9 @@ class AVAudioPlayer: NSObject {
     }
     /// 音量 0 - 1
     var volume: Double = 1.0 {
-        didSet { player.volume = .init(volume)}
+        didSet {
+            player.volume = .init(volume)
+        }
     }
     /// 是否静音
     var isMuted: Bool = false {
@@ -69,6 +71,7 @@ class AVAudioPlayer: NSObject {
     var allowBackgroundPlayback: Bool = true
     
     var delegates: [AudioPlayerDelegateBridge<AnyObject>] = []
+    
     private lazy var player = AVPlayer()
     
     private var playerTimeObserver: Any?
@@ -171,6 +174,7 @@ extension AVAudioPlayer {
         url = nil
         // 设置Seek状态
         isSeeking = false
+        intendedToSeek = nil
     }
     
     private func addObserver() {

@@ -1,5 +1,5 @@
 //
-//  AudioPlayerRemote.swift
+//  AudioPlayerRemoteControl.swift
 //  ┌─┐      ┌───────┐ ┌───────┐
 //  │ │      │ ┌─────┘ │ ┌─────┘
 //  │ │      │ └─────┐ │ └─────┐
@@ -11,7 +11,7 @@
 import MediaPlayer.MPNowPlayingInfoCenter
 import MediaPlayer.MPRemoteCommandCenter
 
-open class AudioPlayerRemote: NSObject {
+open class AudioPlayerRemoteControl: NSObject {
     
     public let player: AudioPlayerable
     
@@ -116,7 +116,7 @@ open class AudioPlayerRemote: NSObject {
     }
 }
 
-extension AudioPlayerRemote: AudioPlayerDelegate {
+extension AudioPlayerRemoteControl: AudioPlayerDelegate {
     
     public func audioPlayerLoadingState(_ player: AudioPlayerable, state: AudioPlayer.LoadingState) {
         updatePlayingInfo()
