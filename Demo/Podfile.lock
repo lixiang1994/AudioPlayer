@@ -12,7 +12,7 @@ PODS:
 
 DEPENDENCIES:
   - AudioPlayer (from `../`)
-  - Loading
+  - Loading (~> 1.1.0)
   - SnapKit (~> 5.0.0)
   - UIAdapter
   - UIImageColors
@@ -36,6 +36,6 @@ SPEC CHECKSUMS:
   UIAdapter: 763299507d2087b19577eade2834bca6b3cedb1f
   UIImageColors: d2ef3b0877d203cbb06489eeb78ea8b7788caabe
 
-PODFILE CHECKSUM: db78b2f4d5f299b33f7703a7c1c594bad97d326e
+PODFILE CHECKSUM: 57591c7d52b61047ac43a85887fd374421812469
 
 COCOAPODS: 1.11.2

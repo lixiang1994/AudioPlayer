@@ -140,6 +140,7 @@ extension AudioPlayerManager {
             remote.set(switchable: switchable)
             
         } else {
+            // 无Item时 播放器停止
             player.stop()
         }
         

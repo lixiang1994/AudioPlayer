@@ -10,7 +10,7 @@ target 'Demo' do
   pod 'AudioPlayer', :path => "../"
   pod 'SnapKit' , '~>5.0.0'
   pod 'UIAdapter'
-  pod 'Loading'
+  pod 'Loading', '~>1.1.0'
   pod 'UIImageColors'
 
 end
