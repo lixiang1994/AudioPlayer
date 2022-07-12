@@ -21,7 +21,7 @@ extension AudioPlayerItem {
     private var cache: [String: TimeInterval] {
         get {
             let key = "audio.player.records"
-            return UserDefaults.standard.dictionary(forKey: key) as? [String: TimeInterval] ?? [:]
+            return UserDefaults.standard.value(forKey: key) as? [String: TimeInterval] ?? [:]
         }
         set {
             let key = "audio.player.records"
@@ -32,13 +32,23 @@ extension AudioPlayerItem {
     enum State {
         case record(Double)
         case played
+        case failed
     }
     
-    /// 状态 (未播放, 播放进度, 已播放)
+    /// 状态 (未播放, 播放进度, 已播放, 播放失败)
     var state: State? {
         get {
             guard let value = cache[id] else { return nil }
-            return value < 0 ? .played : .record(value) 
+            switch value {
+            case -1:
+                return .played
+                
+            case -2:
+                return .failed
+                
+            default:
+                return .record(value)
+            }
         }
         set {
             switch newValue {
@@ -46,7 +56,10 @@ extension AudioPlayerItem {
                 cache[id] = time
                 
             case .played:
-                cache[id] = -1
+                cache[id] = -1.0
+                
+            case .failed:
+                cache[id] = -2.0
                 
             default:
                 cache[id] = nil

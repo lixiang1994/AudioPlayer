@@ -56,25 +56,26 @@ class AudioPlayerManager: NSObject {
     
     /// 播放队列的项目
     func play(_ item: AudioPlayerItem, for queue: AudioPlayerQueue) {
+        // 更新当前队列
         self.queue = queue
-        self.item = item
-        update()
+        // 更新当前Item
+        update(item)
     }
     
     /// 播放上一项
     func playPrev() {
         guard let item = item else { return }
         guard let temp = queue.prev(of: item) else { return }
-        self.item = temp
-        update()
+        // 更新当前Item
+        update(temp)
     }
     
     /// 播放下一项
     func playNext() {
         guard let item = item else { return }
         guard let temp = queue.next(of: item) else { return }
-        self.item = temp
-        update()
+        // 更新当前Item
+        update(temp)
     }
 }
 
@@ -112,7 +113,10 @@ extension AudioPlayerManager {
 
 extension AudioPlayerManager {
     
-    private func update() {
+    private func update(_ item: AudioPlayerItem?) {
+        // 置空当前Item, 防止状态被错误更新
+        self.item = nil
+        
         if let item = item {
             // 准备播放资源
             player.prepare(url: item.resource)
@@ -139,9 +143,8 @@ extension AudioPlayerManager {
             )
             remote.set(switchable: switchable)
             
-        } else {
-            // 无Item时 播放器停止
-            player.stop()
+            // 设置当前Item
+            self.item = item
         }
         
         delegate { $0.audioPlayerManager(self, changed: item) }
@@ -155,6 +158,9 @@ extension AudioPlayerManager {
         case .finished:
             item?.state = .played
             
+        case .failure where item?.state == nil:
+            item?.state = .failed
+            
         default:
             break
         }
@@ -162,8 +168,7 @@ extension AudioPlayerManager {
     
     private func playRandom() {
         guard let item = item else { return }
-        self.item = queue.random(of: item)
-        update()
+        update(queue.random(of: item))
     }
 }
 

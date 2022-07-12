@@ -77,7 +77,11 @@ class AVAudioPlayer: NSObject {
     private var playerTimeObserver: Any?
     private var userPaused: Bool = false
     private var isSeeking: Bool = false
+    
+    /// 是否想要跳转 当非playing状态时 如果调用了seek(to:)  记录状态 在playing时设置跳转
     private var intendedToSeek: AudioPlayer.Seek?
+    /// 是否想要播放 当seeking时如果调用了play() 或者 pasue() 记录状态 在seeking结束时设置对应状态
+    private var intendedToPlay: Bool?
     
     private var timeControlStatusObservation: NSKeyValueObservation?
     private var reasonForWaitingToPlayObservation: NSKeyValueObservation?
@@ -275,6 +279,7 @@ extension AVAudioPlayer {
                     
                     // 查看是否有需要的Seek
                     if let seek = self.intendedToSeek {
+                        self.player.pause()
                         self.seek(to: seek, for: item) { _ in
                             handle()
                         }
@@ -499,8 +504,15 @@ extension AVAudioPlayer: AudioPlayerable {
     
     func play() {
         switch state {
-        case .playing where !isSeeking:
-            player.rate = .init(rate)
+        case .playing:
+            if isSeeking {
+                // 记录播放意图
+                intendedToPlay = true
+            
+            } else {
+                player.rate = .init(rate)
+                intendedToPlay = nil
+            }
             
         case .finished:
             state = .playing
@@ -512,10 +524,17 @@ extension AVAudioPlayer: AudioPlayerable {
     }
     
     func pause() {
-        guard case .playing = state, !isSeeking else { return }
+        guard case .playing = state else { return }
         
-        player.pause()
-        userPaused = true
+        if isSeeking {
+            // 记录播放意图
+            intendedToPlay = false
+            
+        } else {
+            player.pause()
+            userPaused = true
+            intendedToPlay = nil
+        }
     }
     
     func stop() {
@@ -528,12 +547,17 @@ extension AVAudioPlayer: AudioPlayerable {
             let item = player.currentItem,
             player.status == .readyToPlay,
             case .playing = state else {
+            // 记录跳转意图
             intendedToSeek = target
             return
         }
         // 先取消上一个 保证Seek状态
         item.cancelPendingSeeks()
-        // 设置Seek状态
+        // 记录播放状态
+        intendedToPlay = control == .playing
+        // 暂停播放
+        player.pause()
+        // 设置跳转中状态
         isSeeking = true
         // 代理回到
         delegate { $0.audioPlayer(self, seekBegan: target) }
@@ -542,6 +566,10 @@ extension AVAudioPlayer: AudioPlayerable {
             guard let self = self else { return }
             // 设置Seek状态
             self.isSeeking = false
+            // 根据播放意图继续播放
+            if finished, self.intendedToPlay == true {
+                self.play()
+            }
             // 代理回到
             self.delegate { $0.audioPlayer(self, seekEnded: target) }
         }

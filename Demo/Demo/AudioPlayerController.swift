@@ -185,6 +185,23 @@ extension AudioPlayerController: AudioPlayerDelegate {
             
         case .failure(let error):
             // 失败阶段
+            // 重置界面显示
+            container.set(buffer: 0)
+            container.set(current: 0)
+            container.set(duration: 0)
+            container.slider.isEnabled = false
+            container.playButton.isEnabled = false
+            // 弹出提示
+            let alert = UIAlertController(
+                title: "Error",
+                message: error?.localizedDescription ?? "",
+                preferredStyle: .alert
+            )
+            alert.addAction(.init(title: "OK", style: .cancel, handler: { [weak self] action in
+                self?.close()
+            }))
+            present(alert, animated: true)
+            
             print(error?.localizedDescription ?? "")
         }
     }

@@ -16,8 +16,8 @@ extension AudioPlayerManager {
         var playPrev: (()-> Void)?
         var playNext: (()-> Void)?
         
-        override func setup() {
-            super.setup()
+        override func setupCommand() {
+            super.setupCommand()
             
             // 添加上一首/下一首命令
             let remote = MPRemoteCommandCenter.shared()
@@ -25,8 +25,8 @@ extension AudioPlayerManager {
             remote.nextTrackCommand.addTarget(self, action: #selector(nextCommandAction))
         }
         
-        override func clean() {
-            super.clean()
+        override func cleanCommand() {
+            super.cleanCommand()
             // 移除命令
             let remote = MPRemoteCommandCenter.shared()
             remote.previousTrackCommand.removeTarget(self)

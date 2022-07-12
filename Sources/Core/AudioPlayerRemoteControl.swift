@@ -18,12 +18,15 @@ open class AudioPlayerRemoteControl: NSObject {
     public init(_ player: AudioPlayerable) {
         self.player = player
         super.init()
-        setup()
+        // 添加播放器代理
+        player.add(delegate: self)
+        
+        setupCommand()
     }
     
     /// 设置远程控制
-    open func setup() {
-        clean()
+    open func setupCommand() {
+        cleanCommand()
         
         let remote = MPRemoteCommandCenter.shared()
         remote.playCommand.addTarget(self, action: #selector(playCommandAction))
@@ -33,7 +36,7 @@ open class AudioPlayerRemoteControl: NSObject {
     }
     
     /// 清理远程控制
-    open func clean() {
+    open func cleanCommand() {
         let remote = MPRemoteCommandCenter.shared()
         remote.playCommand.removeTarget(self)
         remote.pauseCommand.removeTarget(self)
@@ -49,8 +52,12 @@ open class AudioPlayerRemoteControl: NSObject {
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
     }
     
+    public func cleanPlayingInfo() {
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+    }
+    
     deinit {
-        clean()
+        cleanCommand()
     }
     
     /// 设置播放信息
@@ -129,23 +136,26 @@ extension AudioPlayerRemoteControl: AudioPlayerDelegate {
     public func audioPlayerState(_ player: AudioPlayerable, state: AudioPlayer.State) {
         switch state {
         case .prepare:
-            clean()
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+            cleanPlayingInfo()
             
         case .playing:
-            setup()
+            setupCommand()
             
         case .stopped:
-            clean()
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+            cleanCommand()
+            cleanPlayingInfo()
             
         case .finished:
             updatePlayingInfo()
             
         case .failure:
-            clean()
-            MPNowPlayingInfoCenter.default().nowPlayingInfo = nil
+            cleanCommand()
+            cleanPlayingInfo()
         }
+    }
+    
+    public func audioPlayer(_ player: AudioPlayerable, updatedCurrent time: Double) {
+        updatePlayingInfo()
     }
     
     public func audioPlayer(_ player: AudioPlayerable, updatedDuration time: Double) {

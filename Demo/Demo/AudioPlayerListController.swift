@@ -94,7 +94,10 @@ fileprivate extension AudioPlayerItem.State {
             return "已播放至: \(time.toHMS)"
             
         case .played:
-            return "已播放完"
+            return "播放完成"
+            
+        case .failed:
+            return "播放失败"
         }
     }
 }
