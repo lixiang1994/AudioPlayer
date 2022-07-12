@@ -54,6 +54,23 @@ class AudioPlayerView: UIView {
         // 设置等宽字体
         currentTimeLabel.font = currentTimeLabel.font.monospaced
         durationTimeLabel.font = durationTimeLabel.font.monospaced
+        
+        slider.setThumbImage(
+            .init(
+                color: .white,
+                size: .init(width: 6, height: 10),
+                scale: UIScreen.main.scale
+            )?.withRoundedCorners(),
+            for: .normal
+        )
+        slider.setThumbImage(
+            .init(
+                color: .lightGray,
+                size: .init(width: 6, height: 10),
+                scale: UIScreen.main.scale
+            )?.withRoundedCorners(),
+            for: .disabled
+        )
     }
     
     override func layoutSubviews() {
@@ -152,43 +169,6 @@ extension AudioPlayerView {
     }
 }
 
-fileprivate extension UIImage {
-    
-    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1), scale: CGFloat = 1) {
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        defer { UIGraphicsEndImageContext() }
-
-        color.setFill()
-        UIRectFill(.init(origin: .zero, size: size))
-
-        guard let result = UIGraphicsGetImageFromCurrentImageContext()?.cgImage else {
-            return nil
-        }
-        self.init(cgImage: result)
-    }
-    
-    func withRoundedCorners(radius: CGFloat? = nil) -> UIImage? {
-        let maxRadius = min(size.width, size.height) / 2
-        let cornerRadius: CGFloat
-        if let radius = radius, radius > 0 && radius <= maxRadius {
-            cornerRadius = radius
-            
-        } else {
-            cornerRadius = maxRadius
-        }
-
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-
-        let rect = CGRect(origin: .zero, size: size)
-        UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius).addClip()
-        draw(in: rect)
-
-        let image = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        return image
-    }
-}
-
 extension TimeInterval {
     
     private static let format = DateFormatter()
@@ -262,5 +242,42 @@ private extension UIFont {
         }
         let new = fontDescriptor.addingAttributes([.featureSettings: [setting]])
         return UIFont(descriptor: new, size: 0)
+    }
+}
+
+private extension UIImage {
+    
+    // 根据颜色创建图片
+    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1), scale: CGFloat = 1) {
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+        defer { UIGraphicsEndImageContext() }
+
+        color.setFill()
+        UIRectFill(CGRect(origin: .zero, size: size))
+
+        guard let aCgImage = UIGraphicsGetImageFromCurrentImageContext()?.cgImage else {
+            return nil
+        }
+        self.init(cgImage: aCgImage, scale: scale, orientation: .up)
+    }
+    
+    func withRoundedCorners(radius: CGFloat? = nil) -> UIImage? {
+        let maxRadius = min(size.width, size.height) / 2
+        let cornerRadius: CGFloat
+        if let radius = radius, radius > 0 && radius <= maxRadius {
+            cornerRadius = radius
+        } else {
+            cornerRadius = maxRadius
+        }
+
+        UIGraphicsBeginImageContextWithOptions(size, false, scale)
+
+        let rect = CGRect(origin: .zero, size: size)
+        UIBezierPath(roundedRect: rect, cornerRadius: cornerRadius).addClip()
+        draw(in: rect)
+
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
     }
 }
