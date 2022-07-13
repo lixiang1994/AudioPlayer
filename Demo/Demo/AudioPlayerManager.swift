@@ -105,6 +105,29 @@ extension AudioPlayerManager {
     }
     
     private func setupNotification() {
+        /// 会话线路变更通知
+        NotificationCenter.default.addObserver(
+            forName: AVAudioSession.routeChangeNotification,
+            object: AVAudioSession.sharedInstance(),
+            queue: .main
+        ) { [weak self] sender in
+            guard let self = self else { return }
+            guard
+                let info = sender.userInfo,
+                let reason = info[AVAudioSessionRouteChangeReasonKey] as? Int else {
+                return
+            }
+            switch AVAudioSession.RouteChangeReason(rawValue: UInt(reason)) {
+            case .oldDeviceUnavailable?:
+                DispatchQueue.main.async {
+                    // 暂停播放
+                    self.player.pause()
+                }
+                
+            default: break
+            }
+        }
+        /// 应用即将终止通知
         NotificationCenter.default.addObserver(
             forName: UIApplication.willTerminateNotification,
             object: nil,

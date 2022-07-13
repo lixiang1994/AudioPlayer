@@ -127,12 +127,6 @@ class AVAudioPlayer: NSObject {
         )
         NotificationCenter.default.addObserver(
             self,
-            selector: #selector(sessionRouteChange),
-            name: AVAudioSession.routeChangeNotification,
-            object: AVAudioSession.sharedInstance()
-        )
-        NotificationCenter.default.addObserver(
-            self,
             selector: #selector(sessionInterruption),
             name: AVAudioSession.interruptionNotification,
             object: AVAudioSession.sharedInstance()
@@ -385,25 +379,6 @@ extension AVAudioPlayer {
         self.error(notification.userInfo?[AVPlayerItemFailedToPlayToEndTimeErrorKey] as? Error)
     }
     
-    /// 会话线路变更通知
-    @objc
-    private func sessionRouteChange(_ notification: NSNotification) {
-        guard
-            let info = notification.userInfo,
-            let reason = info[AVAudioSessionRouteChangeReasonKey] as? Int else {
-            return
-        }
-        guard let _ = player.currentItem else { return }
-        
-        switch AVAudioSession.RouteChangeReason(rawValue: UInt(reason)) {
-        case .oldDeviceUnavailable?:
-            DispatchQueue.main.async {
-                self.player.pause()
-            }
-        default: break
-        }
-    }
-    
     /// 会话中断通知
     @objc
     private func sessionInterruption(_ notification: NSNotification) {
@@ -517,7 +492,10 @@ extension AVAudioPlayer: AudioPlayerable {
         case .prepare:
             intendedToPlay = true
             
-        case .playing:
+        case .playing where intendedToSeek != nil:
+            intendedToPlay = true
+            
+        case .playing where intendedToSeek == nil:
             intendedToPlay = true
             player.rate = .init(rate)
             
