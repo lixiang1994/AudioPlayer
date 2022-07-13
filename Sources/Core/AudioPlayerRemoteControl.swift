@@ -148,7 +148,7 @@ extension AudioPlayerRemoteControl: AudioPlayerDelegate {
         case .finished:
             updatePlayingInfo()
             
-        case .failure:
+        case .failed:
             cleanCommand()
             cleanPlayingInfo()
         }

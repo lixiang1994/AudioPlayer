@@ -14,16 +14,16 @@ public enum AudioPlayer {
     /// 播放状态
     /// stopped -> prepare -> playing -> finished
     public enum State {
-        /// 准备播放: 调用`prepare(url:)`后的状态.
+        /// 准备播放: 调用`prepare(resource:)`后的状态.
         case prepare
         /// 正在播放: `prepare`处理完成后的状态,  当`finished`状态时再次调用`play()`也会回到该状态.
         case playing
         /// 播放停止: 默认的初始状态, 调用`stop()`后的状态.
         case stopped
-        /// 播放完成: 在`isLoop = false`时触发.
+        /// 播放完成: 在`isLoop = false`时会触发.
         case finished
-        /// 播放失败: 调用`prepare(url:)`后的任何时候 只要发送了异常便会触发该状态.
-        case failure(Swift.Error?)
+        /// 播放失败: 调用`prepare(resource:)`后的任何时候 只要发生了异常便会触发该状态.
+        case failed(Swift.Error?)
     }
     
     /// 控制状态: 仅在 state 为 .playing 状态时可用

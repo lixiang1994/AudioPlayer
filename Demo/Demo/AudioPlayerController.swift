@@ -18,7 +18,7 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
         super.viewDidLoad()
         
         setup()
-        setupContent()
+        setupManager()
     }
     
     private func setup() {
@@ -33,19 +33,13 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
         container.slider.addTarget(self, action: #selector(sliderValueChanged), for: .valueChanged)
     }
     
-    private func setupContent() {
+    private func setupManager() {
         // 添加代理
         manager.add(delegate: self)
         manager.player.add(delegate: self)
-        // 同步状态
+        
         audioPlayerManager(manager, changed: manager.item)
         audioPlayerManager(manager, changed: manager.mode)
-        audioPlayerState(manager.player, state: manager.player.state)
-        audioPlayerControlState(manager.player, state: manager.player.control)
-        audioPlayerLoadingState(manager.player, state: manager.player.loading)
-        audioPlayer(manager.player, updatedDuration: manager.player.duration)
-        audioPlayer(manager.player, updatedCurrent: manager.player.current)
-        audioPlayer(manager.player, updatedBuffer: manager.player.buffer)
     }
     
     @objc
@@ -67,13 +61,20 @@ extension AudioPlayerController {
     
     /// 播放/暂停
     @IBAction func playAction(_ sender: UIButton) {
-        if sender.isSelected {
-            // 暂停
-            manager.player.pause()
+        switch manager.player.state {
+        case .failed:
+            // 失败状态时点击播放按钮 调用重播
+            manager.replay()
             
-        } else {
-            // 播放
-            manager.player.play()
+        default:
+            if sender.isSelected {
+                // 暂停
+                manager.player.pause()
+                
+            } else {
+                // 播放
+                manager.player.play()
+            }
         }
     }
     
@@ -148,6 +149,14 @@ extension AudioPlayerController: AudioPlayerManagerDelegate {
             container.set(cover: nil)
             container.set(switchable: (false, false))
         }
+        
+        // 同步播放器状态
+        audioPlayerState(manager.player, state: manager.player.state)
+        audioPlayerControlState(manager.player, state: manager.player.control)
+        audioPlayerLoadingState(manager.player, state: manager.player.loading)
+        audioPlayer(manager.player, updatedDuration: manager.player.duration)
+        audioPlayer(manager.player, updatedCurrent: manager.player.current)
+        audioPlayer(manager.player, updatedBuffer: manager.player.buffer)
     }
 }
 
@@ -158,9 +167,9 @@ extension AudioPlayerController: AudioPlayerDelegate {
         case .prepare:
             // 准备阶段
             // 重置界面显示
-            container.set(buffer: 0)
-            container.set(current: 0)
-            container.set(duration: 0)
+            audioPlayer(player, updatedDuration: player.duration)
+            audioPlayer(player, updatedCurrent: player.current)
+            audioPlayer(player, updatedBuffer: player.buffer)
             container.slider.isEnabled = false
             container.playButton.isEnabled = false
             
@@ -172,9 +181,9 @@ extension AudioPlayerController: AudioPlayerDelegate {
         case .stopped:
             // 停止阶段
             // 重置界面显示
-            container.set(buffer: 0)
-            container.set(current: 0)
-            container.set(duration: 0)
+            audioPlayer(player, updatedDuration: player.duration)
+            audioPlayer(player, updatedCurrent: player.current)
+            audioPlayer(player, updatedBuffer: player.buffer)
             container.slider.isEnabled = false
             container.playButton.isEnabled = false
             
@@ -183,26 +192,24 @@ extension AudioPlayerController: AudioPlayerDelegate {
             container.slider.isEnabled = true
             container.playButton.isEnabled = true
             
-        case .failure(let error):
+        case .failed(let error):
             // 失败阶段
-            // 重置界面显示
-            container.set(buffer: 0)
-            container.set(current: 0)
-            container.set(duration: 0)
+            audioPlayer(player, updatedDuration: player.duration)
+            audioPlayer(player, updatedCurrent: player.current)
+            audioPlayer(player, updatedBuffer: player.buffer)
             container.slider.isEnabled = false
-            container.playButton.isEnabled = false
+            container.playButton.isEnabled = true
             // 弹出提示
             let alert = UIAlertController(
                 title: "Error",
                 message: error?.localizedDescription ?? "",
                 preferredStyle: .alert
             )
-            alert.addAction(.init(title: "OK", style: .cancel, handler: { [weak self] action in
-                self?.close()
+            alert.addAction(.init(title: "Close", style: .cancel))
+            alert.addAction(.init(title: "Retry", style: .default, handler: { [weak self] action in
+                self?.manager.replay()
             }))
             present(alert, animated: true)
-            
-            print(error?.localizedDescription ?? "")
         }
     }
     
@@ -243,7 +250,7 @@ extension AudioPlayerController: AudioPlayerDelegate {
     }
     
     func audioPlayer(_ player: AudioPlayerable, updatedDuration time: Double) {
-        // 更新总时长
-        container.set(duration: time)
+        // 更新总时长 如果time为0 说明实际时长未加载完成. 可先显示Item中的时长 优化体验
+        container.set(duration: time > 0 ? time : manager.item?.duration ?? 0)
     }
 }

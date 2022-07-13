@@ -77,6 +77,12 @@ class AudioPlayerManager: NSObject {
         // 更新当前Item
         update(temp)
     }
+    
+    /// 重播当前项
+    func replay() {
+        guard let item = item else { return }
+        update(item)
+    }
 }
 
 extension AudioPlayerManager {
@@ -119,7 +125,7 @@ extension AudioPlayerManager {
         
         if let item = item {
             // 准备播放资源
-            player.prepare(url: item.resource)
+            player.prepare(resource: item.resource)
             // 处理Item状态
             if let state = item.state {
                 switch state {
@@ -158,7 +164,7 @@ extension AudioPlayerManager {
         case .finished:
             item?.state = .played
             
-        case .failure where item?.state == nil:
+        case .failed where item?.state == nil:
             item?.state = .failed
             
         default:
@@ -226,7 +232,7 @@ extension AudioPlayerManager: AudioPlayerDelegate {
                 break
             }
             
-        case .failure(let error):
+        case .failed(let error):
             // 失败阶段
             print(error?.localizedDescription ?? "")
         }

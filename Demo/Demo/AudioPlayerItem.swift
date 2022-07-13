@@ -12,6 +12,7 @@ struct AudioPlayerItem: Equatable {
     let title: String
     let cover: String
     let author: String
+    let duration: TimeInterval
     let resource: URL
 }
 

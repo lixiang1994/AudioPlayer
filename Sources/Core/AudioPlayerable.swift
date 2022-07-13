@@ -16,9 +16,9 @@ public protocol AudioPlayerURLAsset {
 
 public protocol AudioPlayerable: NSObjectProtocol {
     
-    /// 准备播放器 准备完成后自动播放
-    func prepare(url: AudioPlayerURLAsset)
-    /// 播放
+    /// 准备
+    func prepare(resource: AudioPlayerURLAsset)
+    /// 播放 
     func play()
     /// 暂停
     func pause()
@@ -27,8 +27,8 @@ public protocol AudioPlayerable: NSObjectProtocol {
     /// 快速定位到指定播放时间点 (多次调用 以最后一次为准)
     func seek(to target: AudioPlayer.Seek)
     
-    /// 当前URL
-    var url: URL? { get }
+    /// 资源
+    var resource: AudioPlayerURLAsset? { get }
     /// 播放器当前状态
     var state: AudioPlayer.State { get }
     /// 播放器控制状态
@@ -52,7 +52,7 @@ public protocol AudioPlayerable: NSObjectProtocol {
     /// 是否循环播放  默认: false
     var isLoop: Bool { get set }
     /// 是否自动播放  默认: true
-    var isAutoPlay: Bool { get set }
+    var isAutoplay: Bool { get set }
     /// 允许后台播放 默认: true
     var allowBackgroundPlayback: Bool { get set }
     

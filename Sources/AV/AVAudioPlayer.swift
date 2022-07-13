@@ -21,7 +21,7 @@ class AVAudioPlayer: NSObject {
     static let shared = AVAudioPlayer()
     
     /// 当前URL
-    private(set) var url: URL?
+    private(set) var resource: AudioPlayerURLAsset?
     
     /// 播放状态
     private (set) var state: AudioPlayer.State = .stopped {
@@ -66,7 +66,7 @@ class AVAudioPlayer: NSObject {
     /// 是否循环播放
     var isLoop: Bool = false
     /// 是否自动播放
-    var isAutoPlay: Bool = true
+    var isAutoplay: Bool = true
     /// 允许后台播放
     var allowBackgroundPlayback: Bool = true
     
@@ -75,13 +75,11 @@ class AVAudioPlayer: NSObject {
     private lazy var player = AVPlayer()
     
     private var playerTimeObserver: Any?
-    private var userPaused: Bool = false
-    private var isSeeking: Bool = false
     
     /// 是否想要跳转 当非playing状态时 如果调用了seek(to:)  记录状态 在playing时设置跳转
     private var intendedToSeek: AudioPlayer.Seek?
     /// 是否想要播放 当seeking时如果调用了play() 或者 pasue() 记录状态 在seeking结束时设置对应状态
-    private var intendedToPlay: Bool?
+    private var intendedToPlay: Bool = false
     
     private var timeControlStatusObservation: NSKeyValueObservation?
     private var reasonForWaitingToPlayObservation: NSKeyValueObservation?
@@ -123,6 +121,12 @@ class AVAudioPlayer: NSObject {
         )
         NotificationCenter.default.addObserver(
             self,
+            selector: #selector(itemFailedToPlayToEndTime),
+            name: .AVPlayerItemFailedToPlayToEndTime,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
             selector: #selector(sessionRouteChange),
             name: AVAudioSession.routeChangeNotification,
             object: AVAudioSession.sharedInstance()
@@ -153,9 +157,9 @@ extension AVAudioPlayer {
     /// 错误
     private func error(_ value: Swift.Error?) {
         clear()
-        state = .failure(value)
+        state = .failed(value)
     }
-    
+
     /// 清理
     private func clear() {
         guard let item = player.currentItem else { return }
@@ -174,11 +178,11 @@ extension AVAudioPlayer {
         
         // 移除item
         player.replaceCurrentItem(with: nil)
-        // 清空当前URL
-        url = nil
-        // 设置Seek状态
-        isSeeking = false
+        // 清空资源
+        resource = nil
+        // 清理意图
         intendedToSeek = nil
+        intendedToPlay = false
     }
     
     private func addObserver() {
@@ -188,9 +192,14 @@ extension AVAudioPlayer {
         playerTimeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) {
             [weak self] (time) in
             guard let self = self else { return }
-            guard !self.isSeeking else { return }
+            guard case .playing = self.state else { return }
             
-            self.delegate{ $0.audioPlayer(self, updatedCurrent: CMTimeGetSeconds(time)) }
+            if let seek = self.intendedToSeek {
+                self.delegate{ $0.audioPlayer(self, updatedCurrent: seek.time) }
+                
+            } else {
+                self.delegate{ $0.audioPlayer(self, updatedCurrent: CMTimeGetSeconds(time)) }
+            }
         }
         
         timeControlStatusObservation = player.observe(\.timeControlStatus) {
@@ -201,13 +210,11 @@ extension AVAudioPlayer {
             switch observer.timeControlStatus {
             case .paused:
                 self.control = .pausing
-                self.userPaused = false
                 
             case .playing:
                 // 校准播放速率
                 if observer.rate == .init(self.rate) {
                     self.control = .playing
-                    self.userPaused = false
                     
                 } else {
                     observer.rate = .init(self.rate)
@@ -265,15 +272,16 @@ extension AVAudioPlayer {
                 
                 switch observer.status {
                 case .readyToPlay:
-                    let handle = {
+                    let handle = { [weak self] in
+                        guard let self = self else { return }
+                        self.intendedToSeek = nil
                         self.state = .playing
                         
-                        if self.isAutoPlay {
-                            self.player.rate = .init(self.rate)
+                        if self.intendedToPlay {
+                            self.play()
                             
                         } else {
-                            self.player.pause()
-                            self.userPaused = true
+                            self.pause()
                         }
                     }
                     
@@ -343,31 +351,20 @@ extension AVAudioPlayer {
         guard let item = notification.object as? AVPlayerItem, item == player.currentItem else {
             return
         }
-        // 取消Seeks
-        item.cancelPendingSeeks()
-        // 设置Seek状态
-        isSeeking = true
-        // Seek到起始位置
-        item.seek(to: .zero) { [weak self] (result) in
-            guard let self = self else { return }
-            // 设置Seek状态
-            self.isSeeking = false
-            // 判断循环模式
-            if self.isLoop {
-                // 继续播放
-                self.player.rate = .init(self.rate)
-                
-            } else {
-                // 暂停播放
-                self.player.pause()
-                self.userPaused = true
-                // 设置完成状态
-                self.state = .finished
-            }
+        // 判断是否循环播放
+        if isLoop {
+            // Seek到起始位置
+            seek(to: .init(time: .zero))
+            
+        } else {
+            // 暂停播放
+            pause()
+            // 设置完成状态
+            state = .finished
         }
     }
     
-    /// 播放异常通知
+    /// 播放中断通知
     @objc
     private func itemPlaybackStalled(_ notification: NSNotification) {
         guard notification.object as? AVPlayerItem == player.currentItem else {
@@ -377,6 +374,15 @@ extension AVAudioPlayer {
             return
         }
         play()
+    }
+    
+    /// 播放失败通知
+    @objc
+    private func itemFailedToPlayToEndTime(_ notification: NSNotification) {
+        guard notification.object as? AVPlayerItem == player.currentItem else {
+            return
+        }
+        self.error(notification.userInfo?[AVPlayerItemFailedToPlayToEndTimeErrorKey] as? Error)
     }
     
     /// 会话线路变更通知
@@ -409,10 +415,12 @@ extension AVAudioPlayer {
         guard let _ = player.currentItem else { return }
         
         switch AVAudioSession.InterruptionType(rawValue: .init(type)) {
-        case .began?:
-            if !userPaused, control == .playing { player.pause() }
-        case .ended?:
-            if !userPaused, control == .pausing { play() }
+        case .began? where intendedToPlay:
+            player.pause()
+            
+        case .ended? where intendedToPlay:
+            play()
+            
         default:
             break
         }
@@ -429,7 +437,7 @@ extension AVAudioPlayer {
         }
         
         // 继续播放
-        if case .playing = state, !userPaused, control == .pausing {
+        if case .playing = state, intendedToPlay {
             play()
         }
     }
@@ -447,9 +455,8 @@ extension AVAudioPlayer {
                 self.backgroundTaskIdentifier = .invalid
             }
             
-        case .playing where !allowBackgroundPlayback:
+        case .playing where !allowBackgroundPlayback && intendedToPlay:
             // 如果在播放阶段 不允许后台播放 则需要暂停
-            guard !userPaused, control == .playing else { return }
             player.pause()
             
         default:
@@ -460,28 +467,29 @@ extension AVAudioPlayer {
 
 extension AVAudioPlayer: AudioPlayerable {
     
-    func prepare(url: AudioPlayerURLAsset) {
+    func prepare(resource: AudioPlayerURLAsset) {
         // 清理原有资源
         clear()
         // 重置当前状态
         loading = .began
         state = .prepare
         
-        // 设置当前URL
-        self.url = url.value
-        // 初始化播放器
+        // 设置当前资源
+        self.resource = resource
+        
         let asset: AVURLAsset
-        if let temp = url as? AVURLAsset {
+        if let temp = resource as? AVURLAsset {
             asset = temp
             
         } else {
-            asset = AVURLAsset(url: url.value)
+            asset = AVURLAsset(url: resource.value)
         }
         
 //        if asset.resourceLoader.delegate == nil {
 //            asset.resourceLoader.setDelegate(AVAssetResourceLoader(), queue: .main)
 //        }
         
+        // 初始化播放项
         let item = AVPlayerItem(asset: asset)
         item.canUseNetworkResourcesForLiveStreamingWhilePaused = true
         // 预缓冲时长 默认自动选择
@@ -489,34 +497,35 @@ extension AVAudioPlayer: AudioPlayerable {
         // 控制倍速播放的质量: 音频质量最高，计算成本最高，适合音乐. 可变率从1/32到32;
         item.audioTimePitchAlgorithm = .spectral
         
+        // 初始化播放器
         player = AVPlayer(playerItem: item)
         player.actionAtItemEnd = .pause
         player.rate = .init(rate)
         player.volume = .init(volume)
         player.isMuted = isMuted
-        
         player.automaticallyWaitsToMinimizeStalling = false
         
         // 添加监听
         addObserver()
         addObserver(item: item)
+        
+        intendedToPlay = isAutoplay
     }
     
     func play() {
         switch state {
-        case .playing:
-            if isSeeking {
-                // 记录播放意图
-                intendedToPlay = true
+        case .prepare:
+            intendedToPlay = true
             
-            } else {
-                player.rate = .init(rate)
-                intendedToPlay = nil
-            }
+        case .playing:
+            intendedToPlay = true
+            player.rate = .init(rate)
             
         case .finished:
             state = .playing
-            player.rate = .init(rate)
+            intendedToPlay = true
+            // Seek到起始位置
+            seek(to: .init(time: .zero))
             
         default:
             break
@@ -524,17 +533,8 @@ extension AVAudioPlayer: AudioPlayerable {
     }
     
     func pause() {
-        guard case .playing = state else { return }
-        
-        if isSeeking {
-            // 记录播放意图
-            intendedToPlay = false
-            
-        } else {
-            player.pause()
-            userPaused = true
-            intendedToPlay = nil
-        }
+        intendedToPlay = false
+        player.pause()
     }
     
     func stop() {
@@ -547,30 +547,28 @@ extension AVAudioPlayer: AudioPlayerable {
             let item = player.currentItem,
             player.status == .readyToPlay,
             case .playing = state else {
-            // 记录跳转意图
+            // 设置跳转意图
             intendedToSeek = target
             return
         }
         // 先取消上一个 保证Seek状态
         item.cancelPendingSeeks()
-        // 记录播放状态
-        intendedToPlay = control == .playing
-        // 暂停播放
+        // 设置跳转意图
+        intendedToSeek = target
+        // 暂停当前播放
         player.pause()
-        // 设置跳转中状态
-        isSeeking = true
-        // 代理回到
+        // 代理回调
         delegate { $0.audioPlayer(self, seekBegan: target) }
         // 开始Seek
         seek(to: target, for: item) { [weak self] finished in
             guard let self = self else { return }
-            // 设置Seek状态
-            self.isSeeking = false
+            // 清空跳转意图
+            self.intendedToSeek = nil
             // 根据播放意图继续播放
-            if finished, self.intendedToPlay == true {
+            if finished, self.intendedToPlay {
                 self.play()
             }
-            // 代理回到
+            // 代理回调
             self.delegate { $0.audioPlayer(self, seekEnded: target) }
         }
     }
@@ -597,8 +595,13 @@ extension AVAudioPlayer: AudioPlayerable {
     
     var current: TimeInterval {
         guard let item = player.currentItem else { return 0 }
-        let time = CMTimeGetSeconds(item.currentTime())
-        return time.isNaN ? 0 : time
+        if let seek = intendedToSeek {
+            return seek.time
+            
+        } else {
+            let time = CMTimeGetSeconds(item.currentTime())
+            return time.isNaN ? 0 : time
+        }
     }
     
     var duration: TimeInterval {
