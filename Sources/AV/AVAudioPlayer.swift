@@ -76,9 +76,11 @@ class AVAudioPlayer: NSObject {
     
     private var playerTimeObserver: Any?
     
-    /// 是否想要跳转 当非playing状态时 如果调用了seek(to:)  记录状态 在playing时设置跳转
+    /// 当前时间校准器 用于解决时间精度偏差问题.
+    private var currentTimeCalibrator: TimeInterval?
+    /// 跳转意图 例如当非playing状态时 如果调用了seek(to:)  记录状态 在playing时设置跳转
     private var intendedToSeek: AudioPlayer.Seek?
-    /// 是否想要播放 当seeking时如果调用了play() 或者 pasue() 记录状态 在seeking结束时设置对应状态
+    /// 播放意图 例如当seeking时如果调用了play() 或者 pasue() 记录状态 在seeking结束时设置对应状态
     private var intendedToPlay: Bool = false
     
     private var timeControlStatusObservation: NSKeyValueObservation?
@@ -187,13 +189,20 @@ extension AVAudioPlayer {
             [weak self] (time) in
             guard let self = self else { return }
             guard case .playing = self.state else { return }
-            
+            let time = CMTimeGetSeconds(time)
+            // 如果有跳转意图 则返回跳转的目标时间
             if let seek = self.intendedToSeek {
-                self.delegate{ $0.audioPlayer(self, updatedCurrent: seek.time) }
-                
-            } else {
-                self.delegate{ $0.audioPlayer(self, updatedCurrent: CMTimeGetSeconds(time)) }
+                self.delegate { $0.audioPlayer(self, updatedCurrent: seek.time) }
+                return
             }
+            // 当前时间校准器 如果大于 当前时间, 则返回校准时间, 否则清空校准器 返回当前时间.
+            if let temp = self.currentTimeCalibrator, temp > time {
+                self.delegate { $0.audioPlayer(self, updatedCurrent: time) }
+                return
+            }
+            self.currentTimeCalibrator = nil
+            
+            self.delegate { $0.audioPlayer(self, updatedCurrent: time) }
         }
         
         timeControlStatusObservation = player.observe(\.timeControlStatus) {
@@ -542,6 +551,8 @@ extension AVAudioPlayer: AudioPlayerable {
             guard let self = self else { return }
             // 清空跳转意图
             self.intendedToSeek = nil
+            // 设置当前时间校准器
+            self.currentTimeCalibrator = target.time
             // 根据播放意图继续播放
             if finished, self.intendedToPlay {
                 self.play()
@@ -573,13 +584,17 @@ extension AVAudioPlayer: AudioPlayerable {
     
     var current: TimeInterval {
         guard let item = player.currentItem else { return 0 }
+        let time = CMTimeGetSeconds(item.currentTime())
+        // 如果有跳转意图 则返回跳转的目标时间
         if let seek = intendedToSeek {
             return seek.time
-            
-        } else {
-            let time = CMTimeGetSeconds(item.currentTime())
-            return time.isNaN ? 0 : time
         }
+        // 当前时间校准器 如果大于 当前时间, 则返回校准时间, 否则清空校准器 返回当前时间.
+        if let temp = currentTimeCalibrator, temp > time {
+            return temp
+        }
+        currentTimeCalibrator = nil
+        return time.isNaN ? 0 : time
     }
     
     var duration: TimeInterval {
