@@ -305,8 +305,8 @@ extension AVAudioPlayer {
             let observation = item.observe(\.duration) {
                 [weak self] (observer, change) in
                 guard let self = self else { return }
-                
-                self.delegate { $0.audioPlayer(self, updatedDuration: observer.duration.seconds) }
+                let time = observer.duration.seconds.isNaN ? 0 : observer.duration.seconds
+                self.delegate { $0.audioPlayer(self, updatedDuration: time) }
             }
             itemDurationObservation = observation
         }
@@ -628,7 +628,7 @@ extension AVAudioPlayer: AudioPlayerable {
     
     var current: TimeInterval {
         guard let item = player.currentItem else { return 0 }
-        let time = CMTimeGetSeconds(item.currentTime())
+        let time = item.currentTime().seconds
         // 如果有跳转意图 则返回跳转的目标时间
         if let seek = intendedToSeek {
             return seek.time
@@ -643,7 +643,7 @@ extension AVAudioPlayer: AudioPlayerable {
     
     var duration: TimeInterval {
         guard let item = player.currentItem else { return 0 }
-        let time = CMTimeGetSeconds(item.duration)
+        let time = item.duration.seconds
         return time.isNaN ? 0 : time
     }
     
