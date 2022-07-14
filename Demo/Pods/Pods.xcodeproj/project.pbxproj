@@ -11,13 +11,14 @@
 		0CDCE095EC8C8FA446C8BA272ECB4961 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16838B1802E83E5913ED9D6514ACDB7E /* Foundation.framework */; };
 		0DD2DD8E5F3DFED0E105892041888A05 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDF7617B1329658DE152509C01837D7 /* UIKit.framework */; };
 		144DA93A55A598F5197F10C729FBDD69 /* UILayoutSupport+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20F8AF25099DD3B7FCEE8D3C8121E80A /* UILayoutSupport+Extensions.swift */; };
+		14E794D5B3461E8D28F22B656237CA16 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDF7617B1329658DE152509C01837D7 /* UIKit.framework */; };
 		17BE0F4E51B0FB968125F1A520607FD8 /* ConstraintMultiplierTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC48B117C10E5CF2E15EE17411E1AF6F /* ConstraintMultiplierTarget.swift */; };
+		1849614B1D578B5FFE511A036C80D487 /* AudioPlayerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B1A0DF339688ABE593428CC6A31B67 /* AudioPlayerDelegates.swift */; };
 		1E9EEA756F2774D73347F1660EEFE3E9 /* ConstraintView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A84F51D475F36A9EA9218AFE1DBC67B /* ConstraintView+Extensions.swift */; };
 		23B8F56C9E032E65147091DB8EBD9404 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16838B1802E83E5913ED9D6514ACDB7E /* Foundation.framework */; };
-		242B16793530496F1FFA00310775C8AD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EDF7617B1329658DE152509C01837D7 /* UIKit.framework */; };
 		274DF0E2BF04F6F4F9F1E70CF513A4F2 /* ConstraintLayoutSupportDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF6D234C5C47707C028174FF01CAB7F /* ConstraintLayoutSupportDSL.swift */; };
 		29DE1CC0405C4ED382ADEFC56B570E28 /* LoadingReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F2C88A8458DF76F08D7E719B5F8265 /* LoadingReloader.swift */; };
-		37FAF10BAE30768D4410D15F3C5672CB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16838B1802E83E5913ED9D6514ACDB7E /* Foundation.framework */; };
+		31D1255B47F4424409385B3B4D8D1091 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16838B1802E83E5913ED9D6514ACDB7E /* Foundation.framework */; };
 		3A8BCB11A7E32500F477472C65FC81BF /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16838B1802E83E5913ED9D6514ACDB7E /* Foundation.framework */; };
 		3A95260A8BAC775FC42653BC3E5F1C3D /* LoadingCircleIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D704F5EF06D1D4765E7B21D33F61FCDC /* LoadingCircleIndicator.swift */; };
 		3B60C02F6E42FD06B128473E00A94224 /* ConstraintLayoutSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9F000854EED8A7E817B322DB8C0EC1 /* ConstraintLayoutSupport.swift */; };
@@ -26,7 +27,8 @@
 		3DEDFA52B3A196F6D3E1F0937617628A /* ConstraintLayoutGuide+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037EFD75BFDA67C8E976596EBEBADB1A /* ConstraintLayoutGuide+Extensions.swift */; };
 		3EA580FE7CABE291B12E9E10E81F570D /* UIAdapter-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8039BF65F2CF269184EF45F7996B71F3 /* UIAdapter-dummy.m */; };
 		43863B6D6A0E47B6648BB7B469736EDD /* LayoutConstraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996F4A0596018AB3F196FF0BCE4D8869 /* LayoutConstraint.swift */; };
-		4B718745DD6A4C09BA33223CC12B14B6 /* AudioPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9A0D47B90FE46FD38DF7BF46BDCF96E /* AudioPlayerDelegate.swift */; };
+		47BFCDAA263D4543DE7CA8B1BD750819 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC1FDDD17DA5722426AF72AC8FC8E3C2 /* AudioPlayer.swift */; };
+		4B669763D6AC55DE6EF32F750441B5E7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0369DA51EE7CCFD7C10862B38060EEB5 /* AVFoundation.framework */; };
 		4CA13A0527BC57DE2C54A0F3B5ED8652 /* LayoutConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701D37B88A1C552A555F590ABA254E84 /* LayoutConstraintItem.swift */; };
 		51A4A1046676D304410544EB56732A49 /* Constraint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1EA1373D68769A172B3F78B66F60962 /* Constraint.swift */; };
 		522BED8C5CF6AE473146ABBDFAEE4EFC /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6019A3A789517EBF8B092D9F755B0E61 /* LoadingIndicator.swift */; };
@@ -36,49 +38,49 @@
 		682B38CE7AB91AA8E88889ACBC8BE620 /* UIAdapter.Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D768561EF0D09699A4977BFD37ECAB8 /* UIAdapter.Screen.swift */; };
 		69786CD7879D5D4EED23A2033E01E06F /* Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2D0D5FB0AF34C2067FEAD42B913AC5F /* Protocol.swift */; };
 		6AFB87A70D01AF9E3A51C99A01D7198F /* LoadingRotateIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DB2651960CA3B45016BBCBF0A00223D /* LoadingRotateIndicator.swift */; };
+		6B00BD1ADA433B5DB6F3E940964918AB /* AVAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 951C73CE84D7B5AB5FDE7FF39D97817C /* AVAudioPlayer.swift */; };
 		6BEB0242A54249D802849E34108BCB49 /* UIImageColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3D7E617C5D68BAC2AB1C0EAC2077E62 /* UIImageColors.swift */; };
 		6EDE2E7F2F6742D7B85576225B0323C7 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = C475E76C7BA6A0F942D557DFBD45B362 /* Loading.swift */; };
 		70CC89EDD6365089DB21E617AF388581 /* UIImageColors-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 9044A21209AFF231982158BC8F1D3D24 /* UIImageColors-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7580FAAB1BDA52F5A969E5571D1A5973 /* ConstraintAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCDC9B72339B80145B0CF4A370085553 /* ConstraintAttributes.swift */; };
 		7764AA5F6BBFC6ECE43959923DD007D3 /* ConstraintDirectionalInsetTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F09658CE4B0601A0E3463E5705DBF3 /* ConstraintDirectionalInsetTarget.swift */; };
 		7D5FECC29D5795400862374E16B4E6A2 /* LoadingSimpleReloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = B37D48348DCE18E2A0E207295ABE8B7B /* LoadingSimpleReloader.swift */; };
-		816045272EDFC6D8D4504E4713A9ED8B /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB174515150D23F9D16EE4643014EA /* AudioPlayer.swift */; };
 		825062025906CE93C5D124E1FD9A811E /* ConstraintMakerExtendable.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA60505B8AB37DEE07C2AE42AEBCEB55 /* ConstraintMakerExtendable.swift */; };
 		8449EB1DFD43E222D687D5A8D2088D2D /* ConstraintLayoutGuideDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD4F54B896AAB104100988CD5BFF733 /* ConstraintLayoutGuideDSL.swift */; };
-		86307B37A3A635E30F9A334EFE81DA01 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0369DA51EE7CCFD7C10862B38060EEB5 /* AVFoundation.framework */; };
 		887265E0E0D4A3D81BB7AF6667000703 /* UIView+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC54ACE0697EF6F83C6FFB853679B177 /* UIView+Loading.swift */; };
 		8C6546C1EF4F153DF3795CC6FE189E5B /* ConstraintInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E13704180888216BAAF0AF4873DEDFB /* ConstraintInsets.swift */; };
-		8D5C54ED196DDAECFD99A594B5902EB4 /* AudioPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B9C8CAD4121F20F1EDFCFAF1A5B0D93 /* AudioPlayer-dummy.m */; };
+		8D262E4A6E92D8F5F802D91F68FD1FDE /* AudioPlayerRemoteControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63457683717630F204AD44F114C411BC /* AudioPlayerRemoteControl.swift */; };
 		8E967737541B9EFFCE28BE60A4F6DE4A /* LoadingDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFCDB8C4481540D19F8BB489C2B341A4 /* LoadingDefaultView.swift */; };
 		8FD9CD608C4EAAFDE6AC7B8B9EF0FF5E /* ConstraintDescription.swift in Sources */ = {isa = PBXBuildFile; fileRef = A701B176152107883104885F1CF13592 /* ConstraintDescription.swift */; };
 		90FD5AE525E138A473723FD79AF73273 /* ConstraintDSL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D83762406DE197AC0D9AD237D18AFA3 /* ConstraintDSL.swift */; };
 		968B4874A9F12D67C8B901136C9C8157 /* SnapKit-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 06F938E89F43FBEC90375EC0309B2D0A /* SnapKit-dummy.m */; };
-		9B5349B1287FD9D6009E07D7 /* AudioPlayerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5349B0287FD9D6009E07D7 /* AudioPlayerConfiguration.swift */; };
+		9D140F3D555A94C2FDC907C989545B42 /* AudioPlayer-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F27A839B15E8F861707356AB160CD03E /* AudioPlayer-dummy.m */; };
 		A0F754C88A64972A40A9008B0AD52109 /* ConstraintDirectionalInsets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 747F73B6562F2391D83A4A853A34A8B6 /* ConstraintDirectionalInsets.swift */; };
 		A4467357581E8345DD348683CC4111AF /* SnapKit-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 262FED152E180BF25A83F875D43BC73E /* SnapKit-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A53D3AF15CE8D348306EF11619C5D166 /* ConstraintMakerEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81BA5A8886760F00E0867B5EFB809685 /* ConstraintMakerEditable.swift */; };
-		A5DE481DB8A8F43312A6DC3D93F9330B /* AVAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98D12F7DA5D9A0C7430BA4026D75BD09 /* AVAudioPlayer.swift */; };
-		A96B390B746AD943E28C07071CCA4C1A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08BD3FDD1F50B0A21D9B5FA69247616E /* MediaPlayer.framework */; };
 		A974F54F33F7471980619B90AB2939E6 /* LoadingImagesIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC53824530D4B411FDBF15198FB0205E /* LoadingImagesIndicator.swift */; };
 		AA30E594EFA1DEF26A6911463F2EF6B7 /* UIAdapter.Zoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B6670A538641C6C320D03BC8059E1D9 /* UIAdapter.Zoom.swift */; };
 		ABB0E9E11A8DA4FEF15B16AAFC8499FB /* UIButton+Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7AFA977D5F990FF79877C8FAD3FB864 /* UIButton+Loading.swift */; };
 		ABC64118EBAD0E09599DC29579B483D0 /* UIImageColors-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 62DDCA3A79362BF33C4AD6AC90DA685C /* UIImageColors-dummy.m */; };
+		B496D47D292A1926EB67AA611CB02CDA /* AudioPlayerable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C42690A2E0BA0BD189D9ECA662B0B22 /* AudioPlayerable.swift */; };
 		B543FD108C1C6AF6129CB4991553218B /* ConstraintConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7B5E9D86434E16A75EC738E2D94A0D /* ConstraintConfig.swift */; };
 		B72923F32D8960CA2EEE4D1C7BFEE2E7 /* Pods-Demo-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3666E01CF3B1BB3B5EB22455C1F1E4F6 /* Pods-Demo-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		B88C088CA41B4DB1DC5ACD89C79B90BD /* AudioPlayerable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50D84D670D1C656BF306E62DA3062CA6 /* AudioPlayerable.swift */; };
 		BD333CDBCF5D2FD55920336FC271DF33 /* ConstraintItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C7A22A2DB8581230309A5A7CB65D8B /* ConstraintItem.swift */; };
 		BEBF920FEB959B46A76BAADF22E5CD15 /* ConstraintInsetTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDF5EC45A1F876E0FE57722107128202 /* ConstraintInsetTarget.swift */; };
+		BF68B91B8199F158789D4E3DC2AA4A4D /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08BD3FDD1F50B0A21D9B5FA69247616E /* MediaPlayer.framework */; };
 		C3DDC4A06CE42E1B524504A6117051D1 /* Pods-Demo-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 0FC0B6886FC27E9B0BED9829A43F1D61 /* Pods-Demo-dummy.m */; };
 		C61D3BC32A28A405C934C00039AD2583 /* ConstraintConstantTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2BF7AF8C89AD5657B3EE7F40EB437EB3 /* ConstraintConstantTarget.swift */; };
+		C86E686BD32B35B5D907F5E34CBB08E1 /* AudioPlayerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB0C998305CE14ABD48A31F4AC1CABC /* AudioPlayerConfiguration.swift */; };
 		CB194156C900B767B0160AF72EDF354D /* ConstraintMaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCC924B46FF047A1969EE81548416B90 /* ConstraintMaker.swift */; };
 		CB8E4BF0D710970BE2CB4C87ED1043E4 /* ConstraintMakerRelatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B7DD07AA1EAABAB07C5FE2F13128B1 /* ConstraintMakerRelatable.swift */; };
 		CCA22C9F421C9E8C13009947816D8C82 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 16838B1802E83E5913ED9D6514ACDB7E /* Foundation.framework */; };
 		D13D417B236E736EEAE7217B5CE3EC5C /* ConstraintMakerFinalizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF415A3CC4B2729C6A6934B6E9081A5 /* ConstraintMakerFinalizable.swift */; };
 		D59C2826AD288ECFF576B2AFA312716C /* ConstraintRelation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FAD84199A41FE5D17B94095F09B222E /* ConstraintRelation.swift */; };
+		E3428003D8500C199669814A734DDBA6 /* AudioPlayer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = CF3C025DF1A65D44C4AD294E5794DCA7 /* AudioPlayer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E36244E8BF4AC941E82DAF16DDF4BBC2 /* ConstraintPriorityTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0338693911770C5F98A76D07A055969F /* ConstraintPriorityTarget.swift */; };
 		E36E06F840BF7C0C9826D18D6EE76801 /* UIAdapter-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D7870940DCBABB47C6D08AB088BF860 /* UIAdapter-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E69F2459EE3750944E0CECE75B8AF068 /* AudioPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A07B0C5EE34A08914FFBAE49B232F5D /* AudioPlayerDelegate.swift */; };
 		E8EAADACF3BAE33BDECBC7214EAE9CD2 /* ConstraintRelatableTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E1CCFF97269D065AACC1B0297C9E82C /* ConstraintRelatableTarget.swift */; };
-		EC3ED2E43C103FBC51229C258CFD7F39 /* AudioPlayerRemoteControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9313C9C6D2FCF11127CB09CBDA00956 /* AudioPlayerRemoteControl.swift */; };
 		EE6C364198A763EBBF49237035D86439 /* ConstraintLayoutGuide.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9525C14A9E1DE0CDE67ACC266E29FFA /* ConstraintLayoutGuide.swift */; };
 		F10586462FB54CEA169A1A7A469A926D /* Debugging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88969E3CF49988F29280B896B8F005D4 /* Debugging.swift */; };
 		F24D06C23DAB2F52A30C886A7A8177C7 /* ConstraintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3ACFAF165181A51AD20982300091CC10 /* ConstraintView.swift */; };
@@ -86,47 +88,45 @@
 		F2C817C166B2DE613222C41015A586C9 /* ConstraintMakerPriortizable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEDFCD14EDE27873B7EC8530D34CC6C3 /* ConstraintMakerPriortizable.swift */; };
 		F343BA4E457FFDB0165492AECAEF0BCC /* ConstraintPriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = D789E020E50D336914B40EBDC5E982D8 /* ConstraintPriority.swift */; };
 		F718DCDD6FAC1C6759E5235BA3C17E2C /* LoadingSystemIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B77F00F06DF074D1C74B0BF92B8B665 /* LoadingSystemIndicator.swift */; };
-		F80D84FB70A318D4CDB6AA912C0C5D3B /* AudioPlayerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1565EDFCB514935143D876143DA22CEF /* AudioPlayerDelegates.swift */; };
-		F9350A0D550D8A1915BAEE7F977E06B2 /* AudioPlayer-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = C535D37AF2439B120E36AE27F4154959 /* AudioPlayer-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FAD2ABA28EDDF38133CC62B89F8F6BC6 /* Loading-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = B8430B3721D8A7BA125E448CFEE73375 /* Loading-dummy.m */; };
 		FD692E1D5AA64C1BE4E6A9DF4A9A987A /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BFA887F69E2EDC31F8F5387F9AFBC8A /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		34ED12DEDEEFFF61BD85528774E1AC37 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5F45A505FD3AA90FB0F341785BC6117D;
-			remoteInfo = Loading;
-		};
-		5010CD4B5600F20E685C1F802795BB35 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = BDB3D9762DE1E9282191B6B26703E4DE;
-			remoteInfo = UIImageColors;
-		};
-		53326AD20E93D53F32E504215518AFE8 /* PBXContainerItemProxy */ = {
+		43840A7BB9C76E8BE9B38F03AF7F58EE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 19622742EBA51E823D6DAE3F8CDBFAD4;
 			remoteInfo = SnapKit;
 		};
-		A3A684240A199B6CD447E2718C03D934 /* PBXContainerItemProxy */ = {
+		7B7541843AFA2B9B055895122A80EF22 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5F45A505FD3AA90FB0F341785BC6117D;
+			remoteInfo = Loading;
+		};
+		D9EC73347A8E9333569FC051297A4FD7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 37E045F159DC1944AD0D0CB13B0CC8D3;
 			remoteInfo = AudioPlayer;
 		};
-		ECE818CC8DE6EF18966E855DE8E1804C /* PBXContainerItemProxy */ = {
+		E1FD60C52DBBB6D506197D2CCBC095AC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 3DD7B7CA7C05350D22AC11B09F3C5E56;
 			remoteInfo = UIAdapter;
+		};
+		EEE53671C1FDFB729A75D414E982C4E9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BDB3D9762DE1E9282191B6B26703E4DE;
+			remoteInfo = UIImageColors;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -135,6 +135,7 @@
 		0369DA51EE7CCFD7C10862B38060EEB5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
 		037EFD75BFDA67C8E976596EBEBADB1A /* ConstraintLayoutGuide+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "ConstraintLayoutGuide+Extensions.swift"; path = "Source/ConstraintLayoutGuide+Extensions.swift"; sourceTree = "<group>"; };
 		052FA5877F3B6BE71F0FCBF7CC0F6823 /* Loading-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Loading-umbrella.h"; sourceTree = "<group>"; };
+		055F3FF64083947F17933854556F8BB8 /* AudioPlayer-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AudioPlayer-prefix.pch"; sourceTree = "<group>"; };
 		06F3E5C6ECF6318B927DEBF7D3F68023 /* Pods-Demo-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Demo-acknowledgements.plist"; sourceTree = "<group>"; };
 		06F938E89F43FBEC90375EC0309B2D0A /* SnapKit-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "SnapKit-dummy.m"; sourceTree = "<group>"; };
 		08BD3FDD1F50B0A21D9B5FA69247616E /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
@@ -144,8 +145,8 @@
 		0FAD84199A41FE5D17B94095F09B222E /* ConstraintRelation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintRelation.swift; path = Source/ConstraintRelation.swift; sourceTree = "<group>"; };
 		0FC0B6886FC27E9B0BED9829A43F1D61 /* Pods-Demo-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-Demo-dummy.m"; sourceTree = "<group>"; };
 		12B5414F32669A4B7E2A7160C8C61061 /* UIAdapter */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = UIAdapter; path = UIAdapter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		1565EDFCB514935143D876143DA22CEF /* AudioPlayerDelegates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayerDelegates.swift; path = Sources/Core/AudioPlayerDelegates.swift; sourceTree = "<group>"; };
 		16838B1802E83E5913ED9D6514ACDB7E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		1A806466FA6585C8C2244D61C8EDFE14 /* AudioPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AudioPlayer.modulemap; sourceTree = "<group>"; };
 		1D7870940DCBABB47C6D08AB088BF860 /* UIAdapter-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIAdapter-umbrella.h"; sourceTree = "<group>"; };
 		1DF415A3CC4B2729C6A6934B6E9081A5 /* ConstraintMakerFinalizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerFinalizable.swift; path = Source/ConstraintMakerFinalizable.swift; sourceTree = "<group>"; };
 		1FCA808F13535B9A5C4A8734CA168AFB /* SnapKit-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "SnapKit-prefix.pch"; sourceTree = "<group>"; };
@@ -159,20 +160,17 @@
 		2D768561EF0D09699A4977BFD37ECAB8 /* UIAdapter.Screen.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIAdapter.Screen.swift; path = Sources/Screen/UIAdapter.Screen.swift; sourceTree = "<group>"; };
 		2E48890A6360864D3513FA8E4B1C1E8F /* UIImageColors.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = UIImageColors.release.xcconfig; sourceTree = "<group>"; };
 		2F1801F23F251D888A206BDFAF4B154D /* UIAdapter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = UIAdapter.debug.xcconfig; sourceTree = "<group>"; };
-		31EB174515150D23F9D16EE4643014EA /* AudioPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayer.swift; path = Sources/Core/AudioPlayer.swift; sourceTree = "<group>"; };
+		335F99FA384E7C6C60DADFCFC86AAAE3 /* AudioPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AudioPlayer.debug.xcconfig; sourceTree = "<group>"; };
 		3666E01CF3B1BB3B5EB22455C1F1E4F6 /* Pods-Demo-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Demo-umbrella.h"; sourceTree = "<group>"; };
 		3ACFAF165181A51AD20982300091CC10 /* ConstraintView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintView.swift; path = Source/ConstraintView.swift; sourceTree = "<group>"; };
 		3D9F000854EED8A7E817B322DB8C0EC1 /* ConstraintLayoutSupport.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutSupport.swift; path = Source/ConstraintLayoutSupport.swift; sourceTree = "<group>"; };
 		3DB2651960CA3B45016BBCBF0A00223D /* LoadingRotateIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingRotateIndicator.swift; path = Sources/Indicator/LoadingRotateIndicator.swift; sourceTree = "<group>"; };
-		3F99C0716245B0B1959920F27E1BE047 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		4203302B7AB3CE9DD765AB27C814943B /* UIImageColors.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = UIImageColors.debug.xcconfig; sourceTree = "<group>"; };
 		4206C12206B3D596EC72D9A27661EC4B /* AudioPlayer */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = AudioPlayer; path = AudioPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		470140B984DE190AAAA45F77FAD98A37 /* AudioPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AudioPlayer.debug.xcconfig; sourceTree = "<group>"; };
 		4B2BE2293A4ED863742C6B5BFB23A681 /* UIAdapter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = UIAdapter.release.xcconfig; sourceTree = "<group>"; };
 		4B6670A538641C6C320D03BC8059E1D9 /* UIAdapter.Zoom.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIAdapter.Zoom.swift; path = Sources/Zoom/UIAdapter.Zoom.swift; sourceTree = "<group>"; };
 		4C07420EEC4093CA285CAC0586898172 /* Typealiases.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Typealiases.swift; path = Source/Typealiases.swift; sourceTree = "<group>"; };
 		4EDF7617B1329658DE152509C01837D7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS14.0.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
-		50D84D670D1C656BF306E62DA3062CA6 /* AudioPlayerable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayerable.swift; path = Sources/Core/AudioPlayerable.swift; sourceTree = "<group>"; };
 		534BEAAF8F499EA923417886CA484AE8 /* UIAdapter-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIAdapter-prefix.pch"; sourceTree = "<group>"; };
 		575B4FEF97C798B19B4D4572DB58FB83 /* UIImageColors */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = UIImageColors; path = UIImageColors.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5B611DE0103874E56294C6E4D334FBDB /* Loading */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Loading; path = Loading.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,38 +178,44 @@
 		5EBFB49DD331C1F98349E0D107A85EAA /* UIAdapter.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = UIAdapter.modulemap; sourceTree = "<group>"; };
 		6019A3A789517EBF8B092D9F755B0E61 /* LoadingIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingIndicator.swift; path = Sources/Indicator/LoadingIndicator.swift; sourceTree = "<group>"; };
 		62DDCA3A79362BF33C4AD6AC90DA685C /* UIImageColors-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIImageColors-dummy.m"; sourceTree = "<group>"; };
+		63457683717630F204AD44F114C411BC /* AudioPlayerRemoteControl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayerRemoteControl.swift; path = Sources/Core/AudioPlayerRemoteControl.swift; sourceTree = "<group>"; };
 		6761D2C53803E15D6F50FA36A3223FB9 /* LoadingButtonReloader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingButtonReloader.swift; path = Sources/Reloader/LoadingButtonReloader.swift; sourceTree = "<group>"; };
 		6ACF190BED963B88F582E04F0AA542FB /* Loading.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Loading.release.xcconfig; sourceTree = "<group>"; };
+		6C42690A2E0BA0BD189D9ECA662B0B22 /* AudioPlayerable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayerable.swift; path = Sources/Core/AudioPlayerable.swift; sourceTree = "<group>"; };
+		6D5F500FDF4F55AA34572F34F89C50F8 /* AudioPlayer-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AudioPlayer-Info.plist"; sourceTree = "<group>"; };
 		6E1CCFF97269D065AACC1B0297C9E82C /* ConstraintRelatableTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintRelatableTarget.swift; path = Source/ConstraintRelatableTarget.swift; sourceTree = "<group>"; };
 		6EA7817B4990D2E2B9AFA05E00E5BA07 /* Loading-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Loading-Info.plist"; sourceTree = "<group>"; };
-		6F202F145E6A3BBED942DDB38FB906B4 /* AudioPlayer-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AudioPlayer-prefix.pch"; sourceTree = "<group>"; };
 		701D37B88A1C552A555F590ABA254E84 /* LayoutConstraintItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutConstraintItem.swift; path = Source/LayoutConstraintItem.swift; sourceTree = "<group>"; };
+		72D4C4C5CFE12EC519345634A5E15228 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
 		747F73B6562F2391D83A4A853A34A8B6 /* ConstraintDirectionalInsets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintDirectionalInsets.swift; path = Source/ConstraintDirectionalInsets.swift; sourceTree = "<group>"; };
 		77EBCE1FFE347A3644369F0343168C1D /* Pods-Demo-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-Demo-frameworks.sh"; sourceTree = "<group>"; };
+		7A07B0C5EE34A08914FFBAE49B232F5D /* AudioPlayerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayerDelegate.swift; path = Sources/Core/AudioPlayerDelegate.swift; sourceTree = "<group>"; };
 		7C0127F83A3D99C8BE2035B07CE39CEC /* UIImageColors-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "UIImageColors-Info.plist"; sourceTree = "<group>"; };
 		7E65ADC3B1644FF0F90473EEE697A2FF /* Pods-Demo.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-Demo.modulemap"; sourceTree = "<group>"; };
+		7F18A022302850690F823223F4EE762C /* AudioPlayer.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = AudioPlayer.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		8039BF65F2CF269184EF45F7996B71F3 /* UIAdapter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "UIAdapter-dummy.m"; sourceTree = "<group>"; };
 		80DA2729312379DEDDCC7B6D5ECC3F57 /* Loading.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Loading.debug.xcconfig; sourceTree = "<group>"; };
 		81BA5A8886760F00E0867B5EFB809685 /* ConstraintMakerEditable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerEditable.swift; path = Source/ConstraintMakerEditable.swift; sourceTree = "<group>"; };
 		88969E3CF49988F29280B896B8F005D4 /* Debugging.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Debugging.swift; path = Source/Debugging.swift; sourceTree = "<group>"; };
 		8B77F00F06DF074D1C74B0BF92B8B665 /* LoadingSystemIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingSystemIndicator.swift; path = Sources/Indicator/LoadingSystemIndicator.swift; sourceTree = "<group>"; };
-		8B9C8CAD4121F20F1EDFCFAF1A5B0D93 /* AudioPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AudioPlayer-dummy.m"; sourceTree = "<group>"; };
 		8BFA887F69E2EDC31F8F5387F9AFBC8A /* LoadingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingView.swift; path = Sources/View/LoadingView.swift; sourceTree = "<group>"; };
 		9044A21209AFF231982158BC8F1D3D24 /* UIImageColors-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIImageColors-umbrella.h"; sourceTree = "<group>"; };
+		951C73CE84D7B5AB5FDE7FF39D97817C /* AVAudioPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AVAudioPlayer.swift; path = Sources/AV/AVAudioPlayer.swift; sourceTree = "<group>"; };
 		9558A38ED24A67B6B41B7B4B53338ACF /* UIAdapter-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "UIAdapter-Info.plist"; sourceTree = "<group>"; };
 		979486118B3E90C08386079D57962701 /* SnapKit */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = SnapKit; path = SnapKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		98A4A4AAB0539AA22E2B94E55A3D32F1 /* SnapKit-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "SnapKit-Info.plist"; sourceTree = "<group>"; };
-		98D12F7DA5D9A0C7430BA4026D75BD09 /* AVAudioPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AVAudioPlayer.swift; path = Sources/AV/AVAudioPlayer.swift; sourceTree = "<group>"; };
 		996F4A0596018AB3F196FF0BCE4D8869 /* LayoutConstraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LayoutConstraint.swift; path = Source/LayoutConstraint.swift; sourceTree = "<group>"; };
-		9B5349B0287FD9D6009E07D7 /* AudioPlayerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerConfiguration.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9C3E3BE34E555114CDFBE5F4D6DF8C15 /* AudioPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AudioPlayer.release.xcconfig; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		9DD4F54B896AAB104100988CD5BFF733 /* ConstraintLayoutGuideDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutGuideDSL.swift; path = Source/ConstraintLayoutGuideDSL.swift; sourceTree = "<group>"; };
+		A1B1A0DF339688ABE593428CC6A31B67 /* AudioPlayerDelegates.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayerDelegates.swift; path = Sources/Core/AudioPlayerDelegates.swift; sourceTree = "<group>"; };
 		A1EA1373D68769A172B3F78B66F60962 /* Constraint.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Constraint.swift; path = Source/Constraint.swift; sourceTree = "<group>"; };
 		A1F2C88A8458DF76F08D7E719B5F8265 /* LoadingReloader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingReloader.swift; path = Sources/Reloader/LoadingReloader.swift; sourceTree = "<group>"; };
 		A3E78E571AAC16A8C29B185F735AD6D4 /* Loading-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Loading-prefix.pch"; sourceTree = "<group>"; };
 		A701B176152107883104885F1CF13592 /* ConstraintDescription.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintDescription.swift; path = Source/ConstraintDescription.swift; sourceTree = "<group>"; };
 		A8FDB9A35DEF72206090FEA1C41E4ED3 /* ConstraintOffsetTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintOffsetTarget.swift; path = Source/ConstraintOffsetTarget.swift; sourceTree = "<group>"; };
 		AB8C6A6641987744D0E0E83CD18EF8E3 /* UIImageColors.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = UIImageColors.modulemap; sourceTree = "<group>"; };
+		ABF7DBF52F72400D71393016A5566D62 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
 		B2D0D5FB0AF34C2067FEAD42B913AC5F /* Protocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Protocol.swift; path = Sources/Protocol.swift; sourceTree = "<group>"; };
 		B37D48348DCE18E2A0E207295ABE8B7B /* LoadingSimpleReloader.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingSimpleReloader.swift; path = Sources/Reloader/LoadingSimpleReloader.swift; sourceTree = "<group>"; };
 		B3D7E617C5D68BAC2AB1C0EAC2077E62 /* UIImageColors.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = UIImageColors.swift; path = UIImageColors/Sources/UIImageColors.swift; sourceTree = "<group>"; };
@@ -222,15 +226,15 @@
 		BCDC9B72339B80145B0CF4A370085553 /* ConstraintAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintAttributes.swift; path = Source/ConstraintAttributes.swift; sourceTree = "<group>"; };
 		BFCDB8C4481540D19F8BB489C2B341A4 /* LoadingDefaultView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingDefaultView.swift; path = Sources/View/LoadingDefaultView.swift; sourceTree = "<group>"; };
 		C05FB6C44FA5A1F5DE1DF46ECF6DDDF4 /* UIImageColors-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "UIImageColors-prefix.pch"; sourceTree = "<group>"; };
-		C2AD1737D05E8115C5123390B0DD8C15 /* AudioPlayer.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = AudioPlayer.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		C37ECBF1B4B9FFEAF8BF14E7F370370A /* SnapKit.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = SnapKit.modulemap; sourceTree = "<group>"; };
 		C475E76C7BA6A0F942D557DFBD45B362 /* Loading.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Loading.swift; path = Sources/Loading.swift; sourceTree = "<group>"; };
-		C535D37AF2439B120E36AE27F4154959 /* AudioPlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AudioPlayer-umbrella.h"; sourceTree = "<group>"; };
 		C64090D47B1BFCCD45377556E8CF7FAA /* LoadingCircleProgressIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingCircleProgressIndicator.swift; path = Sources/Indicator/LoadingCircleProgressIndicator.swift; sourceTree = "<group>"; };
 		C694DE63ED5EAB66E3CA6D184271692B /* Pods-Demo */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = "Pods-Demo"; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CB7A9E4882D7E3D0E1E699F8A6F54B8C /* SnapKit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SnapKit.release.xcconfig; sourceTree = "<group>"; };
+		CC1FDDD17DA5722426AF72AC8FC8E3C2 /* AudioPlayer.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayer.swift; path = Sources/Core/AudioPlayer.swift; sourceTree = "<group>"; };
+		CDB0C998305CE14ABD48A31F4AC1CABC /* AudioPlayerConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayerConfiguration.swift; path = Sources/Core/AudioPlayerConfiguration.swift; sourceTree = "<group>"; };
 		CDF5EC45A1F876E0FE57722107128202 /* ConstraintInsetTarget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintInsetTarget.swift; path = Source/ConstraintInsetTarget.swift; sourceTree = "<group>"; };
-		D6AC03F9D9EF960A78F67F57F303DB10 /* AudioPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AudioPlayer.release.xcconfig; sourceTree = "<group>"; };
+		CF3C025DF1A65D44C4AD294E5794DCA7 /* AudioPlayer-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AudioPlayer-umbrella.h"; sourceTree = "<group>"; };
 		D704F5EF06D1D4765E7B21D33F61FCDC /* LoadingCircleIndicator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingCircleIndicator.swift; path = Sources/Indicator/LoadingCircleIndicator.swift; sourceTree = "<group>"; };
 		D789E020E50D336914B40EBDC5E982D8 /* ConstraintPriority.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintPriority.swift; path = Source/ConstraintPriority.swift; sourceTree = "<group>"; };
 		D9525C14A9E1DE0CDE67ACC266E29FFA /* ConstraintLayoutGuide.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintLayoutGuide.swift; path = Source/ConstraintLayoutGuide.swift; sourceTree = "<group>"; };
@@ -239,17 +243,13 @@
 		DDEDDEA5E8747667A9BBE52BA22B088D /* Pods-Demo-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-Demo-Info.plist"; sourceTree = "<group>"; };
 		E14C7B5E452F2DDF30E90A3950EE1807 /* Pods-Demo-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-Demo-acknowledgements.markdown"; sourceTree = "<group>"; };
 		E1C7A22A2DB8581230309A5A7CB65D8B /* ConstraintItem.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintItem.swift; path = Source/ConstraintItem.swift; sourceTree = "<group>"; };
-		E33E39FADBD2DE11671A0B8F901C79F7 /* AudioPlayer.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = AudioPlayer.modulemap; sourceTree = "<group>"; };
-		E9A0D47B90FE46FD38DF7BF46BDCF96E /* AudioPlayerDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayerDelegate.swift; path = Sources/Core/AudioPlayerDelegate.swift; sourceTree = "<group>"; };
 		E9CD66E6431A03350FA7B54C5F1BC71C /* SnapKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = SnapKit.debug.xcconfig; sourceTree = "<group>"; };
 		EC54ACE0697EF6F83C6FFB853679B177 /* UIView+Loading.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIView+Loading.swift"; path = "Sources/Extension/UIView+Loading.swift"; sourceTree = "<group>"; };
 		ED7B5E9D86434E16A75EC738E2D94A0D /* ConstraintConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintConfig.swift; path = Source/ConstraintConfig.swift; sourceTree = "<group>"; };
 		EEDFCD14EDE27873B7EC8530D34CC6C3 /* ConstraintMakerPriortizable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerPriortizable.swift; path = Source/ConstraintMakerPriortizable.swift; sourceTree = "<group>"; };
-		EF2FACA141F9608FD402746588433230 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		F27A839B15E8F861707356AB160CD03E /* AudioPlayer-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "AudioPlayer-dummy.m"; sourceTree = "<group>"; };
 		F65039BAD54EC4EB0A48B739B71BAD37 /* ConstraintViewDSL.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintViewDSL.swift; path = Source/ConstraintViewDSL.swift; sourceTree = "<group>"; };
-		F9313C9C6D2FCF11127CB09CBDA00956 /* AudioPlayerRemoteControl.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AudioPlayerRemoteControl.swift; path = Sources/Core/AudioPlayerRemoteControl.swift; sourceTree = "<group>"; };
 		FA60505B8AB37DEE07C2AE42AEBCEB55 /* ConstraintMakerExtendable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ConstraintMakerExtendable.swift; path = Source/ConstraintMakerExtendable.swift; sourceTree = "<group>"; };
-		FC9EB6ACF572D6D405271C84CBC5F82E /* AudioPlayer-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "AudioPlayer-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,14 +261,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6918A4680CD424A854A130FAF2497A09 /* Frameworks */ = {
+		96985B8095C5BC382EC859B1C81F04D3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				86307B37A3A635E30F9A334EFE81DA01 /* AVFoundation.framework in Frameworks */,
-				37FAF10BAE30768D4410D15F3C5672CB /* Foundation.framework in Frameworks */,
-				A96B390B746AD943E28C07071CCA4C1A /* MediaPlayer.framework in Frameworks */,
-				242B16793530496F1FFA00310775C8AD /* UIKit.framework in Frameworks */,
+				4B669763D6AC55DE6EF32F750441B5E7 /* AVFoundation.framework in Frameworks */,
+				31D1255B47F4424409385B3B4D8D1091 /* Foundation.framework in Frameworks */,
+				BF68B91B8199F158789D4E3DC2AA4A4D /* MediaPlayer.framework in Frameworks */,
+				14E794D5B3461E8D28F22B656237CA16 /* UIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,16 +308,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		02733D835EEC916376B6B37AB41B91AF /* AudioPlayer */ = {
+		060BA383D487B9CC5B80ABC5F298D4BC /* AudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
-				248F836CA72F82A1BA3F0FA320954173 /* AVPlayer */,
-				3DCC5B2AF02776485C53546E9CB43CA8 /* Core */,
-				A789C951C34C1A64C33D3CDB88304A80 /* Pod */,
-				CFB07B8730EF9879172305A46BE02DED /* Support Files */,
+				1CD8A0EC1DA2FD3F7C0EC50FB26465BC /* AVPlayer */,
+				469BE77DEABA373A9442B6CE0A26EE28 /* Core */,
+				AA44A6FA0C215494C6B7399B41A7605A /* Pod */,
+				0FF10E8F404C232770DA93EF3E17929D /* Support Files */,
 			);
 			name = AudioPlayer;
 			path = ../..;
+			sourceTree = "<group>";
+		};
+		0FF10E8F404C232770DA93EF3E17929D /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				1A806466FA6585C8C2244D61C8EDFE14 /* AudioPlayer.modulemap */,
+				F27A839B15E8F861707356AB160CD03E /* AudioPlayer-dummy.m */,
+				6D5F500FDF4F55AA34572F34F89C50F8 /* AudioPlayer-Info.plist */,
+				055F3FF64083947F17933854556F8BB8 /* AudioPlayer-prefix.pch */,
+				CF3C025DF1A65D44C4AD294E5794DCA7 /* AudioPlayer-umbrella.h */,
+				335F99FA384E7C6C60DADFCFC86AAAE3 /* AudioPlayer.debug.xcconfig */,
+				9C3E3BE34E555114CDFBE5F4D6DF8C15 /* AudioPlayer.release.xcconfig */,
+			);
+			name = "Support Files";
+			path = "Demo/Pods/Target Support Files/AudioPlayer";
 			sourceTree = "<group>";
 		};
 		1A5DF7510CD22C8380EF4E1D468F5F11 /* UIImageColors */ = {
@@ -326,7 +341,16 @@
 				B3D7E617C5D68BAC2AB1C0EAC2077E62 /* UIImageColors.swift */,
 				500B54020269E45F27F420AB1204EBFE /* Support Files */,
 			);
+			name = UIImageColors;
 			path = UIImageColors;
+			sourceTree = "<group>";
+		};
+		1CD8A0EC1DA2FD3F7C0EC50FB26465BC /* AVPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				951C73CE84D7B5AB5FDE7FF39D97817C /* AVAudioPlayer.swift */,
+			);
+			name = AVPlayer;
 			sourceTree = "<group>";
 		};
 		21FF7982FCED7A76D3B9EB72011DACF2 /* Targets Support Files */ = {
@@ -337,14 +361,6 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		248F836CA72F82A1BA3F0FA320954173 /* AVPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				98D12F7DA5D9A0C7430BA4026D75BD09 /* AVAudioPlayer.swift */,
-			);
-			name = AVPlayer;
-			sourceTree = "<group>";
-		};
 		2EBFA5F946DAA7A7336AC4584FD733FB /* UIAdapter */ = {
 			isa = PBXGroup;
 			children = (
@@ -352,20 +368,8 @@
 				4B6670A538641C6C320D03BC8059E1D9 /* UIAdapter.Zoom.swift */,
 				C3CFB189E4D480357594F9CB97C1183C /* Support Files */,
 			);
+			name = UIAdapter;
 			path = UIAdapter;
-			sourceTree = "<group>";
-		};
-		3DCC5B2AF02776485C53546E9CB43CA8 /* Core */ = {
-			isa = PBXGroup;
-			children = (
-				31EB174515150D23F9D16EE4643014EA /* AudioPlayer.swift */,
-				50D84D670D1C656BF306E62DA3062CA6 /* AudioPlayerable.swift */,
-				9B5349B0287FD9D6009E07D7 /* AudioPlayerConfiguration.swift */,
-				E9A0D47B90FE46FD38DF7BF46BDCF96E /* AudioPlayerDelegate.swift */,
-				1565EDFCB514935143D876143DA22CEF /* AudioPlayerDelegates.swift */,
-				F9313C9C6D2FCF11127CB09CBDA00956 /* AudioPlayerRemoteControl.swift */,
-			);
-			name = Core;
 			sourceTree = "<group>";
 		};
 		3E77FC609AF7C6732AE1BB04D15B7275 /* Loading */ = {
@@ -388,7 +392,21 @@
 				EC54ACE0697EF6F83C6FFB853679B177 /* UIView+Loading.swift */,
 				C14D4813F9FDD9FC16DCC7E573D63637 /* Support Files */,
 			);
+			name = Loading;
 			path = Loading;
+			sourceTree = "<group>";
+		};
+		469BE77DEABA373A9442B6CE0A26EE28 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				CC1FDDD17DA5722426AF72AC8FC8E3C2 /* AudioPlayer.swift */,
+				6C42690A2E0BA0BD189D9ECA662B0B22 /* AudioPlayerable.swift */,
+				CDB0C998305CE14ABD48A31F4AC1CABC /* AudioPlayerConfiguration.swift */,
+				7A07B0C5EE34A08914FFBAE49B232F5D /* AudioPlayerDelegate.swift */,
+				A1B1A0DF339688ABE593428CC6A31B67 /* AudioPlayerDelegates.swift */,
+				63457683717630F204AD44F114C411BC /* AudioPlayerRemoteControl.swift */,
+			);
+			name = Core;
 			sourceTree = "<group>";
 		};
 		500B54020269E45F27F420AB1204EBFE /* Support Files */ = {
@@ -447,17 +465,8 @@
 				20F8AF25099DD3B7FCEE8D3C8121E80A /* UILayoutSupport+Extensions.swift */,
 				E90C3DE338CAD68E6F53F6BEC8ACDA64 /* Support Files */,
 			);
+			name = SnapKit;
 			path = SnapKit;
-			sourceTree = "<group>";
-		};
-		A789C951C34C1A64C33D3CDB88304A80 /* Pod */ = {
-			isa = PBXGroup;
-			children = (
-				C2AD1737D05E8115C5123390B0DD8C15 /* AudioPlayer.podspec */,
-				3F99C0716245B0B1959920F27E1BE047 /* LICENSE */,
-				EF2FACA141F9608FD402746588433230 /* README.md */,
-			);
-			name = Pod;
 			sourceTree = "<group>";
 		};
 		A8DEFD83AB893CB86C8528E6037CB868 /* Pods-Demo */ = {
@@ -475,6 +484,16 @@
 			);
 			name = "Pods-Demo";
 			path = "Target Support Files/Pods-Demo";
+			sourceTree = "<group>";
+		};
+		AA44A6FA0C215494C6B7399B41A7605A /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				7F18A022302850690F823223F4EE762C /* AudioPlayer.podspec */,
+				72D4C4C5CFE12EC519345634A5E15228 /* LICENSE */,
+				ABF7DBF52F72400D71393016A5566D62 /* README.md */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 		BA4F31F07263C99FC76E66D632A59F09 /* Frameworks */ = {
@@ -540,25 +559,10 @@
 			);
 			sourceTree = "<group>";
 		};
-		CFB07B8730EF9879172305A46BE02DED /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				E33E39FADBD2DE11671A0B8F901C79F7 /* AudioPlayer.modulemap */,
-				8B9C8CAD4121F20F1EDFCFAF1A5B0D93 /* AudioPlayer-dummy.m */,
-				FC9EB6ACF572D6D405271C84CBC5F82E /* AudioPlayer-Info.plist */,
-				6F202F145E6A3BBED942DDB38FB906B4 /* AudioPlayer-prefix.pch */,
-				C535D37AF2439B120E36AE27F4154959 /* AudioPlayer-umbrella.h */,
-				470140B984DE190AAAA45F77FAD98A37 /* AudioPlayer.debug.xcconfig */,
-				D6AC03F9D9EF960A78F67F57F303DB10 /* AudioPlayer.release.xcconfig */,
-			);
-			name = "Support Files";
-			path = "Demo/Pods/Target Support Files/AudioPlayer";
-			sourceTree = "<group>";
-		};
 		D9268D824E754E8F529E323879402515 /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				02733D835EEC916376B6B37AB41B91AF /* AudioPlayer */,
+				060BA383D487B9CC5B80ABC5F298D4BC /* AudioPlayer */,
 			);
 			name = "Development Pods";
 			sourceTree = "<group>";
@@ -603,14 +607,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		276C23EB55114A43E03F12CBAD9369E4 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				F9350A0D550D8A1915BAEE7F977E06B2 /* AudioPlayer-umbrella.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		3B921547E999920F44EBD58F955423CC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -640,6 +636,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				E36E06F840BF7C0C9826D18D6EE76801 /* UIAdapter-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C430A2E0775B680FD88AE014E61F59F9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E3428003D8500C199669814A734DDBA6 /* AudioPlayer-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -674,12 +678,12 @@
 		};
 		37E045F159DC1944AD0D0CB13B0CC8D3 /* AudioPlayer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E54961B772156963F585B0AD398CAFAA /* Build configuration list for PBXNativeTarget "AudioPlayer" */;
+			buildConfigurationList = 97DE6A47C923BF869ED6205BB37B30FC /* Build configuration list for PBXNativeTarget "AudioPlayer" */;
 			buildPhases = (
-				276C23EB55114A43E03F12CBAD9369E4 /* Headers */,
-				E6732BC66C6D744EA5E2F9EDD0F2C2BF /* Sources */,
-				6918A4680CD424A854A130FAF2497A09 /* Frameworks */,
-				B9763A64022A95FFF3A79E26E8FECA53 /* Resources */,
+				C430A2E0775B680FD88AE014E61F59F9 /* Headers */,
+				BEA98705E443E97ED7371C23113187F4 /* Sources */,
+				96985B8095C5BC382EC859B1C81F04D3 /* Frameworks */,
+				2B6A75B408EF14BA3AD6D251BB3BCF7C /* Resources */,
 			);
 			buildRules = (
 			);
@@ -702,11 +706,11 @@
 			buildRules = (
 			);
 			dependencies = (
-				6541F5CC1147EFB472DF16CE8CAD2F2E /* PBXTargetDependency */,
-				5FB082D56325B93E7D8293D20A1610D9 /* PBXTargetDependency */,
-				6B91D7EC1F33612B69AE4D8095C37940 /* PBXTargetDependency */,
-				FFEF73D9A22C8EFC294C6A77BD75115D /* PBXTargetDependency */,
-				E667D2BE9DC06EE23A3FA740EC4F6898 /* PBXTargetDependency */,
+				6962F23A350F824C0627D20EBF6C662A /* PBXTargetDependency */,
+				6429E5C8DECA43096EE9476E14654976 /* PBXTargetDependency */,
+				D890EFE866B9620E380C83158CC1D9BD /* PBXTargetDependency */,
+				B9A5947E81CFD36F37DCC09DA4411ECF /* PBXTargetDependency */,
+				4C555F617D08760D9338F732C2514E03 /* PBXTargetDependency */,
 			);
 			name = "Pods-Demo";
 			productName = Pods_Demo;
@@ -807,6 +811,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		2B6A75B408EF14BA3AD6D251BB3BCF7C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5DEC566FC300620E6A67D66D295BA3F9 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -815,13 +826,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		76909D450341B433CE2FEDA1789EE77B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		B9763A64022A95FFF3A79E26E8FECA53 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -931,6 +935,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		BEA98705E443E97ED7371C23113187F4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				47BFCDAA263D4543DE7CA8B1BD750819 /* AudioPlayer.swift in Sources */,
+				9D140F3D555A94C2FDC907C989545B42 /* AudioPlayer-dummy.m in Sources */,
+				B496D47D292A1926EB67AA611CB02CDA /* AudioPlayerable.swift in Sources */,
+				C86E686BD32B35B5D907F5E34CBB08E1 /* AudioPlayerConfiguration.swift in Sources */,
+				E69F2459EE3750944E0CECE75B8AF068 /* AudioPlayerDelegate.swift in Sources */,
+				1849614B1D578B5FFE511A036C80D487 /* AudioPlayerDelegates.swift in Sources */,
+				8D262E4A6E92D8F5F802D91F68FD1FDE /* AudioPlayerRemoteControl.swift in Sources */,
+				6B00BD1ADA433B5DB6F3E940964918AB /* AVAudioPlayer.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CEE6E55B777B2D5F72529BBFF8C30DA5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -939,57 +958,78 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E6732BC66C6D744EA5E2F9EDD0F2C2BF /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9B5349B1287FD9D6009E07D7 /* AudioPlayerConfiguration.swift in Sources */,
-				816045272EDFC6D8D4504E4713A9ED8B /* AudioPlayer.swift in Sources */,
-				8D5C54ED196DDAECFD99A594B5902EB4 /* AudioPlayer-dummy.m in Sources */,
-				B88C088CA41B4DB1DC5ACD89C79B90BD /* AudioPlayerable.swift in Sources */,
-				4B718745DD6A4C09BA33223CC12B14B6 /* AudioPlayerDelegate.swift in Sources */,
-				F80D84FB70A318D4CDB6AA912C0C5D3B /* AudioPlayerDelegates.swift in Sources */,
-				EC3ED2E43C103FBC51229C258CFD7F39 /* AudioPlayerRemoteControl.swift in Sources */,
-				A5DE481DB8A8F43312A6DC3D93F9330B /* AVAudioPlayer.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5FB082D56325B93E7D8293D20A1610D9 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Loading;
-			target = 5F45A505FD3AA90FB0F341785BC6117D /* Loading */;
-			targetProxy = 34ED12DEDEEFFF61BD85528774E1AC37 /* PBXContainerItemProxy */;
-		};
-		6541F5CC1147EFB472DF16CE8CAD2F2E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = AudioPlayer;
-			target = 37E045F159DC1944AD0D0CB13B0CC8D3 /* AudioPlayer */;
-			targetProxy = A3A684240A199B6CD447E2718C03D934 /* PBXContainerItemProxy */;
-		};
-		6B91D7EC1F33612B69AE4D8095C37940 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = SnapKit;
-			target = 19622742EBA51E823D6DAE3F8CDBFAD4 /* SnapKit */;
-			targetProxy = 53326AD20E93D53F32E504215518AFE8 /* PBXContainerItemProxy */;
-		};
-		E667D2BE9DC06EE23A3FA740EC4F6898 /* PBXTargetDependency */ = {
+		4C555F617D08760D9338F732C2514E03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = UIImageColors;
 			target = BDB3D9762DE1E9282191B6B26703E4DE /* UIImageColors */;
-			targetProxy = 5010CD4B5600F20E685C1F802795BB35 /* PBXContainerItemProxy */;
+			targetProxy = EEE53671C1FDFB729A75D414E982C4E9 /* PBXContainerItemProxy */;
 		};
-		FFEF73D9A22C8EFC294C6A77BD75115D /* PBXTargetDependency */ = {
+		6429E5C8DECA43096EE9476E14654976 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Loading;
+			target = 5F45A505FD3AA90FB0F341785BC6117D /* Loading */;
+			targetProxy = 7B7541843AFA2B9B055895122A80EF22 /* PBXContainerItemProxy */;
+		};
+		6962F23A350F824C0627D20EBF6C662A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AudioPlayer;
+			target = 37E045F159DC1944AD0D0CB13B0CC8D3 /* AudioPlayer */;
+			targetProxy = D9EC73347A8E9333569FC051297A4FD7 /* PBXContainerItemProxy */;
+		};
+		B9A5947E81CFD36F37DCC09DA4411ECF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = UIAdapter;
 			target = 3DD7B7CA7C05350D22AC11B09F3C5E56 /* UIAdapter */;
-			targetProxy = ECE818CC8DE6EF18966E855DE8E1804C /* PBXContainerItemProxy */;
+			targetProxy = E1FD60C52DBBB6D506197D2CCBC095AC /* PBXContainerItemProxy */;
+		};
+		D890EFE866B9620E380C83158CC1D9BD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = SnapKit;
+			target = 19622742EBA51E823D6DAE3F8CDBFAD4 /* SnapKit */;
+			targetProxy = 43840A7BB9C76E8BE9B38F03AF7F58EE /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		28B15367444DDA81828C7CBAD1D1E28A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9C3E3BE34E555114CDFBE5F4D6DF8C15 /* AudioPlayer.release.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/AudioPlayer/AudioPlayer-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AudioPlayer/AudioPlayer-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/AudioPlayer/AudioPlayer.modulemap";
+				PRODUCT_MODULE_NAME = AudioPlayer;
+				PRODUCT_NAME = AudioPlayer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 		35726659EA5CEF3C19B7B80FA82F51D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4203302B7AB3CE9DD765AB27C814943B /* UIImageColors.debug.xcconfig */;
@@ -1118,41 +1158,6 @@
 				SYMROOT = "${SRCROOT}/../build";
 			};
 			name = Release;
-		};
-		964EDEC34714104CDE98AF4298FA4CB5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 470140B984DE190AAAA45F77FAD98A37 /* AudioPlayer.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/AudioPlayer/AudioPlayer-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AudioPlayer/AudioPlayer-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/AudioPlayer/AudioPlayer.modulemap";
-				PRODUCT_MODULE_NAME = AudioPlayer;
-				PRODUCT_NAME = AudioPlayer;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
 		};
 		98496367B184DFCB557F8585561CC54C /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1396,42 +1401,6 @@
 			};
 			name = Debug;
 		};
-		D3AE019FCF7DC2537AB81DEBE721B795 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6AC03F9D9EF960A78F67F57F303DB10 /* AudioPlayer.release.xcconfig */;
-			buildSettings = {
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				GCC_PREFIX_HEADER = "Target Support Files/AudioPlayer/AudioPlayer-prefix.pch";
-				INFOPLIST_FILE = "Target Support Files/AudioPlayer/AudioPlayer-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@loader_path/Frameworks",
-				);
-				MODULEMAP_FILE = "Target Support Files/AudioPlayer/AudioPlayer.modulemap";
-				PRODUCT_MODULE_NAME = AudioPlayer;
-				PRODUCT_NAME = AudioPlayer;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_VERSION = 5.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		DFFD31690F9CC8449FD1F803388E1D46 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CB7A9E4882D7E3D0E1E699F8A6F54B8C /* SnapKit.release.xcconfig */;
@@ -1467,6 +1436,41 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		E4BADF550846BAF1EDEAB62C8AD0373D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 335F99FA384E7C6C60DADFCFC86AAAE3 /* AudioPlayer.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREFIX_HEADER = "Target Support Files/AudioPlayer/AudioPlayer-prefix.pch";
+				INFOPLIST_FILE = "Target Support Files/AudioPlayer/AudioPlayer-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/AudioPlayer/AudioPlayer.modulemap";
+				PRODUCT_MODULE_NAME = AudioPlayer;
+				PRODUCT_NAME = AudioPlayer;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_VERSION = 5.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
 		};
 		E607D268E824E21195E51C3FA2CAEF98 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -1579,6 +1583,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		97DE6A47C923BF869ED6205BB37B30FC /* Build configuration list for PBXNativeTarget "AudioPlayer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E4BADF550846BAF1EDEAB62C8AD0373D /* Debug */,
+				28B15367444DDA81828C7CBAD1D1E28A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CE7E305AB03CBE26D67417A5F81D2601 /* Build configuration list for PBXNativeTarget "Pods-Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1593,15 +1606,6 @@
 			buildConfigurations = (
 				515F857D002935391B0F84B1A9AA9FA3 /* Debug */,
 				B3CEB6AD7CA67F59CF4FE133C6848937 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E54961B772156963F585B0AD398CAFAA /* Build configuration list for PBXNativeTarget "AudioPlayer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				964EDEC34714104CDE98AF4298FA4CB5 /* Debug */,
-				D3AE019FCF7DC2537AB81DEBE721B795 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
