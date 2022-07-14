@@ -188,7 +188,7 @@ extension AVAudioPlayer {
             }
             // 当前时间校准器 如果大于 当前时间, 则返回校准时间, 否则清空校准器 返回当前时间.
             if let temp = self.currentTimeCalibrator, temp > time {
-                self.delegate { $0.audioPlayer(self, updatedCurrent: time) }
+                self.delegate { $0.audioPlayer(self, updatedCurrent: temp) }
                 return
             }
             self.currentTimeCalibrator = nil
