@@ -11,6 +11,7 @@
 		9B26547328783F4700325A9E /* AudioPlayerManager.RemoteControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B26547228783F4700325A9E /* AudioPlayerManager.RemoteControl.swift */; };
 		9B2654752879A20500325A9E /* AudioPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2654742879A20500325A9E /* AudioPlayerItem.swift */; };
 		9B2654772879A2C800325A9E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2654762879A2C800325A9E /* AudioPlayerManager.swift */; };
+		9B5349B728800C1E009E07D7 /* AudioPlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */; };
 		9BD3F7742876D58D00015754 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7732876D58D00015754 /* AppDelegate.swift */; };
 		9BD3F7762876D58D00015754 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7752876D58D00015754 /* SceneDelegate.swift */; };
 		9BD3F7782876D58D00015754 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7772876D58D00015754 /* ViewController.swift */; };
@@ -32,6 +33,7 @@
 		9B26547228783F4700325A9E /* AudioPlayerManager.RemoteControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.RemoteControl.swift; sourceTree = "<group>"; };
 		9B2654742879A20500325A9E /* AudioPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerItem.swift; sourceTree = "<group>"; };
 		9B2654762879A2C800325A9E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
+		9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerButton.swift; sourceTree = "<group>"; };
 		9BD3F7702876D58D00015754 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BD3F7732876D58D00015754 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BD3F7752876D58D00015754 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -92,6 +94,7 @@
 				9BD3F7732876D58D00015754 /* AppDelegate.swift */,
 				9BD3F7752876D58D00015754 /* SceneDelegate.swift */,
 				9BD3F7772876D58D00015754 /* ViewController.swift */,
+				9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */,
 				9BD3F78F28780E1C00015754 /* AudioPlayerListController.swift */,
 				9B2654762879A2C800325A9E /* AudioPlayerManager.swift */,
 				9BD3F79128781C9100015754 /* AudioPlayerQueue.swift */,
@@ -241,6 +244,7 @@
 				9BD3F7742876D58D00015754 /* AppDelegate.swift in Sources */,
 				9B2654752879A20500325A9E /* AudioPlayerItem.swift in Sources */,
 				9BD3F78C2877E22B00015754 /* AudioPlayerPlanetLayer.swift in Sources */,
+				9B5349B728800C1E009E07D7 /* AudioPlayerButton.swift in Sources */,
 				9BD3F7762876D58D00015754 /* SceneDelegate.swift in Sources */,
 				9BD3F78E2878047500015754 /* Storyboard.swift in Sources */,
 				9BD3F78A2877DBF600015754 /* AudioPlayerView.swift in Sources */,

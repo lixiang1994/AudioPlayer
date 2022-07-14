@@ -228,13 +228,12 @@ extension AudioPlayerController: AudioPlayerDelegate {
     }
     
     func audioPlayerLoadingState(_ player: AudioPlayerable, state: AudioPlayer.LoadingState) {
-        // 加载状态 UI效果待优化
         switch state {
         case .began:
-            container.playButton.loading.start()
+            container.playButton.isLoading = true
             
         case .ended:
-            container.playButton.loading.stop()
+            container.playButton.isLoading = false
         }
     }
     

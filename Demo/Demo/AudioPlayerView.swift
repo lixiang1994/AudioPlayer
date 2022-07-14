@@ -29,7 +29,7 @@ class AudioPlayerView: UIView {
     /// 时长时间
     @IBOutlet weak var durationTimeLabel: UILabel!
     /// 播放/暂停按钮
-    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var playButton: AudioPlayerButton!
     /// 上一曲
     @IBOutlet weak var prevButton: UIButton!
     /// 下一曲

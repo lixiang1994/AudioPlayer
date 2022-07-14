@@ -147,7 +147,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9MU-Lb-hcL">
                                         <rect key="frame" x="0.0" y="790" width="414" height="60"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lrg-kM-u2G">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lrg-kM-u2G" customClass="AudioPlayerButton" customModule="Demo" customModuleProvider="target">
                                                 <rect key="frame" x="177" y="0.0" width="60" height="60"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="Lrg-kM-u2G" secondAttribute="height" id="DJL-Fe-XR8"/>
@@ -157,8 +157,9 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </constraint>
                                                 </constraints>
-                                                <state key="normal" backgroundImage="audio_player_play"/>
-                                                <state key="selected" backgroundImage="audio_player_pause"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" image="audio_player_play"/>
+                                                <state key="selected" image="audio_player_pause"/>
                                                 <connections>
                                                     <action selector="playAction:" destination="3pk-a8-DnO" eventType="touchUpInside" id="V3t-gg-UuT"/>
                                                 </connections>
@@ -463,8 +464,8 @@
         <image name="audio_player_list" width="24" height="24"/>
         <image name="audio_player_next" width="24" height="24"/>
         <image name="audio_player_one" width="28" height="28"/>
-        <image name="audio_player_pause" width="60" height="60"/>
-        <image name="audio_player_play" width="60" height="60"/>
+        <image name="audio_player_pause" width="24" height="24"/>
+        <image name="audio_player_play" width="24" height="24"/>
         <image name="audio_player_prev" width="24" height="24"/>
         <image name="navigation_back" width="32" height="32"/>
         <systemColor name="systemBackgroundColor">
