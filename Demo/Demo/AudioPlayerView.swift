@@ -50,6 +50,7 @@ class AudioPlayerView: UIView {
     }
     
     private func setup() {
+        backgroundImageView.image = .init(named: "audio_player_bg")
         coverAnmiationView.layer.addSublayer(planetLayer)
         // 设置等宽字体
         currentTimeLabel.font = currentTimeLabel.font.monospaced
@@ -88,10 +89,14 @@ extension AudioPlayerView {
     }
     
     func set(cover: String?) {
-        backgroundImageView.image = .init(named: "audio_player_bg")
-        coverImageView.image = .init(named: "audio_player_cover")
-        coverImageView.image?.getColors { [weak self] colors in
-            self?.planetLayer.color = colors?.detail
+        if let cover = cover {
+            coverImageView.image = .init(named: cover)
+            coverImageView.image?.getColors { [weak self] colors in
+                self?.planetLayer.color = colors?.detail
+            }
+            
+        } else {
+            planetLayer.color = #colorLiteral(red: 0.6784313725, green: 0.5568627451, blue: 0.4705882353, alpha: 1)
         }
         
 //        backgroundImageView.kf.setImage(with: cover, placeholder: #imageLiteral(resourceName: "audio_player_bg"), options: [.transitionFade])

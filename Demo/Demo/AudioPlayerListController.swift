@@ -16,7 +16,7 @@ class AudioPlayerListController: UIViewController {
             .init(
                 id: "1",
                 title: "最伟大的作品",
-                cover: "",
+                cover: "cover_01",
                 author: "周杰伦",
                 duration: 880.85,
                 resource: URL(string: "https://chtbl.com/track/1F1B1F/traffic.megaphone.fm/WSJ2560705456.mp3")!
@@ -24,7 +24,7 @@ class AudioPlayerListController: UIViewController {
             .init(
                 id: "2",
                 title: "布拉格广场",
-                cover: "",
+                cover: "cover_02",
                 author: "蔡依林,周杰伦",
                 duration: 293.90,
                 resource: Bundle.main.url(forResource: "蔡依林,周杰伦 - 布拉格广场", withExtension: "mp3")!
