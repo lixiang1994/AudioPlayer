@@ -88,12 +88,12 @@ class AudioPlayerManager: NSObject {
 extension AudioPlayerManager {
     
     private func setup() {
-        // 允许后台播放
-        player.allowBackgroundPlayback = true
-        // 添加播放器代理
-        player.add(delegate: self)
         // 设置播放倍速
         player.rate = 1.0
+        // 允许后台播放
+        player.allowedBackgroundPlayback = true
+        // 添加播放器代理
+        player.add(delegate: self)
         
         // 设置远程控制 (上一首/下一首) 的回调
         remote.playPrev = { [weak self] in

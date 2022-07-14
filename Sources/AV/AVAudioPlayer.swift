@@ -13,15 +13,16 @@ import AVFoundation
 
 public extension AudioPlayer {
     
-    static let av: Builder = .init { AVAudioPlayer() }
+    static let av: Builder = .init { AVAudioPlayer($0) }
 }
 
 class AVAudioPlayer: NSObject {
-        
-    static let shared = AVAudioPlayer()
     
     /// 当前URL
     private(set) var resource: AudioPlayerURLAsset?
+    
+    /// 配置
+    private(set) var configuration: AudioPlayerConfiguration
     
     /// 播放状态
     private (set) var state: AudioPlayer.State = .stopped {
@@ -65,10 +66,8 @@ class AVAudioPlayer: NSObject {
     }
     /// 是否循环播放
     var isLoop: Bool = false
-    /// 是否自动播放
-    var isAutoplay: Bool = true
     /// 允许后台播放
-    var allowBackgroundPlayback: Bool = true
+    var allowedBackgroundPlayback: Bool = true
     
     var delegates: [AudioPlayerDelegateBridge<AnyObject>] = []
     
@@ -91,10 +90,15 @@ class AVAudioPlayer: NSObject {
     private var itemLoadedTimeRangesObservation: NSKeyValueObservation?
     private var itemPlaybackLikelyToKeepUpObservation: NSKeyValueObservation?
     
+    private var itemPlaybackStalledObserver: Any?
+    private var itemDidPlayToEndTimeObserver: Any?
+    private var itemFailedToPlayToEndTimeObserver: Any?
+    
     /// 后台任务标识
     private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = .invalid
     
-    override init() {
+    init(_ configuration: AudioPlayerConfiguration) {
+        self.configuration = configuration
         super.init()
         
         setup()
@@ -109,24 +113,6 @@ class AVAudioPlayer: NSObject {
     }
     
     private func setupNotification() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(itemDidPlayToEndTime),
-            name: .AVPlayerItemDidPlayToEndTime,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(itemPlaybackStalled),
-            name: .AVPlayerItemPlaybackStalled,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(itemFailedToPlayToEndTime),
-            name: .AVPlayerItemFailedToPlayToEndTime,
-            object: nil
-        )
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(sessionInterruption),
@@ -171,6 +157,7 @@ extension AVAudioPlayer {
         // 移除监听
         removeObserver()
         removeObserver(item: item)
+        removeNotification(item: item)
         
         // 移除item
         player.replaceCurrentItem(with: nil)
@@ -182,9 +169,13 @@ extension AVAudioPlayer {
     }
     
     private func addObserver() {
+        // 移除原有观察者
         removeObserver()
-        // 当前播放时间 (间隔: 每秒10次)
-        let interval = CMTime(value: 1, timescale: 10)
+        // 当前播放时间回调间隔 (每秒N次)
+        let interval = CMTime(
+            value: 1,
+            timescale: .init(configuration.currentTimeCallbackPeriodicInterval)
+        )
         playerTimeObserver = player.addPeriodicTimeObserver(forInterval: interval, queue: .main) {
             [weak self] (time) in
             guard let self = self else { return }
@@ -344,16 +335,80 @@ extension AVAudioPlayer {
         itemLoadedTimeRangesObservation = nil
         itemPlaybackLikelyToKeepUpObservation = nil
     }
+    
+    private func addNotification(item: AVPlayerItem) {
+        do {
+            let observation = NotificationCenter.default.addObserver(
+                forName: .AVPlayerItemPlaybackStalled,
+                object: item,
+                queue: .main
+            ) { [weak self] sender in
+                guard let self = self else { return }
+                self.itemPlaybackStalled(sender)
+            }
+            itemPlaybackStalledObserver = observation
+        }
+        do {
+            let observation = NotificationCenter.default.addObserver(
+                forName: .AVPlayerItemDidPlayToEndTime,
+                object: item,
+                queue: .main
+            ) { [weak self] sender in
+                guard let self = self else { return }
+                self.itemDidPlayToEndTime(sender)
+            }
+            itemDidPlayToEndTimeObserver = observation
+        }
+        do {
+            let observation = NotificationCenter.default.addObserver(
+                forName: .AVPlayerItemFailedToPlayToEndTime,
+                object: item,
+                queue: .main
+            ) { [weak self] sender in
+                guard let self = self else { return }
+                self.itemFailedToPlayToEndTime(sender)
+            }
+            itemFailedToPlayToEndTimeObserver = observation
+        }
+    }
+    
+    private func removeNotification(item: AVPlayerItem) {
+        if let observer = itemPlaybackStalledObserver {
+            NotificationCenter.default.removeObserver(
+                observer,
+                name: .AVPlayerItemPlaybackStalled,
+                object: item
+            )
+        }
+        if let observer = itemDidPlayToEndTimeObserver {
+            NotificationCenter.default.removeObserver(
+                observer,
+                name: .AVPlayerItemDidPlayToEndTime,
+                object: item
+            )
+        }
+        if let observer = itemFailedToPlayToEndTimeObserver {
+            NotificationCenter.default.removeObserver(
+                observer,
+                name: .AVPlayerItemFailedToPlayToEndTime,
+                object: item
+            )
+        }
+    }
 }
 
 extension AVAudioPlayer {
     
+    /// 播放中断通知
+    @objc
+    private func itemPlaybackStalled(_ notification: Notification) {
+        guard case .playing = state, intendedToPlay else { return }
+        play()
+    }
+    
     /// 播放结束通知
     @objc
-    private func itemDidPlayToEndTime(_ notification: NSNotification) {
-        guard let item = notification.object as? AVPlayerItem, item == player.currentItem else {
-            return
-        }
+    private func itemDidPlayToEndTime(_ notification: Notification) {
         // 判断是否循环播放
         if isLoop {
             // Seek到起始位置
@@ -367,30 +422,15 @@ extension AVAudioPlayer {
         }
     }
     
-    /// 播放中断通知
-    @objc
-    private func itemPlaybackStalled(_ notification: NSNotification) {
-        guard notification.object as? AVPlayerItem == player.currentItem else {
-            return
-        }
-        guard case .playing = state else {
-            return
-        }
-        play()
-    }
-    
     /// 播放失败通知
     @objc
-    private func itemFailedToPlayToEndTime(_ notification: NSNotification) {
-        guard notification.object as? AVPlayerItem == player.currentItem else {
-            return
-        }
-        self.error(notification.userInfo?[AVPlayerItemFailedToPlayToEndTimeErrorKey] as? Error)
+    private func itemFailedToPlayToEndTime(_ notification: Notification) {
+        error(notification.userInfo?[AVPlayerItemFailedToPlayToEndTimeErrorKey] as? Error)
     }
     
     /// 会话中断通知
     @objc
-    private func sessionInterruption(_ notification: NSNotification) {
+    private func sessionInterruption(_ notification: Notification) {
         guard
             let info = notification.userInfo,
             let type = info[AVAudioSessionInterruptionTypeKey] as? Int else {
@@ -411,7 +451,7 @@ extension AVAudioPlayer {
     }
     
     @objc
-    private func willEnterForeground(_ notification: NSNotification) {
+    private func willEnterForeground(_ notification: Notification) {
         guard player.currentItem != .none else { return }
         
         // 结束后台任务
@@ -427,11 +467,11 @@ extension AVAudioPlayer {
     }
     
     @objc
-    private func didEnterBackground(_ notification: NSNotification) {
+    private func didEnterBackground(_ notification: Notification) {
         guard player.currentItem != .none else { return }
         
         switch state {
-        case .prepare where allowBackgroundPlayback:
+        case .prepare where allowedBackgroundPlayback:
             // 如果在准备阶段 则开启后台任务 防止被挂起
             backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask { [weak self] in
                 guard let self = self else { return }
@@ -439,7 +479,7 @@ extension AVAudioPlayer {
                 self.backgroundTaskIdentifier = .invalid
             }
             
-        case .playing where !allowBackgroundPlayback && intendedToPlay:
+        case .playing where !allowedBackgroundPlayback && intendedToPlay:
             // 如果在播放阶段 不允许后台播放 则需要暂停
             player.pause()
             
@@ -477,7 +517,7 @@ extension AVAudioPlayer: AudioPlayerable {
         let item = AVPlayerItem(asset: asset)
         item.canUseNetworkResourcesForLiveStreamingWhilePaused = true
         // 预缓冲时长 默认自动选择
-        item.preferredForwardBufferDuration = 0
+        item.preferredForwardBufferDuration = configuration.preferredBufferDuration
         // 控制倍速播放的质量: 音频质量最高，计算成本最高，适合音乐. 可变率从1/32到32;
         item.audioTimePitchAlgorithm = .spectral
         
@@ -492,8 +532,10 @@ extension AVAudioPlayer: AudioPlayerable {
         // 添加监听
         addObserver()
         addObserver(item: item)
+        addNotification(item: item)
         
-        intendedToPlay = isAutoplay
+        // 设置初始播放意图
+        intendedToPlay = configuration.isAutoplay
     }
     
     func play() {
@@ -544,7 +586,9 @@ extension AVAudioPlayer: AudioPlayerable {
         intendedToSeek = target
         // 暂停当前播放
         player.pause()
-        // 代理回调
+        // 代理回调 当前时间为目标时间
+        delegate { $0.audioPlayer(self, updatedCurrent: target.time) }
+        // 代理回调 开始跳转
         delegate { $0.audioPlayer(self, seekBegan: target) }
         // 开始Seek
         seek(to: target, for: item) { [weak self] finished in
@@ -557,7 +601,7 @@ extension AVAudioPlayer: AudioPlayerable {
             if finished, self.intendedToPlay {
                 self.play()
             }
-            // 代理回调
+            // 代理回调 结束跳转
             self.delegate { $0.audioPlayer(self, seekEnded: target) }
         }
     }

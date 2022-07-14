@@ -44,7 +44,7 @@ public enum AudioPlayer {
     
     public struct Seek {
         /// 目标时间 (秒)
-        let time: TimeInterval
+        public let time: TimeInterval
         /// 完成回调 (成功为true, 失败为false, 失败可能是由于网络问题或被其他Seek抢占导致的)
         let completion: ((Bool) -> Void)?
         
@@ -59,18 +59,18 @@ extension AudioPlayer {
     
     public class Builder {
         
-        public typealias Generator = () -> AudioPlayerable
+        public typealias Generator = (AudioPlayerConfiguration) -> AudioPlayerable
         
         private var generator: Generator
         
-        public private(set) lazy var shared = generator()
+        public private(set) lazy var shared = generator(.init())
         
         public init(_ generator: @escaping Generator) {
             self.generator = generator
         }
         
-        public func instance() -> AudioPlayerable {
-            return generator()
+        public func instance(_ configuration: AudioPlayerConfiguration = .init()) -> AudioPlayerable {
+            return generator(configuration)
         }
     }
 }
