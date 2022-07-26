@@ -553,8 +553,8 @@ extension AVAudioPlayer: AudioPlayerable {
         case .finished:
             state = .playing
             intendedToPlay = true
-            // Seek到起始位置
-            seek(to: .init(time: .zero))
+            // Seek到意图位置或起始位置
+            seek(to: intendedToSeek ?? .init(time: .zero))
             
         default:
             break

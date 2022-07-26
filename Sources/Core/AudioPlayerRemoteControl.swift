@@ -83,7 +83,8 @@ open class AudioPlayerRemoteControl: NSObject {
                 boundsSize: thumb.size,
                 requestHandler: { (size) -> UIImage in
                     return thumb
-            })
+                }
+            )
             info[MPMediaItemPropertyArtwork] = artwork
             // 媒体类型
             info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue

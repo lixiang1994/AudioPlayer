@@ -28,6 +28,14 @@ class AudioPlayerListController: UIViewController {
                 author: "蔡依林,周杰伦",
                 duration: 293.90,
                 resource: Bundle.main.url(forResource: "蔡依林,周杰伦 - 布拉格广场", withExtension: "mp3")!
+            ),
+            .init(
+                id: "3",
+                title: "Test",
+                cover: "cover_02",
+                author: "lee",
+                duration: 2021.52,
+                resource: URL(string: "https://dts.podtrac.com/redirect.mp3/chrt.fm/track/8DB4DB/pdst.fm/e/nyt.simplecastaudio.com/03d8b493-87fc-4bd1-931f-8a8e9b945d8a/episodes/66076fed-8026-4682-b0d0-a31f72cffb3c/audio/128/default.mp3?aid=rss_feed&awCollectionId=03d8b493-87fc-4bd1-931f-8a8e9b945d8a&awEpisodeId=66076fed-8026-4682-b0d0-a31f72cffb3c&feed=54nAGcIl")!
             )
         ]
     )
