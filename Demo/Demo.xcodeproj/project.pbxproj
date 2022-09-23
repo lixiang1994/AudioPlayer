@@ -13,6 +13,26 @@
 		9B2654772879A2C800325A9E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2654762879A2C800325A9E /* AudioPlayerManager.swift */; };
 		9B5349B728800C1E009E07D7 /* AudioPlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */; };
 		9B5349BB28801BB0009E07D7 /* 蔡依林,周杰伦 - 布拉格广场.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9B5349BA28801BB0009E07D7 /* 蔡依林,周杰伦 - 布拉格广场.mp3 */; };
+		9B80471328DB2A0600FFBDFB /* AudioPlayerQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471228DB2A0600FFBDFB /* AudioPlayerQueue.swift */; };
+		9B80471528DB2A4D00FFBDFB /* AudioPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471428DB2A4D00FFBDFB /* AudioPlayerItem.swift */; };
+		9B80471728DB428800FFBDFB /* AudioPlayerQueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471628DB428800FFBDFB /* AudioPlayerQueueView.swift */; };
+		9B80471A28DB519A00FFBDFB /* AudioPlayerSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471928DB519A00FFBDFB /* AudioPlayerSourcesView.swift */; };
+		9BBFF01C28D9A7610010D023 /* MarqueeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF01A28D9A7610010D023 /* MarqueeText.swift */; };
+		9BBFF01D28D9A7610010D023 /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF01B28D9A7610010D023 /* SwiftUI+Extension.swift */; };
+		9BBFF01F28D9A9080010D023 /* AudioPlayerSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF01E28D9A9080010D023 /* AudioPlayerSettingView.swift */; };
+		9BBFF02128DAE5700010D023 /* AudioFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF02028DAE5700010D023 /* AudioFiles.swift */; };
+		9BBFF02328DAFA9B0010D023 /* AudioPlayerWatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF02228DAFA9B0010D023 /* AudioPlayerWatchManager.swift */; };
+		9BBFF02528DAFAA40010D023 /* AudioPlayerPhoneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF02428DAFAA40010D023 /* AudioPlayerPhoneManager.swift */; };
+		9BD090A728C05E0300334171 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BD090A628C05E0300334171 /* Assets.xcassets */; };
+		9BD090AD28C05E0300334171 /* Demo Watch WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9BD090AC28C05E0300334171 /* Demo Watch WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9BD090B228C05E0300334171 /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD090B128C05E0300334171 /* DemoApp.swift */; };
+		9BD090B428C05E0300334171 /* AudioPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD090B328C05E0300334171 /* AudioPlayerView.swift */; };
+		9BD090B628C05E0300334171 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD090B528C05E0300334171 /* NotificationController.swift */; };
+		9BD090B828C05E0300334171 /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD090B728C05E0300334171 /* NotificationView.swift */; };
+		9BD090BA28C05E0300334171 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD090B928C05E0300334171 /* ComplicationController.swift */; };
+		9BD090BC28C05E0400334171 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BD090BB28C05E0400334171 /* Assets.xcassets */; };
+		9BD090BF28C05E0400334171 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BD090BE28C05E0400334171 /* Preview Assets.xcassets */; };
+		9BD090C428C05E0400334171 /* Demo Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9BD090A428C05E0200334171 /* Demo Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9BD3F7742876D58D00015754 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7732876D58D00015754 /* AppDelegate.swift */; };
 		9BD3F7762876D58D00015754 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7752876D58D00015754 /* SceneDelegate.swift */; };
 		9BD3F7782876D58D00015754 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7772876D58D00015754 /* ViewController.swift */; };
@@ -25,17 +45,91 @@
 		9BD3F78E2878047500015754 /* Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F78D2878047500015754 /* Storyboard.swift */; };
 		9BD3F79028780E1C00015754 /* AudioPlayerListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F78F28780E1C00015754 /* AudioPlayerListController.swift */; };
 		9BD3F79228781C9100015754 /* AudioPlayerQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F79128781C9100015754 /* AudioPlayerQueue.swift */; };
+		9BE975AD28C5D25E00453995 /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975AC28C5D25E00453995 /* WatchSession.swift */; };
+		9BE975AF28C5F2C300453995 /* Watch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975AE28C5F2C300453995 /* Watch.swift */; };
+		9BE975B028C5F2C300453995 /* Watch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975AE28C5F2C300453995 /* Watch.swift */; };
+		9BE975B728C5FD3400453995 /* AudioPlayerWatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975B628C5FD3400453995 /* AudioPlayerWatchSession.swift */; };
+		9BE975BB28C610EE00453995 /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975BA28C610EE00453995 /* WatchSession.swift */; };
+		9BE975BD28C6136C00453995 /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975BC28C6136C00453995 /* AudioPlayerManager.swift */; };
+		DF793F84363D963ACDA58C7D /* libPods-Demo Watch WatchKit Extension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E3556F8F9A181D69D8C765 /* libPods-Demo Watch WatchKit Extension.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9BD090AE28C05E0300334171 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9BD3F7682876D58D00015754 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9BD090AB28C05E0300334171;
+			remoteInfo = "Demo Watch WatchKit Extension";
+		};
+		9BD090C228C05E0400334171 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9BD3F7682876D58D00015754 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9BD090A328C05E0200334171;
+			remoteInfo = "Demo Watch";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9BD090C528C05E0400334171 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				9BD090C428C05E0400334171 /* Demo Watch.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9BD090C828C05E0400334171 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9BD090AD28C05E0300334171 /* Demo Watch WatchKit Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		08E3556F8F9A181D69D8C765 /* libPods-Demo Watch WatchKit Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Demo Watch WatchKit Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		18597030E69EA542FB9E5C5C /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2196F9AB8F7FFD40D56B16A9 /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 		30D87B82558D539A0CDF977D /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
+		539DF81ECA5D961E212A8DF7 /* Pods-Demo Watch WatchKit Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo Watch WatchKit Extension.debug.xcconfig"; path = "Target Support Files/Pods-Demo Watch WatchKit Extension/Pods-Demo Watch WatchKit Extension.debug.xcconfig"; sourceTree = "<group>"; };
+		71528778B88AC572F18445EB /* Pods-Demo Watch WatchKit Extension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo Watch WatchKit Extension.release.xcconfig"; path = "Target Support Files/Pods-Demo Watch WatchKit Extension/Pods-Demo Watch WatchKit Extension.release.xcconfig"; sourceTree = "<group>"; };
 		9B26547228783F4700325A9E /* AudioPlayerManager.RemoteControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.RemoteControl.swift; sourceTree = "<group>"; };
 		9B2654742879A20500325A9E /* AudioPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerItem.swift; sourceTree = "<group>"; };
 		9B2654762879A2C800325A9E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerButton.swift; sourceTree = "<group>"; };
 		9B5349BA28801BB0009E07D7 /* 蔡依林,周杰伦 - 布拉格广场.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "蔡依林,周杰伦 - 布拉格广场.mp3"; sourceTree = "<group>"; };
+		9B80471228DB2A0600FFBDFB /* AudioPlayerQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerQueue.swift; sourceTree = "<group>"; };
+		9B80471428DB2A4D00FFBDFB /* AudioPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerItem.swift; sourceTree = "<group>"; };
+		9B80471628DB428800FFBDFB /* AudioPlayerQueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerQueueView.swift; sourceTree = "<group>"; };
+		9B80471928DB519A00FFBDFB /* AudioPlayerSourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerSourcesView.swift; sourceTree = "<group>"; };
+		9BBFF01A28D9A7610010D023 /* MarqueeText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeText.swift; sourceTree = "<group>"; };
+		9BBFF01B28D9A7610010D023 /* SwiftUI+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extension.swift"; sourceTree = "<group>"; };
+		9BBFF01E28D9A9080010D023 /* AudioPlayerSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerSettingView.swift; sourceTree = "<group>"; };
+		9BBFF02028DAE5700010D023 /* AudioFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFiles.swift; sourceTree = "<group>"; };
+		9BBFF02228DAFA9B0010D023 /* AudioPlayerWatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerWatchManager.swift; sourceTree = "<group>"; };
+		9BBFF02428DAFAA40010D023 /* AudioPlayerPhoneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerPhoneManager.swift; sourceTree = "<group>"; };
+		9BD090A428C05E0200334171 /* Demo Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Demo Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BD090A628C05E0300334171 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9BD090AC28C05E0300334171 /* Demo Watch WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Demo Watch WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BD090B128C05E0300334171 /* DemoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoApp.swift; sourceTree = "<group>"; };
+		9BD090B328C05E0300334171 /* AudioPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerView.swift; sourceTree = "<group>"; };
+		9BD090B528C05E0300334171 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		9BD090B728C05E0300334171 /* NotificationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
+		9BD090B928C05E0300334171 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		9BD090BB28C05E0400334171 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9BD090BE28C05E0400334171 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9BD090C028C05E0400334171 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9BD090C128C05E0400334171 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		9BD3F7702876D58D00015754 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BD3F7732876D58D00015754 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BD3F7752876D58D00015754 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -50,9 +144,22 @@
 		9BD3F78D2878047500015754 /* Storyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboard.swift; sourceTree = "<group>"; };
 		9BD3F78F28780E1C00015754 /* AudioPlayerListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerListController.swift; sourceTree = "<group>"; };
 		9BD3F79128781C9100015754 /* AudioPlayerQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerQueue.swift; sourceTree = "<group>"; };
+		9BE975AC28C5D25E00453995 /* WatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSession.swift; sourceTree = "<group>"; };
+		9BE975AE28C5F2C300453995 /* Watch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Watch.swift; sourceTree = "<group>"; };
+		9BE975B628C5FD3400453995 /* AudioPlayerWatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerWatchSession.swift; sourceTree = "<group>"; };
+		9BE975BA28C610EE00453995 /* WatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSession.swift; sourceTree = "<group>"; };
+		9BE975BC28C6136C00453995 /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		9BD090A928C05E0300334171 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF793F84363D963ACDA58C7D /* libPods-Demo Watch WatchKit Extension.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9BD3F76D2876D58D00015754 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -68,14 +175,77 @@
 			isa = PBXGroup;
 			children = (
 				18597030E69EA542FB9E5C5C /* Pods_Demo.framework */,
+				08E3556F8F9A181D69D8C765 /* libPods-Demo Watch WatchKit Extension.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9B80471828DB429200FFBDFB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9BBFF01928D9A7610010D023 /* MarqueeText */,
+				9BD090B328C05E0300334171 /* AudioPlayerView.swift */,
+				9B80471628DB428800FFBDFB /* AudioPlayerQueueView.swift */,
+				9BBFF01E28D9A9080010D023 /* AudioPlayerSettingView.swift */,
+				9B80471928DB519A00FFBDFB /* AudioPlayerSourcesView.swift */,
+				9BD090B528C05E0300334171 /* NotificationController.swift */,
+				9BD090B728C05E0300334171 /* NotificationView.swift */,
+				9BD090B928C05E0300334171 /* ComplicationController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9BBFF01928D9A7610010D023 /* MarqueeText */ = {
+			isa = PBXGroup;
+			children = (
+				9BBFF01A28D9A7610010D023 /* MarqueeText.swift */,
+				9BBFF01B28D9A7610010D023 /* SwiftUI+Extension.swift */,
+			);
+			path = MarqueeText;
+			sourceTree = "<group>";
+		};
+		9BD090A528C05E0200334171 /* Demo Watch */ = {
+			isa = PBXGroup;
+			children = (
+				9BD090A628C05E0300334171 /* Assets.xcassets */,
+			);
+			path = "Demo Watch";
+			sourceTree = "<group>";
+		};
+		9BD090B028C05E0300334171 /* Demo Watch WatchKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				9B80471828DB429200FFBDFB /* View */,
+				9BBFF02028DAE5700010D023 /* AudioFiles.swift */,
+				9BE975BA28C610EE00453995 /* WatchSession.swift */,
+				9BD090B128C05E0300334171 /* DemoApp.swift */,
+				9BD090BB28C05E0400334171 /* Assets.xcassets */,
+				9BD090C028C05E0400334171 /* Info.plist */,
+				9BD090C128C05E0400334171 /* PushNotificationPayload.apns */,
+				9BD090BD28C05E0400334171 /* Preview Content */,
+				9BE975BC28C6136C00453995 /* AudioPlayerManager.swift */,
+				9BBFF02228DAFA9B0010D023 /* AudioPlayerWatchManager.swift */,
+				9BBFF02428DAFAA40010D023 /* AudioPlayerPhoneManager.swift */,
+				9B80471228DB2A0600FFBDFB /* AudioPlayerQueue.swift */,
+				9B80471428DB2A4D00FFBDFB /* AudioPlayerItem.swift */,
+			);
+			path = "Demo Watch WatchKit Extension";
+			sourceTree = "<group>";
+		};
+		9BD090BD28C05E0400334171 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9BD090BE28C05E0400334171 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 		9BD3F7672876D58D00015754 = {
 			isa = PBXGroup;
 			children = (
 				9BD3F7722876D58D00015754 /* Demo */,
+				9BD090A528C05E0200334171 /* Demo Watch */,
+				9BD090B028C05E0300334171 /* Demo Watch WatchKit Extension */,
 				9BD3F7712876D58D00015754 /* Products */,
 				EDAA50BEB31A984205B11F1D /* Pods */,
 				4DFE5703828DEDDC2F9619C1 /* Frameworks */,
@@ -86,6 +256,8 @@
 			isa = PBXGroup;
 			children = (
 				9BD3F7702876D58D00015754 /* Demo.app */,
+				9BD090A428C05E0200334171 /* Demo Watch.app */,
+				9BD090AC28C05E0300334171 /* Demo Watch WatchKit Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -111,8 +283,19 @@
 				9BD3F77E2876D58E00015754 /* LaunchScreen.storyboard */,
 				9BD3F7812876D58E00015754 /* Info.plist */,
 				9BD3F78D2878047500015754 /* Storyboard.swift */,
+				9BE975B828C5FD3D00453995 /* Watch */,
+				9BE975B628C5FD3400453995 /* AudioPlayerWatchSession.swift */,
 			);
 			path = Demo;
+			sourceTree = "<group>";
+		};
+		9BE975B828C5FD3D00453995 /* Watch */ = {
+			isa = PBXGroup;
+			children = (
+				9BE975AE28C5F2C300453995 /* Watch.swift */,
+				9BE975AC28C5D25E00453995 /* WatchSession.swift */,
+			);
+			path = Watch;
 			sourceTree = "<group>";
 		};
 		EDAA50BEB31A984205B11F1D /* Pods */ = {
@@ -120,6 +303,8 @@
 			children = (
 				30D87B82558D539A0CDF977D /* Pods-Demo.debug.xcconfig */,
 				2196F9AB8F7FFD40D56B16A9 /* Pods-Demo.release.xcconfig */,
+				539DF81ECA5D961E212A8DF7 /* Pods-Demo Watch WatchKit Extension.debug.xcconfig */,
+				71528778B88AC572F18445EB /* Pods-Demo Watch WatchKit Extension.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -127,6 +312,41 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		9BD090A328C05E0200334171 /* Demo Watch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9BD090CC28C05E0400334171 /* Build configuration list for PBXNativeTarget "Demo Watch" */;
+			buildPhases = (
+				9BD090A228C05E0200334171 /* Resources */,
+				9BD090C828C05E0400334171 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9BD090AF28C05E0300334171 /* PBXTargetDependency */,
+			);
+			name = "Demo Watch";
+			productName = "Demo Watch";
+			productReference = 9BD090A428C05E0200334171 /* Demo Watch.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		9BD090AB28C05E0300334171 /* Demo Watch WatchKit Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9BD090CB28C05E0400334171 /* Build configuration list for PBXNativeTarget "Demo Watch WatchKit Extension" */;
+			buildPhases = (
+				8AF0FFCF4BF23CCAC4E477CF /* [CP] Check Pods Manifest.lock */,
+				9BD090A828C05E0300334171 /* Sources */,
+				9BD090A928C05E0300334171 /* Frameworks */,
+				9BD090AA28C05E0300334171 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Demo Watch WatchKit Extension";
+			productName = "Demo Watch WatchKit Extension";
+			productReference = 9BD090AC28C05E0300334171 /* Demo Watch WatchKit Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		9BD3F76F2876D58D00015754 /* Demo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9BD3F7842876D58E00015754 /* Build configuration list for PBXNativeTarget "Demo" */;
@@ -136,10 +356,12 @@
 				9BD3F76D2876D58D00015754 /* Frameworks */,
 				9BD3F76E2876D58D00015754 /* Resources */,
 				1194BC848CA97F0FFFEEEF62 /* [CP] Embed Pods Frameworks */,
+				9BD090C528C05E0400334171 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9BD090C328C05E0400334171 /* PBXTargetDependency */,
 			);
 			name = Demo;
 			productName = Demo;
@@ -156,6 +378,12 @@
 				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1340;
 				TargetAttributes = {
+					9BD090A328C05E0200334171 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+					9BD090AB28C05E0300334171 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
 					9BD3F76F2876D58D00015754 = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
@@ -175,11 +403,30 @@
 			projectRoot = "";
 			targets = (
 				9BD3F76F2876D58D00015754 /* Demo */,
+				9BD090A328C05E0200334171 /* Demo Watch */,
+				9BD090AB28C05E0300334171 /* Demo Watch WatchKit Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		9BD090A228C05E0200334171 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BD090A728C05E0300334171 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9BD090AA28C05E0300334171 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BD090BF28C05E0400334171 /* Preview Assets.xcassets in Resources */,
+				9BD090BC28C05E0400334171 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9BD3F76E2876D58D00015754 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -233,17 +480,66 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8AF0FFCF4BF23CCAC4E477CF /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Demo Watch WatchKit Extension-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		9BD090A828C05E0300334171 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9BE975BB28C610EE00453995 /* WatchSession.swift in Sources */,
+				9BBFF01C28D9A7610010D023 /* MarqueeText.swift in Sources */,
+				9BD090B628C05E0300334171 /* NotificationController.swift in Sources */,
+				9BE975B028C5F2C300453995 /* Watch.swift in Sources */,
+				9BD090B428C05E0300334171 /* AudioPlayerView.swift in Sources */,
+				9BBFF01F28D9A9080010D023 /* AudioPlayerSettingView.swift in Sources */,
+				9BBFF01D28D9A7610010D023 /* SwiftUI+Extension.swift in Sources */,
+				9BD090BA28C05E0300334171 /* ComplicationController.swift in Sources */,
+				9BBFF02128DAE5700010D023 /* AudioFiles.swift in Sources */,
+				9BE975BD28C6136C00453995 /* AudioPlayerManager.swift in Sources */,
+				9BBFF02328DAFA9B0010D023 /* AudioPlayerWatchManager.swift in Sources */,
+				9B80471328DB2A0600FFBDFB /* AudioPlayerQueue.swift in Sources */,
+				9B80471728DB428800FFBDFB /* AudioPlayerQueueView.swift in Sources */,
+				9B80471A28DB519A00FFBDFB /* AudioPlayerSourcesView.swift in Sources */,
+				9BD090B228C05E0300334171 /* DemoApp.swift in Sources */,
+				9BBFF02528DAFAA40010D023 /* AudioPlayerPhoneManager.swift in Sources */,
+				9B80471528DB2A4D00FFBDFB /* AudioPlayerItem.swift in Sources */,
+				9BD090B828C05E0300334171 /* NotificationView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9BD3F76C2876D58D00015754 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				9BD3F7782876D58D00015754 /* ViewController.swift in Sources */,
 				9B2654772879A2C800325A9E /* AudioPlayerManager.swift in Sources */,
+				9BE975B728C5FD3400453995 /* AudioPlayerWatchSession.swift in Sources */,
 				9BD3F79028780E1C00015754 /* AudioPlayerListController.swift in Sources */,
 				9BD3F7882877DB8D00015754 /* AudioPlayerController.swift in Sources */,
+				9BE975AD28C5D25E00453995 /* WatchSession.swift in Sources */,
 				9B26547328783F4700325A9E /* AudioPlayerManager.RemoteControl.swift in Sources */,
 				9BD3F7742876D58D00015754 /* AppDelegate.swift in Sources */,
 				9B2654752879A20500325A9E /* AudioPlayerItem.swift in Sources */,
@@ -252,11 +548,25 @@
 				9BD3F7762876D58D00015754 /* SceneDelegate.swift in Sources */,
 				9BD3F78E2878047500015754 /* Storyboard.swift in Sources */,
 				9BD3F78A2877DBF600015754 /* AudioPlayerView.swift in Sources */,
+				9BE975AF28C5F2C300453995 /* Watch.swift in Sources */,
 				9BD3F79228781C9100015754 /* AudioPlayerQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9BD090AF28C05E0300334171 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9BD090AB28C05E0300334171 /* Demo Watch WatchKit Extension */;
+			targetProxy = 9BD090AE28C05E0300334171 /* PBXContainerItemProxy */;
+		};
+		9BD090C328C05E0400334171 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9BD090A328C05E0200334171 /* Demo Watch */;
+			targetProxy = 9BD090C228C05E0400334171 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9BD3F7792876D58D00015754 /* Main.storyboard */ = {
@@ -278,6 +588,126 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		9BD090C628C05E0400334171 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8G74YECJ4Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = Demo_Watch_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "Demo Watch";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.audio.player.demo;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.audio.player.demo.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Debug;
+		};
+		9BD090C728C05E0400334171 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 8G74YECJ4Z;
+				GENERATE_INFOPLIST_FILE = YES;
+				IBSC_MODULE = Demo_Watch_WatchKit_Extension;
+				INFOPLIST_KEY_CFBundleDisplayName = "Demo Watch";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.audio.player.demo;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.audio.player.demo.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Release;
+		};
+		9BD090C928C05E0400334171 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 539DF81ECA5D961E212A8DF7 /* Pods-Demo Watch WatchKit Extension.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Demo Watch WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 8G74YECJ4Z;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Demo Watch WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Demo Watch WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = Demo_Watch_WatchKit_Extension.ComplicationController;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.audio.player.demo.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Debug;
+		};
+		9BD090CA28C05E0400334171 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 71528778B88AC572F18445EB /* Pods-Demo Watch WatchKit Extension.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Demo Watch WatchKit Extension/Preview Content\"";
+				DEVELOPMENT_TEAM = 8G74YECJ4Z;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Demo Watch WatchKit Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Demo Watch WatchKit Extension";
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = Demo_Watch_WatchKit_Extension.ComplicationController;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.audio.player.demo.watchkitapp.watchkitextension;
+				PRODUCT_NAME = "${TARGET_NAME}";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 8.5;
+			};
+			name = Release;
+		};
 		9BD3F7822876D58E00015754 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -457,6 +887,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9BD090CB28C05E0400334171 /* Build configuration list for PBXNativeTarget "Demo Watch WatchKit Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BD090C928C05E0400334171 /* Debug */,
+				9BD090CA28C05E0400334171 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9BD090CC28C05E0400334171 /* Build configuration list for PBXNativeTarget "Demo Watch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9BD090C628C05E0400334171 /* Debug */,
+				9BD090C728C05E0400334171 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		9BD3F76B2876D58D00015754 /* Build configuration list for PBXProject "Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

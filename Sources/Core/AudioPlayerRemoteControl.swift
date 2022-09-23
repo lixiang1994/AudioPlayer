@@ -8,6 +8,7 @@
 //  └───────┘└───────┘ └───────┘
 //
 
+import UIKit
 import MediaPlayer.MPNowPlayingInfoCenter
 import MediaPlayer.MPRemoteCommandCenter
 
@@ -65,9 +66,9 @@ open class AudioPlayerRemoteControl: NSObject {
     /// - Parameters:
     ///   - title: 标题
     ///   - artist: 作者
-    ///   - thumb: 封面
+    ///   - cover: 封面
     ///   - url: 链接
-    open func set(title: String, artist: String, thumb: UIImage, url: URL) {
+    open func set(title: String, artist: String, cover: UIImage? = nil, url: URL) {
         var info: [String : Any] = [:]
         info[MPMediaItemPropertyTitle] = title
         info[MPMediaItemPropertyArtist] = artist
@@ -77,23 +78,19 @@ open class AudioPlayerRemoteControl: NSObject {
             info[MPNowPlayingInfoPropertyAssetURL] = url
         }
         
-        if #available(iOS 10.0, *) {
+        if let cover = cover {
             // 封面图
             let artwork = MPMediaItemArtwork(
-                boundsSize: thumb.size,
+                boundsSize: cover.size,
                 requestHandler: { (size) -> UIImage in
-                    return thumb
+                    return cover
                 }
             )
             info[MPMediaItemPropertyArtwork] = artwork
-            // 媒体类型
-            info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
-            
-        } else {
-            // 封面图
-            let artwork = MPMediaItemArtwork(image: thumb)
-            info[MPMediaItemPropertyArtwork] = artwork
         }
+        
+        // 媒体类型
+        info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
     }

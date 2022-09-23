@@ -10,16 +10,24 @@ import AVFoundation
 
 protocol AudioPlayerManagerDelegate: AnyObject {
     
+    func audioPlayerManager(_ manager: AudioPlayerManager, changed rate: AudioPlayerManager.Rate)
+    
     func audioPlayerManager(_ manager: AudioPlayerManager, changed mode: AudioPlayerManager.PlaybackMode)
     
     func audioPlayerManager(_ manager: AudioPlayerManager, changed item: AudioPlayerItem?)
+    
+    func audioPlayerManager(_ manager: AudioPlayerManager, changed queue: AudioPlayerQueue)
 }
 
 extension AudioPlayerManagerDelegate {
     
+    func audioPlayerManager(_ manager: AudioPlayerManager, changed rate: AudioPlayerManager.Rate) { }
+    
     func audioPlayerManager(_ manager: AudioPlayerManager, changed mode: AudioPlayerManager.PlaybackMode) { }
     
     func audioPlayerManager(_ manager: AudioPlayerManager, changed item: AudioPlayerItem?) { }
+    
+    func audioPlayerManager(_ manager: AudioPlayerManager, changed queue: AudioPlayerQueue) { }
 }
 
 class AudioPlayerManager: NSObject {
@@ -33,6 +41,13 @@ class AudioPlayerManager: NSObject {
         didSet {
             player.isLoop = mode == .single
             delegate { $0.audioPlayerManager(self, changed: mode) }
+        }
+    }
+    /// 播放倍速 默认1.0
+    var rate: Rate = ._1_0 {
+        didSet {
+            player.rate = rate.rawValue
+            delegate { $0.audioPlayerManager(self, changed: rate) }
         }
     }
     /// 播放项队列
@@ -57,7 +72,7 @@ class AudioPlayerManager: NSObject {
     /// 播放队列的项目
     func play(_ item: AudioPlayerItem, for queue: AudioPlayerQueue) {
         // 更新当前队列
-        self.queue = queue
+        update(queue)
         // 更新当前Item
         update(item)
     }
@@ -83,13 +98,19 @@ class AudioPlayerManager: NSObject {
         guard let item = item else { return }
         update(item)
     }
+    
+    /// 清空
+    func clear() {
+        update(.init([]))
+        update(.none)
+    }
 }
 
 extension AudioPlayerManager {
     
     private func setup() {
         // 设置播放倍速
-        player.rate = 1.0
+        player.rate = rate.rawValue
         // 允许后台播放
         player.allowedBackgroundPlayback = true
         // 添加播放器代理
@@ -142,6 +163,12 @@ extension AudioPlayerManager {
 
 extension AudioPlayerManager {
     
+    private func update(_ queue: AudioPlayerQueue) {
+        self.queue = queue
+        
+        delegate { $0.audioPlayerManager(self, changed: queue) }
+    }
+    
     private func update(_ item: AudioPlayerItem?) {
         // 置空当前Item, 防止状态被错误更新
         self.item = nil
@@ -167,13 +194,19 @@ extension AudioPlayerManager {
             remote.set(
                 title: item.title,
                 artist: item.author,
-                thumb: UIImage(named: item.cover)!,
+                cover: UIImage(named: item.cover)!,
                 url: item.resource
             )
             remote.set(switchable: switchable)
             
             // 设置当前Item
             self.item = item
+            
+        } else {
+            // 播放器停止
+            player.stop()
+            // 设置可切换状态
+            switchable = (false, false)
         }
         
         delegate { $0.audioPlayerManager(self, changed: item) }
@@ -301,5 +334,31 @@ extension AudioPlayerManager {
         case random
         // 顺序播放
         case sequential
+    }
+    
+    enum Rate: Double {
+        case _0_5   = 0.5
+        case _0_8   = 0.8
+        case _1_0   = 1.0
+        case _1_1   = 1.1
+        case _1_2   = 1.2
+        case _1_3   = 1.3
+        case _1_4   = 1.4
+        case _1_5   = 1.5
+        case _1_6   = 1.6
+        case _1_7   = 1.7
+        case _1_8   = 1.8
+        case _1_9   = 1.9
+        case _2_0   = 2.0
+        case _2_1   = 2.1
+        case _2_2   = 2.2
+        case _2_3   = 2.3
+        case _2_4   = 2.4
+        case _2_5   = 2.5
+        case _2_6   = 2.6
+        case _2_7   = 2.7
+        case _2_8   = 2.8
+        case _2_9   = 2.9
+        case _3_0   = 3.0
     }
 }

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct AudioPlayerItem: Equatable {
+struct AudioPlayerItem: Equatable, Codable {
     let id: String
     let title: String
     let cover: String

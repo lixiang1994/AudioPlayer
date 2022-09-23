@@ -1,5 +1,5 @@
 framework module AudioPlayer {
-  umbrella header "AudioPlayer-umbrella.h"
+  umbrella header "AudioPlayer-framework-umbrella.h"
 
   export *
   module * { export * }

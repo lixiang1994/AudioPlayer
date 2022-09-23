@@ -1,10 +1,10 @@
 PODS:
-  - AudioPlayer (1.3.0):
-    - AudioPlayer/AVPlayer (= 1.3.0)
-    - AudioPlayer/Core (= 1.3.0)
-  - AudioPlayer/AVPlayer (1.3.0):
+  - AudioPlayer (1.4.0):
+    - AudioPlayer/AVPlayer (= 1.4.0)
+    - AudioPlayer/Core (= 1.4.0)
+  - AudioPlayer/AVPlayer (1.4.0):
     - AudioPlayer/Core
-  - AudioPlayer/Core (1.3.0)
+  - AudioPlayer/Core (1.4.0)
   - Loading (1.1.2)
   - SnapKit (5.0.1)
   - UIAdapter (1.1.0)
@@ -30,12 +30,12 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AudioPlayer: ce545ebde60631cf250bc901a9ed1b178f0ad500
+  AudioPlayer: 710e5444af9c2ededbcab1a29488842f256a0b66
   Loading: eabab8cbe5e08fdce6f8d5b781491c5b0cd33624
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
   UIAdapter: 763299507d2087b19577eade2834bca6b3cedb1f
   UIImageColors: d2ef3b0877d203cbb06489eeb78ea8b7788caabe
 
-PODFILE CHECKSUM: 6f4625fc2b8dc3d3527cf949bb3d808ae9534479
+PODFILE CHECKSUM: ee627dad9935449fbe05110af4ca2208039628ba
 
 COCOAPODS: 1.11.2

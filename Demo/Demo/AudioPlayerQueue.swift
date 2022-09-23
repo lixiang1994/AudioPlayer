@@ -11,7 +11,7 @@ class AudioPlayerQueue {
     
     typealias Item = AudioPlayerItem
     
-    private var items: [Item] = []
+    private(set) var items: [Item] = []
     
     var count: Int {
         return items.count

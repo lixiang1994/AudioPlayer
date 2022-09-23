@@ -66,8 +66,11 @@ class AVAudioPlayer: NSObject {
     }
     /// 是否循环播放
     var isLoop: Bool = false
+    
+    #if os(iOS)
     /// 允许后台播放
     var allowedBackgroundPlayback: Bool = true
+    #endif
     
     var delegates: [AudioPlayerDelegateBridge<AnyObject>] = []
     
@@ -81,6 +84,8 @@ class AVAudioPlayer: NSObject {
     private var intendedToSeek: AudioPlayer.Seek?
     /// 播放意图 例如当seeking时如果调用了play() 或者 pasue() 记录状态 在seeking结束时设置对应状态
     private var intendedToPlay: Bool = false
+    /// 播放中断记录 用于判断播放连续中断情况
+    private var itemPlaybackStalledRecords: [Double] = []
     
     private var timeControlStatusObservation: NSKeyValueObservation?
     private var reasonForWaitingToPlayObservation: NSKeyValueObservation?
@@ -94,8 +99,10 @@ class AVAudioPlayer: NSObject {
     private var itemDidPlayToEndTimeObserver: Any?
     private var itemFailedToPlayToEndTimeObserver: Any?
     
+    #if os(iOS)
     /// 后台任务标识
     private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = .invalid
+    #endif
     
     init(_ configuration: AudioPlayerConfiguration) {
         self.configuration = configuration
@@ -119,6 +126,7 @@ class AVAudioPlayer: NSObject {
             name: AVAudioSession.interruptionNotification,
             object: AVAudioSession.sharedInstance()
         )
+        #if os(iOS)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(willEnterForeground),
@@ -131,6 +139,7 @@ class AVAudioPlayer: NSObject {
             name: UIApplication.didEnterBackgroundNotification,
             object: nil
         )
+        #endif
     }
 }
 
@@ -166,6 +175,8 @@ extension AVAudioPlayer {
         // 清理意图
         intendedToSeek = nil
         intendedToPlay = false
+        // 清理中断记录
+        itemPlaybackStalledRecords = []
     }
     
     private func addObserver() {
@@ -402,8 +413,29 @@ extension AVAudioPlayer {
     /// 播放中断通知
     @objc
     private func itemPlaybackStalled(_ notification: Notification) {
+        guard let item = player.currentItem else { return }
         guard case .playing = state, intendedToPlay else { return }
-        play()
+        // 添加中断记录
+        itemPlaybackStalledRecords.append(Date().timeIntervalSince1970)
+        // 获取连续相差小于1秒的记录数量
+        let array = itemPlaybackStalledRecords
+        for (index, time) in array.enumerated() where index < array.count - 1 {
+            array[index + 1] - time < 1
+        }
+        let count = itemPlaybackStalledRecords.grouped(by: 2).filter {
+            guard $0.count == 2 else { return false }
+            return $0[1] - $0[0] < 1
+        }.count
+        // 如果Asset AVURLAssetPreferPreciseDurationAndTimingKey 为 true.
+        // 某些MP3会无法正常播放声音, 且 seek 到未缓冲区域后 会一直触发该通知.
+        // 为了解决类似问题 统计如果连续10次 则触发失败状态 由外部重新初始化Asset.
+        // 如果连续中断超过10次 按照异常处理
+        if count >= 10 {
+            error(NSError(domain: "Playback Stalled", code: -111111))
+            
+        } else {
+            play()
+        }
     }
     
     /// 播放结束通知
@@ -449,7 +481,11 @@ extension AVAudioPlayer {
             break
         }
     }
-    
+}
+
+#if os(iOS)
+extension AVAudioPlayer {
+
     @objc
     private func willEnterForeground(_ notification: Notification) {
         guard player.currentItem != .none else { return }
@@ -465,7 +501,7 @@ extension AVAudioPlayer {
             play()
         }
     }
-    
+
     @objc
     private func didEnterBackground(_ notification: Notification) {
         guard player.currentItem != .none else { return }
@@ -488,6 +524,7 @@ extension AVAudioPlayer {
         }
     }
 }
+#endif
 
 extension AVAudioPlayer: AudioPlayerable {
     
@@ -681,4 +718,22 @@ fileprivate func min(_ lhs: CMTime, _ rhs: CMTime) -> CMTime {
 
 fileprivate func max(_ lhs: CMTime, _ rhs: CMTime) -> CMTime {
     return CMTimeCompare(lhs, rhs) == 1 ? lhs : rhs
+}
+
+private extension Array {
+    
+    /// 数组分组
+    ///
+    /// - Parameters:
+    ///   - step: 每组个数
+    ///   - range: 分组范围
+    /// - Returns: 分组数组
+    func grouped(by step: Int) -> [[Element]] {
+        guard step > 0, !isEmpty else {
+            return [self]
+        }
+        return stride(from: 0, to: endIndex, by: step).map {
+            .init(self[$0 ... ($0 + (Swift.min(endIndex - $0, step) - 1))])
+        }
+    }
 }

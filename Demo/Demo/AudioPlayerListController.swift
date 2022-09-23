@@ -53,6 +53,10 @@ class AudioPlayerListController: UIViewController {
         
         tableView.reloadData()
     }
+    
+    @IBAction func clearQueueAction(_ sender: Any) {
+        manager.clear()
+    }
 }
 
 extension AudioPlayerListController: UITableViewDelegate, UITableViewDataSource {

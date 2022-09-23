@@ -51,8 +51,11 @@ public protocol AudioPlayerable: NSObjectProtocol {
     var volume: Double { get set }
     /// 是否循环播放  默认: false
     var isLoop: Bool { get set }
+    
+    #if os(iOS)
     /// 允许后台播放 默认: true
     var allowedBackgroundPlayback: Bool { get set }
+    #endif
     
     /// 播放配置
     var configuration: AudioPlayerConfiguration { get }
