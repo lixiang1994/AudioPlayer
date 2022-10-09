@@ -8,11 +8,27 @@
 import Foundation
 import AudioPlayer
 
-class AudioPlayerManager: NSObject, ObservableObject {
+protocol AudioPlayerSource {
     
-    static let shared = AudioPlayerWatchManager()
+    init(_ manager: AudioPlayerManager)
     
-    enum Source {
+    func play(_ item: AudioPlayerItem, for queue: AudioPlayerQueue)
+    
+    func sync()
+    
+    func prev()
+    func next()
+    func play()
+    func pause()
+    
+    func set(rate: Double)
+}
+
+class AudioPlayerManager: ObservableObject {
+    
+    static let shared = AudioPlayerManager()
+    
+    enum Source: Int {
     case phone
     case watch
     }
@@ -27,18 +43,22 @@ class AudioPlayerManager: NSObject, ObservableObject {
     @Published
     var switchable: (prev: Bool, next: Bool) = (false, false)
     
+    /// 状态
     @Published
     var state: AudioPlayer.State = .stopped
     @Published
     var controlState: AudioPlayer.ControlState = .pausing
     @Published
     var loadingState: AudioPlayer.LoadingState = .ended
+    /// 倍速
     @Published
     var rate: Double = 1
     
+    /// 音量
     @Published
     var volume: Double = 0
     
+    /// 进度
     @Published
     var buffer: Double = 0
     @Published
@@ -46,42 +66,67 @@ class AudioPlayerManager: NSObject, ObservableObject {
     @Published
     var current: Double = 0 {
         didSet {
-            guard duration > 0 else { return }
-            progress = current / duration
+            if duration > 0 {
+                progress = current / duration
+                
+            } else {
+                progress = 0
+            }
         }
     }
     @Published
     var duration: Double = 0 {
         didSet {
-            guard duration > 0 else { return }
-            progress = current / duration
+            if duration > 0 {
+                progress = current / duration
+                
+            } else {
+                progress = 0
+            }
         }
     }
     
+    /// 来源
     @Published
     var source: Source = .phone
+    private var __source: AudioPlayerSource?
     
-    /// 播放队列的项目
-    func play(_ item: AudioPlayerItem, for queue: AudioPlayerQueue) {
-        
+    func play(_ item: AudioPlayerItem, for queue: AudioPlayerQueue, in source: Source) {
+        switch source {
+        case .phone where __source == nil || self.source != source:
+            __source = AudioPlayerPhoneSource(self)
+            
+        case .watch where __source == nil || self.source != source:
+            __source = AudioPlayerWatchSource(self)
+            
+        default:
+            break
+        }
+        self.source = source
+        __source?.play(item, for: queue)
     }
     
     func sync() {
+        __source?.sync()
     }
     
     func prev() {
+        __source?.prev()
     }
     
     func next() {
+        __source?.next()
     }
     
     func play() {
+        __source?.play()
     }
     
     func pause() {
+        __source?.pause()
     }
     
     func set(rate: Double) {
-        self.rate = rate
+        __source?.set(rate: rate)
     }
 }

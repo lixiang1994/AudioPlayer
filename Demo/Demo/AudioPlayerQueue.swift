@@ -66,3 +66,10 @@ class AudioPlayerQueue {
         return items.filter({ $0 != item }).randomElement()
     }
 }
+
+extension AudioPlayerQueue: Equatable {
+    
+    static func == (lhs: AudioPlayerQueue, rhs: AudioPlayerQueue) -> Bool {
+        return lhs.items == rhs.items
+    }
+}

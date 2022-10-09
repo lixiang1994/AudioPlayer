@@ -10,7 +10,7 @@ import SwiftUI
 @main
 struct DemoApp: App {
     
-    @State private var selection = 1
+    @State private var selection = 0
     
     @SceneBuilder var body: some Scene {
         WindowGroup {

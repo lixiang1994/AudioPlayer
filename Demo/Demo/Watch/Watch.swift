@@ -31,6 +31,11 @@ enum Watch {
             
             static let Sync = "com.audio.player.sync"
         }
+        
+        enum Sync {
+            static let List = "com.audio.sync.list"
+            static let File = "com.audio.sync.file"
+        }
     }
     
     enum Data {
@@ -51,6 +56,15 @@ enum Watch {
             let author: String
             let duration: TimeInterval
             let resource: URL
+            
+            static let empty = Item(
+                id: "",
+                title: "",
+                cover: "",
+                author: "",
+                duration: 0,
+                resource: .init(fileURLWithPath: "")
+            )
         }
     }
 }

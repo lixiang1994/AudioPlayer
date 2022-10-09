@@ -1,0 +1,106 @@
+[
+	{
+		"id": "1001",
+		"title": "兰亭序",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E5%91%A8%E6%9D%B0%E4%BC%A6.jpg",
+		"author": "周杰伦",
+		"duration": 254,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E5%85%B0%E4%BA%AD%E5%BA%8F-%E5%91%A8%E6%9D%B0%E4%BC%A6.wav"	
+	},
+	{
+		"id": "1002",
+		"title": "彩虹",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E5%91%A8%E6%9D%B0%E4%BC%A6.jpg",
+		"author": "周杰伦",
+		"duration": 264,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E5%BD%A9%E8%99%B9-%E5%91%A8%E6%9D%B0%E4%BC%A6.wav"	
+	},
+	{
+		"id": "1003",
+		"title": "花海",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E5%91%A8%E6%9D%B0%E4%BC%A6.jpg",
+		"author": "周杰伦",
+		"duration": 265,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E8%8A%B1%E6%B5%B7-%E5%91%A8%E6%9D%B0%E4%BC%A6.wav"	
+	},
+	{
+		"id": "1004",
+		"title": "蒲公英的约定",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E5%91%A8%E6%9D%B0%E4%BC%A6.jpg",
+		"author": "周杰伦",
+		"duration": 247,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E8%92%B2%E5%85%AC%E8%8B%B1%E7%9A%84%E7%BA%A6%E5%AE%9A-%E5%91%A8%E6%9D%B0%E4%BC%A6.wav"	
+	},
+	{
+		"id": "1005",
+		"title": "夜曲",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E5%91%A8%E6%9D%B0%E4%BC%A6.jpg",
+		"author": "周杰伦",
+		"duration": 227,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E5%A4%9C%E6%9B%B2-%E5%91%A8%E6%9D%B0%E4%BC%A6.wav"	
+	},
+	{
+		"id": "2001",
+		"title": "爱笑的眼睛",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E6%9E%97%E4%BF%8A%E6%9D%B0.jpg",
+		"author": "林俊杰",
+		"duration": 252,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E7%88%B1%E7%AC%91%E7%9A%84%E7%9C%BC%E7%9D%9B-%E6%9E%97%E4%BF%8A%E6%9D%B0.wav"	
+	},
+	{
+		"id": "2002",
+		"title": "曹操",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E6%9E%97%E4%BF%8A%E6%9D%B0.jpg",
+		"author": "林俊杰",
+		"duration": 242,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E6%9B%B9%E6%93%8D-%E6%9E%97%E4%BF%8A%E6%9D%B0.wav"	
+	},
+	{
+		"id": "2003",
+		"title": "江南",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E6%9E%97%E4%BF%8A%E6%9D%B0.jpg",
+		"author": "林俊杰",
+		"duration": 267,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E6%B1%9F%E5%8D%97-%E6%9E%97%E4%BF%8A%E6%9D%B0.wav"	
+	},
+	{
+		"id": "2004",
+		"title": "美人鱼",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E6%9E%97%E4%BF%8A%E6%9D%B0.jpg",
+		"author": "林俊杰",
+		"duration": 254,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E7%BE%8E%E4%BA%BA%E9%B1%BC-%E6%9E%97%E4%BF%8A%E6%9D%B0.wav"	
+	},
+	{
+		"id": "2005",
+		"title": "修炼爱情",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E6%9E%97%E4%BF%8A%E6%9D%B0.jpg",
+		"author": "林俊杰",
+		"duration": 287,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E4%BF%AE%E7%82%BC%E7%88%B1%E6%83%85-%E6%9E%97%E4%BF%8A%E6%9D%B0.wav"	
+	},
+	{
+		"id": "3001",
+		"title": "灰色头像",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E8%AE%B8%E5%B5%A9.jpg",
+		"author": "许嵩",
+		"duration": 290,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E7%81%B0%E8%89%B2%E5%A4%B4%E5%83%8F-%E8%AE%B8%E5%B5%A9.wav"	
+	},
+	{
+		"id": "3002",
+		"title": "千百度",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E8%AE%B8%E5%B5%A9.jpg",
+		"author": "许嵩",
+		"duration": 226,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E5%8D%83%E7%99%BE%E5%BA%A6-%E8%AE%B8%E5%B5%A9.wav"	
+	},
+	{
+		"id": "3003",
+		"title": "清明雨上",
+		"cover": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/Image/%E8%AE%B8%E5%B5%A9.jpg",
+		"author": "许嵩",
+		"duration": 220,
+		"resource": "https://github.com/lixiang1994/Resources/raw/master/AudioPlayer/%E6%B8%85%E6%98%8E%E9%9B%A8%E4%B8%8A-%E8%AE%B8%E5%B5%A9.wav"	
+	}
+]

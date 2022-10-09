@@ -194,7 +194,7 @@ extension AudioPlayerManager {
             remote.set(
                 title: item.title,
                 artist: item.author,
-                cover: UIImage(named: item.cover)!,
+                cover: nil,
                 url: item.resource
             )
             remote.set(switchable: switchable)

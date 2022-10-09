@@ -12,17 +12,19 @@
 		9B2654752879A20500325A9E /* AudioPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2654742879A20500325A9E /* AudioPlayerItem.swift */; };
 		9B2654772879A2C800325A9E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2654762879A2C800325A9E /* AudioPlayerManager.swift */; };
 		9B5349B728800C1E009E07D7 /* AudioPlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */; };
-		9B5349BB28801BB0009E07D7 /* 蔡依林,周杰伦 - 布拉格广场.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9B5349BA28801BB0009E07D7 /* 蔡依林,周杰伦 - 布拉格广场.mp3 */; };
 		9B80471328DB2A0600FFBDFB /* AudioPlayerQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471228DB2A0600FFBDFB /* AudioPlayerQueue.swift */; };
 		9B80471528DB2A4D00FFBDFB /* AudioPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471428DB2A4D00FFBDFB /* AudioPlayerItem.swift */; };
 		9B80471728DB428800FFBDFB /* AudioPlayerQueueView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471628DB428800FFBDFB /* AudioPlayerQueueView.swift */; };
-		9B80471A28DB519A00FFBDFB /* AudioPlayerSourcesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471928DB519A00FFBDFB /* AudioPlayerSourcesView.swift */; };
+		9BB4FD1928E1ABF90017E5F8 /* AudioPlayerWatchList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB4FD1828E1ABF90017E5F8 /* AudioPlayerWatchList.swift */; };
+		9BB4FD1B28E1AC030017E5F8 /* AudioPlayerPhoneList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB4FD1A28E1AC030017E5F8 /* AudioPlayerPhoneList.swift */; };
+		9BB4FD1D28E1D1170017E5F8 /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB4FD1C28E1D1170017E5F8 /* UserDefaultsExtension.swift */; };
+		9BB4FD1F28E2D90E0017E5F8 /* AudioPlayerQueueController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BB4FD1E28E2D90E0017E5F8 /* AudioPlayerQueueController.swift */; };
 		9BBFF01C28D9A7610010D023 /* MarqueeText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF01A28D9A7610010D023 /* MarqueeText.swift */; };
 		9BBFF01D28D9A7610010D023 /* SwiftUI+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF01B28D9A7610010D023 /* SwiftUI+Extension.swift */; };
 		9BBFF01F28D9A9080010D023 /* AudioPlayerSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF01E28D9A9080010D023 /* AudioPlayerSettingView.swift */; };
 		9BBFF02128DAE5700010D023 /* AudioFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF02028DAE5700010D023 /* AudioFiles.swift */; };
-		9BBFF02328DAFA9B0010D023 /* AudioPlayerWatchManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF02228DAFA9B0010D023 /* AudioPlayerWatchManager.swift */; };
-		9BBFF02528DAFAA40010D023 /* AudioPlayerPhoneManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF02428DAFAA40010D023 /* AudioPlayerPhoneManager.swift */; };
+		9BBFF02328DAFA9B0010D023 /* AudioPlayerWatchSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF02228DAFA9B0010D023 /* AudioPlayerWatchSource.swift */; };
+		9BBFF02528DAFAA40010D023 /* AudioPlayerPhoneSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BBFF02428DAFAA40010D023 /* AudioPlayerPhoneSource.swift */; };
 		9BD090A728C05E0300334171 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BD090A628C05E0300334171 /* Assets.xcassets */; };
 		9BD090AD28C05E0300334171 /* Demo Watch WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 9BD090AC28C05E0300334171 /* Demo Watch WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9BD090B228C05E0300334171 /* DemoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD090B128C05E0300334171 /* DemoApp.swift */; };
@@ -33,6 +35,13 @@
 		9BD090BC28C05E0400334171 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BD090BB28C05E0400334171 /* Assets.xcassets */; };
 		9BD090BF28C05E0400334171 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BD090BE28C05E0400334171 /* Preview Assets.xcassets */; };
 		9BD090C428C05E0400334171 /* Demo Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9BD090A428C05E0200334171 /* Demo Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9BD3806628E5729300A55620 /* audios.json in Resources */ = {isa = PBXBuildFile; fileRef = 9BD3806528E5729300A55620 /* audios.json */; };
+		9BD3806828E572E100A55620 /* 夜曲-周杰伦.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9BD3806728E572E100A55620 /* 夜曲-周杰伦.wav */; };
+		9BD3806A28E5730F00A55620 /* 江南-林俊杰.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9BD3806928E5730F00A55620 /* 江南-林俊杰.wav */; };
+		9BD3806C28E57F3300A55620 /* AudioFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3806B28E57F3300A55620 /* AudioFiles.swift */; };
+		9BD3806F28E57FFD00A55620 /* UserDefaultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3806E28E57FFC00A55620 /* UserDefaultsExtension.swift */; };
+		9BD3807128E585AC00A55620 /* SyncToWatchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3807028E585AC00A55620 /* SyncToWatchController.swift */; };
+		9BD3807328E5862C00A55620 /* SyncToWatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3807228E5862C00A55620 /* SyncToWatch.swift */; };
 		9BD3F7742876D58D00015754 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7732876D58D00015754 /* AppDelegate.swift */; };
 		9BD3F7762876D58D00015754 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7752876D58D00015754 /* SceneDelegate.swift */; };
 		9BD3F7782876D58D00015754 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7772876D58D00015754 /* ViewController.swift */; };
@@ -51,6 +60,7 @@
 		9BE975B728C5FD3400453995 /* AudioPlayerWatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975B628C5FD3400453995 /* AudioPlayerWatchSession.swift */; };
 		9BE975BB28C610EE00453995 /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975BA28C610EE00453995 /* WatchSession.swift */; };
 		9BE975BD28C6136C00453995 /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975BC28C6136C00453995 /* AudioPlayerManager.swift */; };
+		9BFBD82B28E5945E00FF2647 /* AudioPlayerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBD82A28E5945E00FF2647 /* AudioPlayerList.swift */; };
 		DF793F84363D963ACDA58C7D /* libPods-Demo Watch WatchKit Extension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 08E3556F8F9A181D69D8C765 /* libPods-Demo Watch WatchKit Extension.a */; };
 /* End PBXBuildFile section */
 
@@ -107,17 +117,19 @@
 		9B2654742879A20500325A9E /* AudioPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerItem.swift; sourceTree = "<group>"; };
 		9B2654762879A2C800325A9E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerButton.swift; sourceTree = "<group>"; };
-		9B5349BA28801BB0009E07D7 /* 蔡依林,周杰伦 - 布拉格广场.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "蔡依林,周杰伦 - 布拉格广场.mp3"; sourceTree = "<group>"; };
 		9B80471228DB2A0600FFBDFB /* AudioPlayerQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerQueue.swift; sourceTree = "<group>"; };
 		9B80471428DB2A4D00FFBDFB /* AudioPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerItem.swift; sourceTree = "<group>"; };
 		9B80471628DB428800FFBDFB /* AudioPlayerQueueView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerQueueView.swift; sourceTree = "<group>"; };
-		9B80471928DB519A00FFBDFB /* AudioPlayerSourcesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerSourcesView.swift; sourceTree = "<group>"; };
+		9BB4FD1828E1ABF90017E5F8 /* AudioPlayerWatchList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerWatchList.swift; sourceTree = "<group>"; };
+		9BB4FD1A28E1AC030017E5F8 /* AudioPlayerPhoneList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerPhoneList.swift; sourceTree = "<group>"; };
+		9BB4FD1C28E1D1170017E5F8 /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
+		9BB4FD1E28E2D90E0017E5F8 /* AudioPlayerQueueController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerQueueController.swift; sourceTree = "<group>"; };
 		9BBFF01A28D9A7610010D023 /* MarqueeText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MarqueeText.swift; sourceTree = "<group>"; };
 		9BBFF01B28D9A7610010D023 /* SwiftUI+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftUI+Extension.swift"; sourceTree = "<group>"; };
 		9BBFF01E28D9A9080010D023 /* AudioPlayerSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerSettingView.swift; sourceTree = "<group>"; };
 		9BBFF02028DAE5700010D023 /* AudioFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFiles.swift; sourceTree = "<group>"; };
-		9BBFF02228DAFA9B0010D023 /* AudioPlayerWatchManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerWatchManager.swift; sourceTree = "<group>"; };
-		9BBFF02428DAFAA40010D023 /* AudioPlayerPhoneManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerPhoneManager.swift; sourceTree = "<group>"; };
+		9BBFF02228DAFA9B0010D023 /* AudioPlayerWatchSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerWatchSource.swift; sourceTree = "<group>"; };
+		9BBFF02428DAFAA40010D023 /* AudioPlayerPhoneSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerPhoneSource.swift; sourceTree = "<group>"; };
 		9BD090A428C05E0200334171 /* Demo Watch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Demo Watch.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BD090A628C05E0300334171 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9BD090AC28C05E0300334171 /* Demo Watch WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Demo Watch WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -130,6 +142,13 @@
 		9BD090BE28C05E0400334171 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9BD090C028C05E0400334171 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9BD090C128C05E0400334171 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
+		9BD3806528E5729300A55620 /* audios.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = audios.json; sourceTree = "<group>"; };
+		9BD3806728E572E100A55620 /* 夜曲-周杰伦.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "夜曲-周杰伦.wav"; sourceTree = "<group>"; };
+		9BD3806928E5730F00A55620 /* 江南-林俊杰.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "江南-林俊杰.wav"; sourceTree = "<group>"; };
+		9BD3806B28E57F3300A55620 /* AudioFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFiles.swift; sourceTree = "<group>"; };
+		9BD3806E28E57FFC00A55620 /* UserDefaultsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsExtension.swift; sourceTree = "<group>"; };
+		9BD3807028E585AC00A55620 /* SyncToWatchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncToWatchController.swift; sourceTree = "<group>"; };
+		9BD3807228E5862C00A55620 /* SyncToWatch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncToWatch.swift; sourceTree = "<group>"; };
 		9BD3F7702876D58D00015754 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BD3F7732876D58D00015754 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9BD3F7752876D58D00015754 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -149,6 +168,7 @@
 		9BE975B628C5FD3400453995 /* AudioPlayerWatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerWatchSession.swift; sourceTree = "<group>"; };
 		9BE975BA28C610EE00453995 /* WatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSession.swift; sourceTree = "<group>"; };
 		9BE975BC28C6136C00453995 /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
+		9BFBD82A28E5945E00FF2647 /* AudioPlayerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerList.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,10 +207,39 @@
 				9BD090B328C05E0300334171 /* AudioPlayerView.swift */,
 				9B80471628DB428800FFBDFB /* AudioPlayerQueueView.swift */,
 				9BBFF01E28D9A9080010D023 /* AudioPlayerSettingView.swift */,
-				9B80471928DB519A00FFBDFB /* AudioPlayerSourcesView.swift */,
 				9BD090B528C05E0300334171 /* NotificationController.swift */,
 				9BD090B728C05E0300334171 /* NotificationView.swift */,
 				9BD090B928C05E0300334171 /* ComplicationController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9BB4FD2028E2D91D0017E5F8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9BD3806E28E57FFC00A55620 /* UserDefaultsExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		9BB4FD2128E2D9BC0017E5F8 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				9BD3F7772876D58D00015754 /* ViewController.swift */,
+				9BD3F7872877DB8D00015754 /* AudioPlayerController.swift */,
+				9BB4FD1E28E2D90E0017E5F8 /* AudioPlayerQueueController.swift */,
+				9BD3F78F28780E1C00015754 /* AudioPlayerListController.swift */,
+				9BD3807028E585AC00A55620 /* SyncToWatchController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		9BB4FD2228E2D9C10017E5F8 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */,
+				9BD3F7892877DBF600015754 /* AudioPlayerView.swift */,
+				9BD3F78B2877E22B00015754 /* AudioPlayerPlanetLayer.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -215,17 +264,20 @@
 		9BD090B028C05E0300334171 /* Demo Watch WatchKit Extension */ = {
 			isa = PBXGroup;
 			children = (
+				9BD3806D28E57FED00A55620 /* Extensions */,
 				9B80471828DB429200FFBDFB /* View */,
-				9BBFF02028DAE5700010D023 /* AudioFiles.swift */,
 				9BE975BA28C610EE00453995 /* WatchSession.swift */,
 				9BD090B128C05E0300334171 /* DemoApp.swift */,
 				9BD090BB28C05E0400334171 /* Assets.xcassets */,
 				9BD090C028C05E0400334171 /* Info.plist */,
 				9BD090C128C05E0400334171 /* PushNotificationPayload.apns */,
 				9BD090BD28C05E0400334171 /* Preview Content */,
+				9BBFF02028DAE5700010D023 /* AudioFiles.swift */,
 				9BE975BC28C6136C00453995 /* AudioPlayerManager.swift */,
-				9BBFF02228DAFA9B0010D023 /* AudioPlayerWatchManager.swift */,
-				9BBFF02428DAFAA40010D023 /* AudioPlayerPhoneManager.swift */,
+				9BBFF02228DAFA9B0010D023 /* AudioPlayerWatchSource.swift */,
+				9BB4FD1828E1ABF90017E5F8 /* AudioPlayerWatchList.swift */,
+				9BBFF02428DAFAA40010D023 /* AudioPlayerPhoneSource.swift */,
+				9BB4FD1A28E1AC030017E5F8 /* AudioPlayerPhoneList.swift */,
 				9B80471228DB2A0600FFBDFB /* AudioPlayerQueue.swift */,
 				9B80471428DB2A4D00FFBDFB /* AudioPlayerItem.swift */,
 			);
@@ -238,6 +290,24 @@
 				9BD090BE28C05E0400334171 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9BD3806428E5727100A55620 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9BD3806728E572E100A55620 /* 夜曲-周杰伦.wav */,
+				9BD3806928E5730F00A55620 /* 江南-林俊杰.wav */,
+				9BD3806528E5729300A55620 /* audios.json */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9BD3806D28E57FED00A55620 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9BB4FD1C28E1D1170017E5F8 /* UserDefaultsExtension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		9BD3F7672876D58D00015754 = {
@@ -265,18 +335,16 @@
 		9BD3F7722876D58D00015754 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
-				9B5349BA28801BB0009E07D7 /* 蔡依林,周杰伦 - 布拉格广场.mp3 */,
+				9BD3806428E5727100A55620 /* Resources */,
+				9BB4FD2228E2D9C10017E5F8 /* View */,
+				9BB4FD2128E2D9BC0017E5F8 /* Controller */,
+				9BB4FD2028E2D91D0017E5F8 /* Extensions */,
 				9BD3F7732876D58D00015754 /* AppDelegate.swift */,
 				9BD3F7752876D58D00015754 /* SceneDelegate.swift */,
-				9BD3F7772876D58D00015754 /* ViewController.swift */,
-				9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */,
-				9BD3F78F28780E1C00015754 /* AudioPlayerListController.swift */,
+				9BFBD82A28E5945E00FF2647 /* AudioPlayerList.swift */,
 				9B2654762879A2C800325A9E /* AudioPlayerManager.swift */,
 				9BD3F79128781C9100015754 /* AudioPlayerQueue.swift */,
 				9B2654742879A20500325A9E /* AudioPlayerItem.swift */,
-				9BD3F7872877DB8D00015754 /* AudioPlayerController.swift */,
-				9BD3F7892877DBF600015754 /* AudioPlayerView.swift */,
-				9BD3F78B2877E22B00015754 /* AudioPlayerPlanetLayer.swift */,
 				9B26547228783F4700325A9E /* AudioPlayerManager.RemoteControl.swift */,
 				9BD3F7792876D58D00015754 /* Main.storyboard */,
 				9BD3F77C2876D58E00015754 /* Assets.xcassets */,
@@ -285,6 +353,8 @@
 				9BD3F78D2878047500015754 /* Storyboard.swift */,
 				9BE975B828C5FD3D00453995 /* Watch */,
 				9BE975B628C5FD3400453995 /* AudioPlayerWatchSession.swift */,
+				9BD3806B28E57F3300A55620 /* AudioFiles.swift */,
+				9BD3807228E5862C00A55620 /* SyncToWatch.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -431,9 +501,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9BD3806828E572E100A55620 /* 夜曲-周杰伦.wav in Resources */,
+				9BD3806628E5729300A55620 /* audios.json in Resources */,
+				9BD3806A28E5730F00A55620 /* 江南-林俊杰.wav in Resources */,
 				9BD3F7802876D58E00015754 /* LaunchScreen.storyboard in Resources */,
 				9BD3F77D2876D58E00015754 /* Assets.xcassets in Resources */,
-				9B5349BB28801BB0009E07D7 /* 蔡依林,周杰伦 - 布拉格广场.mp3 in Resources */,
 				9BD3F77B2876D58D00015754 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -519,13 +591,15 @@
 				9BD090BA28C05E0300334171 /* ComplicationController.swift in Sources */,
 				9BBFF02128DAE5700010D023 /* AudioFiles.swift in Sources */,
 				9BE975BD28C6136C00453995 /* AudioPlayerManager.swift in Sources */,
-				9BBFF02328DAFA9B0010D023 /* AudioPlayerWatchManager.swift in Sources */,
+				9BBFF02328DAFA9B0010D023 /* AudioPlayerWatchSource.swift in Sources */,
 				9B80471328DB2A0600FFBDFB /* AudioPlayerQueue.swift in Sources */,
 				9B80471728DB428800FFBDFB /* AudioPlayerQueueView.swift in Sources */,
-				9B80471A28DB519A00FFBDFB /* AudioPlayerSourcesView.swift in Sources */,
+				9BB4FD1928E1ABF90017E5F8 /* AudioPlayerWatchList.swift in Sources */,
 				9BD090B228C05E0300334171 /* DemoApp.swift in Sources */,
-				9BBFF02528DAFAA40010D023 /* AudioPlayerPhoneManager.swift in Sources */,
+				9BBFF02528DAFAA40010D023 /* AudioPlayerPhoneSource.swift in Sources */,
 				9B80471528DB2A4D00FFBDFB /* AudioPlayerItem.swift in Sources */,
+				9BB4FD1B28E1AC030017E5F8 /* AudioPlayerPhoneList.swift in Sources */,
+				9BB4FD1D28E1D1170017E5F8 /* UserDefaultsExtension.swift in Sources */,
 				9BD090B828C05E0300334171 /* NotificationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -537,17 +611,23 @@
 				9BD3F7782876D58D00015754 /* ViewController.swift in Sources */,
 				9B2654772879A2C800325A9E /* AudioPlayerManager.swift in Sources */,
 				9BE975B728C5FD3400453995 /* AudioPlayerWatchSession.swift in Sources */,
+				9BD3806F28E57FFD00A55620 /* UserDefaultsExtension.swift in Sources */,
 				9BD3F79028780E1C00015754 /* AudioPlayerListController.swift in Sources */,
 				9BD3F7882877DB8D00015754 /* AudioPlayerController.swift in Sources */,
 				9BE975AD28C5D25E00453995 /* WatchSession.swift in Sources */,
 				9B26547328783F4700325A9E /* AudioPlayerManager.RemoteControl.swift in Sources */,
 				9BD3F7742876D58D00015754 /* AppDelegate.swift in Sources */,
+				9BFBD82B28E5945E00FF2647 /* AudioPlayerList.swift in Sources */,
+				9BD3807128E585AC00A55620 /* SyncToWatchController.swift in Sources */,
 				9B2654752879A20500325A9E /* AudioPlayerItem.swift in Sources */,
+				9BD3806C28E57F3300A55620 /* AudioFiles.swift in Sources */,
 				9BD3F78C2877E22B00015754 /* AudioPlayerPlanetLayer.swift in Sources */,
 				9B5349B728800C1E009E07D7 /* AudioPlayerButton.swift in Sources */,
 				9BD3F7762876D58D00015754 /* SceneDelegate.swift in Sources */,
 				9BD3F78E2878047500015754 /* Storyboard.swift in Sources */,
 				9BD3F78A2877DBF600015754 /* AudioPlayerView.swift in Sources */,
+				9BD3807328E5862C00A55620 /* SyncToWatch.swift in Sources */,
+				9BB4FD1F28E2D90E0017E5F8 /* AudioPlayerQueueController.swift in Sources */,
 				9BE975AF28C5F2C300453995 /* Watch.swift in Sources */,
 				9BD3F79228781C9100015754 /* AudioPlayerQueue.swift in Sources */,
 			);
@@ -839,7 +919,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -870,7 +950,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

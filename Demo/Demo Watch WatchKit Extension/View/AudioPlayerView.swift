@@ -116,11 +116,13 @@ struct AudioPlayerView: View {
                 Spacer()
                 
                 HStack {
-                    NavigationLink(destination: AudioPlayerSourcesView()) {
+                    Button {
+                        
+                    } label: {
                         manager.source.icon
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 30, height: 30)
+                            .frame(width: 20, height: 20)
                     }
                     .frame(width: 40, height: 40)
                     .buttonStyle(.plain)
