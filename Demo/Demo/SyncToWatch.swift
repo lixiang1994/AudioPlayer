@@ -79,9 +79,9 @@ class SyncToWatch {
             switch result {
             case .success(let value):
                 // 根据ids获取items
-                let items = ids.compactMap({ AudioPlayerList.item(for: $0) }).map({ item in
-                    Watch.Data.Item(item)
-                })
+                let items = ids
+                    .compactMap({ AudioPlayerList.item(for: $0) })
+                    .map({ Watch.Data.Item($0) })
                 
                 if
                     let data = try? JSONEncoder().encode(items),
