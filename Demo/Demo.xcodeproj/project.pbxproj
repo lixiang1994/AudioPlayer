@@ -341,6 +341,7 @@
 				9BB4FD2028E2D91D0017E5F8 /* Extensions */,
 				9BD3F7732876D58D00015754 /* AppDelegate.swift */,
 				9BD3F7752876D58D00015754 /* SceneDelegate.swift */,
+				9BD3806B28E57F3300A55620 /* AudioFiles.swift */,
 				9BFBD82A28E5945E00FF2647 /* AudioPlayerList.swift */,
 				9B2654762879A2C800325A9E /* AudioPlayerManager.swift */,
 				9BD3F79128781C9100015754 /* AudioPlayerQueue.swift */,
@@ -352,9 +353,6 @@
 				9BD3F7812876D58E00015754 /* Info.plist */,
 				9BD3F78D2878047500015754 /* Storyboard.swift */,
 				9BE975B828C5FD3D00453995 /* Watch */,
-				9BE975B628C5FD3400453995 /* AudioPlayerWatchSession.swift */,
-				9BD3806B28E57F3300A55620 /* AudioFiles.swift */,
-				9BD3807228E5862C00A55620 /* SyncToWatch.swift */,
 			);
 			path = Demo;
 			sourceTree = "<group>";
@@ -364,6 +362,8 @@
 			children = (
 				9BE975AE28C5F2C300453995 /* Watch.swift */,
 				9BE975AC28C5D25E00453995 /* WatchSession.swift */,
+				9BE975B628C5FD3400453995 /* AudioPlayerWatchSession.swift */,
+				9BD3807228E5862C00A55620 /* SyncToWatch.swift */,
 			);
 			path = Watch;
 			sourceTree = "<group>";

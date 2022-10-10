@@ -37,7 +37,7 @@ class WatchSession: NSObject {
         let value: T
     }
     
-    private var handlers: [String: ([String: Any], ([String: Any])->Void) -> Void] = [:]
+    private var handlers: [String: ([String: Any], @escaping ([String: Any])->Void) -> Void] = [:]
     
     override init() {
         super.init()
@@ -146,10 +146,33 @@ extension WatchSession: WCSessionDelegate {
                 if
                     let data = try? JSONEncoder().encode(Wrapper(value: handle(model.value))),
                     let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) {
-                    reply(json as! [String: Any])
+                    reply((json as? [String: Any]) ?? [:])
                     
                 } else {
                     reply([:])
+                }
+                
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    func receive<T: Codable, R: Codable>(handle: @escaping (T, @escaping (R)-> Void) -> Void, for identifier: String) {
+        handlers[identifier] = { (data, reply) in
+            do {
+                let data = try JSONSerialization.data(withJSONObject: data)
+                let model = try JSONDecoder().decode(Wrapper<T>.self, from: data)
+                
+                handle(model.value) { model in
+                    if
+                        let data = try? JSONEncoder().encode(Wrapper(value: model)),
+                        let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) {
+                        reply((json as? [String: Any]) ?? [:])
+                        
+                    } else {
+                        reply([:])
+                    }
                 }
                 
             } catch {
