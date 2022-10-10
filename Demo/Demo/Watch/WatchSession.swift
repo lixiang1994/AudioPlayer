@@ -10,6 +10,9 @@ import WatchConnectivity
 
 class WatchSession: NSObject {
     
+    static let WatchStateDidChange = Notification.Name(rawValue: "WatchStateDidChange")
+    static let ReachabilityDidChange = Notification.Name(rawValue: "ReachabilityDidChange")
+    
     /// 未完成的文件传输
     static var outstandingFileTransfers: [WCSessionFileTransfer] {
         return WCSession.default.outstandingFileTransfers
@@ -58,16 +61,24 @@ extension WatchSession: WCSessionDelegate {
         
     }
     
-    func sessionReachabilityDidChange(_ session: WCSession) {
-        print(session.isReachable)
+    func sessionWatchStateDidChange(_ session: WCSession) {
+        NotificationCenter.default.post(
+            name: WatchSession.WatchStateDidChange,
+            object: nil,
+            userInfo: [:]
+        )
     }
     
-    func sessionWatchStateDidChange(_ session: WCSession) {
-        
+    func sessionReachabilityDidChange(_ session: WCSession) {
+        NotificationCenter.default.post(
+            name: WatchSession.ReachabilityDidChange,
+            object: nil,
+            userInfo: [:]
+        )
     }
     
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
-        
+        print("didReceiveApplicationContext: \(applicationContext)")
     }
     
     func session(_ session: WCSession, didFinish userInfoTransfer: WCSessionUserInfoTransfer, error: Error?) {

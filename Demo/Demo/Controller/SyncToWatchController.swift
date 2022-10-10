@@ -13,6 +13,7 @@ class SyncToWatchController: UIViewController {
     
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var syncButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,11 +78,22 @@ class SyncToWatchController: UIViewController {
             guard let self = self else { return }
             self.tableView.reloadData()
         }
+        
+        NotificationCenter.default.addObserver(
+            forName: WatchSession.WatchStateDidChange,
+            object: nil,
+            queue: .main
+        ) { [weak self] sender in
+            guard let self = self else { return }
+            self.syncButton.isHidden = !WatchSession.isWatchAppInstalled
+            self.tableView.isHidden = !WatchSession.isWatchAppInstalled
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        syncButton.isHidden = !WatchSession.isWatchAppInstalled
+        tableView.isHidden = !WatchSession.isWatchAppInstalled
         tableView.reloadData()
     }
     

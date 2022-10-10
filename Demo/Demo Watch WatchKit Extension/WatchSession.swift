@@ -10,6 +10,19 @@ import WatchConnectivity
 
 class WatchSession: NSObject {
     
+    static let CompanionAppInstalledDidChange = Notification.Name(rawValue: "CompanionAppInstalledDidChange")
+    static let ReachabilityDidChange = Notification.Name(rawValue: "ReachabilityDidChange")
+    
+    /// 是否安装了配套应用
+    static var isCompanionAppInstalled: Bool {
+        return WCSession.default.isCompanionAppInstalled
+    }
+    
+    /// 是否可访问
+    static var isReachable: Bool {
+        return WCSession.default.isReachable
+    }
+    
     private struct Wrapper<T: Codable>: Codable {
         let value: T
     }
@@ -22,6 +35,7 @@ class WatchSession: NSObject {
     
     override init() {
         super.init()
+        guard WCSession.isSupported() else { return }
         WCSession.default.delegate = self
         WCSession.default.activate()
     }
@@ -31,6 +45,34 @@ extension WatchSession: WCSessionDelegate {
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         print("\(activationState.rawValue)")
+    }
+    
+    func sessionCompanionAppInstalledDidChange(_ session: WCSession) {
+        NotificationCenter.default.post(
+            name: WatchSession.CompanionAppInstalledDidChange,
+            object: nil,
+            userInfo: [:]
+        )
+    }
+    
+    func sessionReachabilityDidChange(_ session: WCSession) {
+        NotificationCenter.default.post(
+            name: WatchSession.ReachabilityDidChange,
+            object: nil,
+            userInfo: [:]
+        )
+    }
+    
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
+        print("didReceiveApplicationContext: \(applicationContext)")
+    }
+    
+    func session(_ session: WCSession, didFinish userInfoTransfer: WCSessionUserInfoTransfer, error: Error?) {
+        print("didFinish: \(userInfoTransfer.userInfo)")
+    }
+    
+    func session(_ session: WCSession, didFinish fileTransfer: WCSessionFileTransfer, error: Error?) {
+        print("didFinish: \(fileTransfer)")
     }
     
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {

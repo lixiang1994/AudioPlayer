@@ -33,6 +33,11 @@ class SyncToWatch {
         }
     }
     
+    /// 是否在传输中
+    var isTransferring: Bool {
+        return WatchSession.outstandingFileTransfers.contains(where: { $0.isTransferring })
+    }
+    
     init() {
         // 监听文件传输完成
         NotificationCenter.default.addObserver(
