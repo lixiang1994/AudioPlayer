@@ -413,19 +413,19 @@ extension AVAudioPlayer {
     /// 播放中断通知
     @objc
     private func itemPlaybackStalled(_ notification: Notification) {
-        guard let item = player.currentItem else { return }
+        guard player.currentItem != nil else { return }
         guard case .playing = state, intendedToPlay else { return }
         // 添加中断记录
         itemPlaybackStalledRecords.append(Date().timeIntervalSince1970)
         // 获取连续相差小于1秒的记录数量
+        var count = 0
         let array = itemPlaybackStalledRecords
         for (index, time) in array.enumerated() where index < array.count - 1 {
-            array[index + 1] - time < 1
+            if array[index + 1] - time < 1 {
+                count += 1
+            }
         }
-        let count = itemPlaybackStalledRecords.grouped(by: 2).filter {
-            guard $0.count == 2 else { return false }
-            return $0[1] - $0[0] < 1
-        }.count
+        
         // 如果Asset AVURLAssetPreferPreciseDurationAndTimingKey 为 true.
         // 某些MP3会无法正常播放声音, 且 seek 到未缓冲区域后 会一直触发该通知.
         // 为了解决类似问题 统计如果连续10次 则触发失败状态 由外部重新初始化Asset.

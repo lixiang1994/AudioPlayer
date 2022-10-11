@@ -23,6 +23,11 @@ class WatchSession: NSObject {
         return WCSession.default.isReachable
     }
     
+    /// 是否需要解锁iOS设备
+    static var iOSDeviceNeedsUnlockAfterRebootForReachability: Bool {
+        return WCSession.default.iOSDeviceNeedsUnlockAfterRebootForReachability
+    }
+    
     private struct Wrapper<T: Codable>: Codable {
         let value: T
     }

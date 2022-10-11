@@ -38,14 +38,6 @@ class AudioPlayerWatchSession: WatchSession {
             
         }, for: Watch.Identifier.Player.Sync)
         
-        // 接收播放队列同步请求
-        receive(handle: { [weak self] in
-            guard let self = self else { return }
-            let manager = AudioPlayerManager.shared
-            self.audioPlayerManager(manager, changed: manager.queue)
-            
-        }, for: Watch.Identifier.Player.Queue)
-        
         // 接收播放请求
         receive(handle: { (value: Watch.Data.Play) in
             let queue = AudioPlayerQueue((value.queue.map({ .init($0) })))
