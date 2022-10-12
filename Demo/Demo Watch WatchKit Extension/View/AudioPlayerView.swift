@@ -19,6 +19,15 @@ struct AudioPlayerView: View {
     
     var body: some View {
         ZStack {
+            
+            switch manager.source {
+            case .phone:
+                VolumeView(origin: .companion).opacity(0)
+                
+            case .watch:
+                VolumeView(origin: .local).opacity(0)
+            }
+            
             VStack {
                 
                 Spacer(minLength: 8)
@@ -152,7 +161,7 @@ struct AudioPlayerView: View {
                         Image("setting")
                             .resizable()
                             .aspectRatio(contentMode: .fit)
-                            .frame(width: 24, height: 24)
+                            .frame(width: 30, height: 30)
                     }
                     .frame(width: 40, height: 40)
                     .buttonStyle(.plain)
@@ -177,7 +186,6 @@ struct AudioPlayerView: View {
                 Spacer()
             }
         }
-        .background(VolumeView().opacity(0))
         .onChange(of: scenePhase) { phase in
             if phase == .active {
                 AudioPlayerManager.shared.sync()
@@ -256,22 +264,18 @@ struct VolumeView: WKInterfaceObjectRepresentable {
     
     typealias WKInterfaceObjectType = WKInterfaceVolumeControl
     
+    let origin: WKInterfaceVolumeControl.Origin
+    
     func makeWKInterfaceObject(context: Self.Context) -> WKInterfaceVolumeControl {
-        let view = WKInterfaceVolumeControl(origin: .local)
-        Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak view] timer in
-            if let view = view {
-                view.focus()
-            } else {
-                timer.invalidate()
-            }
-        }
-        DispatchQueue.main.async {
-            view.focus()
-        }
-        return view
+        return WKInterfaceVolumeControl(origin: origin)
     }
     
     func updateWKInterfaceObject(_ wkInterfaceObject: WKInterfaceVolumeControl, context: WKInterfaceObjectRepresentableContext<VolumeView>) {
+        wkInterfaceObject.focus()
+    }
+    
+    static func dismantleWKInterfaceObject(_ wkInterfaceObject: WKInterfaceVolumeControl, coordinator: ()) {
+        wkInterfaceObject.resignFocus()
     }
 }
 

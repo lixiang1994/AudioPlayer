@@ -137,6 +137,12 @@ extension WatchSession: WCSessionDelegate {
         }, for: identifier)
     }
     
+    func receive<R: Codable>(handle: @escaping (@escaping (R)-> Void) -> Void, for identifier: String) {
+        receive(handle: { (void: Watch.Data.Void, reply: @escaping (R)-> Void) in
+            handle { reply($0) }
+        }, for: identifier)
+    }
+    
     func receive<T: Codable, R: Codable>(handle: @escaping (T) -> R, for identifier: String) {
         handlers[identifier] = { (data, reply) in
             do {
