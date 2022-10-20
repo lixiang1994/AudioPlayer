@@ -30,6 +30,10 @@ class WatchSession: NSObject {
     static var isReachable: Bool {
         return WCSession.default.isReachable
     }
+    /// 会话激活状态
+    static var activationState: WCSessionActivationState {
+        return WCSession.default.activationState
+    }
     
     typealias Response<T> = Swift.Result<T, Swift.Error>
     
@@ -212,7 +216,13 @@ extension WatchSession: WCSessionDelegate {
     }
     
     func request<T: Codable, R: Codable>(message model: T?, for identifier: String, with completion: @escaping (Response<R>) -> Void) {
-        guard WCSession.isSupported(), WCSession.default.isReachable else {
+        guard
+            WCSession.isSupported(),
+            WCSession.default.activationState == .activated,
+            WCSession.default.isReachable else {
+            DispatchQueue.main.async {
+                completion(.failure(NSError(domain: "Unreachable", code: -99)))
+            }
             return
         }
         
@@ -256,7 +266,7 @@ extension WatchSession: WCSessionDelegate {
     ///   - identifier: 标识
     @discardableResult
     func send(info: [String: Any], for identifier: String) -> Bool {
-        guard WCSession.isSupported(), WCSession.default.isReachable else {
+        guard WCSession.isSupported(), WCSession.default.activationState == .activated else {
             return false
         }
         WCSession.default.transferUserInfo(["identifier": identifier, "data": info])
@@ -270,7 +280,7 @@ extension WatchSession: WCSessionDelegate {
     ///   - identifier: 标识
     @discardableResult
     func send(file url: URL, info: [String: Any], for identifier: String) -> Bool {
-        guard WCSession.isSupported(), WCSession.default.isReachable else {
+        guard WCSession.isSupported(), WCSession.default.activationState == .activated else {
             return false
         }
         WCSession.default.transferFile(url, metadata: ["identifier": identifier, "data": info])

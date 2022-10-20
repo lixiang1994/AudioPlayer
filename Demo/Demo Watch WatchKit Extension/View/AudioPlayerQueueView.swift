@@ -73,10 +73,19 @@ struct AudioPlayerQueueView: View {
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundColor(isCurrent ? .red : .white)
                             
-                            Text(item.author)
-                                .lineLimit(1)
-                                .font(.system(size: 12, weight: .regular))
-                                .foregroundColor(.white.opacity(0.64))
+                            HStack {
+                                Text(item.author)
+                                    .lineLimit(1)
+                                    .font(.system(size: 12, weight: .regular))
+                                    .foregroundColor(.white.opacity(0.64))
+                                
+                                Spacer()
+                                
+                                Image("list_cloud")
+                                    .resizable()
+                                    .frame(width: 16, height: 16)
+                                    .opacity(0.0)
+                            }
                         }
                         
                     }.frame(height: 61)

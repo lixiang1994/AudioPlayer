@@ -104,6 +104,9 @@ class SyncToWatchController: UIViewController {
     }
     
     @IBAction func syncAction(_ sender: UIButton) {
+        guard !SyncToWatch.shared.isSyncing else {
+            return
+        }
         
         if !WatchSession.isWatchAppInstalled {
             let alert = UIAlertController(
@@ -194,10 +197,10 @@ fileprivate extension SyncToWatch.State {
         case .sending:
             return "发送中"
             
-        case .finished:
+        case .success:
             return "发送完成"
             
-        case .failed:
+        case .failure:
             return "发送失败"
         }
     }

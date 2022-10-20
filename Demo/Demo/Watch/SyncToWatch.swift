@@ -12,8 +12,8 @@ class SyncToWatch {
     
     enum State {
     case sending
-    case finished
-    case failed
+    case success
+    case failure
     }
     
     static let stateChanged = Notification.Name("com.sync.to.watch.state.changed")
@@ -25,8 +25,8 @@ class SyncToWatch {
         set { UserDefaults.standard.set(model: newValue, forKey: "com.sync.to.watch.all.ids") }
     }
     
-    private var finished: [String] {
-        get { UserDefaults.standard.model(forKey: "com.sync.to.watch.finish.ids") ?? [] }
+    private var finished: [String: Bool] {
+        get { UserDefaults.standard.model(forKey: "com.sync.to.watch.finish.ids") ?? [:] }
         set {
             UserDefaults.standard.set(model: newValue, forKey: "com.sync.to.watch.finish.ids")
             NotificationCenter.default.post(name: SyncToWatch.stateChanged, object: nil)
@@ -38,16 +38,30 @@ class SyncToWatch {
         return WatchSession.outstandingFileTransfers.contains(where: { $0.isTransferring })
     }
     
+    /// 是否在同步中
+    var isSyncing: Bool = false
+    
     init() {
-        // 监听文件传输完成
+        // 监听文件传输成功
         NotificationCenter.default.addObserver(
-            forName: .init("didFinishFileTransfer"),
+            forName: .init("didSuccessFileTransfer"),
             object: nil,
             queue: .main
         ) { [weak self] sender in
             guard let self = self else { return }
             guard let id = sender.userInfo?["id"] as? String else { return }
-            self.finished.append(id)
+            self.finished[id] = true
+        }
+        
+        // 监听文件传输失败
+        NotificationCenter.default.addObserver(
+            forName: .init("didFailureFileTransfer"),
+            object: nil,
+            queue: .main
+        ) { [weak self] sender in
+            guard let self = self else { return }
+            guard let id = sender.userInfo?["id"] as? String else { return }
+            self.finished[id] = false
         }
     }
     
@@ -62,10 +76,10 @@ class SyncToWatch {
         let transfers = WatchSession.outstandingFileTransfers
         let current = transfers.first(where: { $0.file.id == id })
         if let current = current {
-            return current.isTransferring ? .sending : .finished
+            return current.isTransferring ? .sending : .success
             
         } else {
-            return finished.contains(id) ? .finished : nil
+            return finished[id].map({ $0 ? .success : .failure })
         }
     }
     
@@ -78,6 +92,9 @@ class SyncToWatch {
     }
     
     func sync(_ ids: [String], with completion: @escaping (Bool) -> Void) {
+        // 同步中
+        isSyncing = true
+        
         // 获取手表ID列表
         AudioPlayerWatchSession.shared.request(for: Watch.Identifier.Sync.List)
         { (result: Swift.Result<[String], Swift.Error>) in
@@ -93,7 +110,11 @@ class SyncToWatch {
                     let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) {
                     
                     self.ids = ids
-                    self.finished = value
+                    // 将手表的ID记录到完成集合中
+                    self.finished.removeAll()
+                    Array(Set(value).intersection(Set(ids))).forEach {
+                        self.finished[$0] = true
+                    }
                     
                     // 发送列表信息
                     AudioPlayerWatchSession.shared.send(
@@ -136,6 +157,9 @@ class SyncToWatch {
             case .failure:
                 completion(false)
             }
+            
+            // 同步完成
+            self.isSyncing = true
         }
     }
 }

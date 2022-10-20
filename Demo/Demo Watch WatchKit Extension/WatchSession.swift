@@ -23,6 +23,11 @@ class WatchSession: NSObject {
         return WCSession.default.isReachable
     }
     
+    /// 会话激活状态
+    static var activationState: WCSessionActivationState {
+        return WCSession.default.activationState
+    }
+    
     /// 是否需要解锁iOS设备
     static var iOSDeviceNeedsUnlockAfterRebootForReachability: Bool {
         return WCSession.default.iOSDeviceNeedsUnlockAfterRebootForReachability
@@ -40,8 +45,11 @@ class WatchSession: NSObject {
     
     override init() {
         super.init()
-        guard WCSession.isSupported() else { return }
+        WatchSessionState.shared.isActivated = WCSession.default.activationState == .activated
         WCSession.default.delegate = self
+    }
+    
+    func activate() {
         WCSession.default.activate()
     }
 }
@@ -49,23 +57,33 @@ class WatchSession: NSObject {
 extension WatchSession: WCSessionDelegate {
     
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
-        print("\(activationState.rawValue)")
+        DispatchQueue.main.async {
+            WatchSessionState.shared.isActivated = activationState == .activated
+            WatchSessionState.shared.isReachable = session.isReachable
+            WatchSessionState.shared.isCompanionAppInstalled = session.isCompanionAppInstalled
+        }
     }
     
     func sessionCompanionAppInstalledDidChange(_ session: WCSession) {
-        NotificationCenter.default.post(
-            name: WatchSession.CompanionAppInstalledDidChange,
-            object: nil,
-            userInfo: [:]
-        )
+        DispatchQueue.main.async {
+            WatchSessionState.shared.isCompanionAppInstalled = session.isCompanionAppInstalled
+            NotificationCenter.default.post(
+                name: WatchSession.CompanionAppInstalledDidChange,
+                object: nil,
+                userInfo: [:]
+            )
+        }
     }
     
     func sessionReachabilityDidChange(_ session: WCSession) {
-        NotificationCenter.default.post(
-            name: WatchSession.ReachabilityDidChange,
-            object: nil,
-            userInfo: [:]
-        )
+        DispatchQueue.main.async {
+            WatchSessionState.shared.isReachable = session.isReachable
+            NotificationCenter.default.post(
+                name: WatchSession.ReachabilityDidChange,
+                object: nil,
+                userInfo: [:]
+            )
+        }
     }
     
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String : Any]) {
@@ -81,71 +99,75 @@ extension WatchSession: WCSessionDelegate {
     }
     
     func session(_ session: WCSession, didReceiveUserInfo userInfo: [String : Any] = [:]) {
-        guard
-            let identifier = userInfo["identifier"] as? String,
-            let data = userInfo["data"] as? [String: Any] else {
-            return
-        }
-        switch identifier {
-        case Watch.Identifier.Sync.List:    // 同步音频列表
-            guard let list = data["list"] as? [[String: Any]] else { return }
-            do {
-                let data = try JSONSerialization.data(withJSONObject: list)
-                let model = try JSONDecoder().decode([Watch.Data.Item].self, from: data)
-                let items = model.map({ AudioPlayerItem($0) })
-                // 设置本地列表
-                AudioPlayerWatchList.shared.set(items)
-                // 对比音频文件 删除不包含在新列表中的文件
-                let new = Set(items.map({ $0.id }))
-                let old = Set(AudioFiles.ids)
-                old.subtracting(new).forEach({
-                    guard let file = AudioFiles.remove(at: $0) else { return }
-                    let target = AudioFiles.directory.appendingPathComponent(
-                        "\(file.id).\(file.pathExtension)"
-                    )
-                    try? FileManager.default.removeItem(at: target)
-                })
-                
-            } catch {
-                print(error)
+        DispatchQueue.main.async {
+            guard
+                let identifier = userInfo["identifier"] as? String,
+                let data = userInfo["data"] as? [String: Any] else {
+                return
             }
-            
-        default:
-            break
+            switch identifier {
+            case Watch.Identifier.Sync.List:    // 同步音频列表
+                guard let list = data["list"] as? [[String: Any]] else { return }
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: list)
+                    let model = try JSONDecoder().decode([Watch.Data.Item].self, from: data)
+                    let items = model.map({ AudioPlayerItem($0) })
+                    // 设置本地列表
+                    AudioPlayerWatchList.shared.set(items)
+                    // 对比音频文件 删除不包含在新列表中的文件
+                    let new = Set(items.map({ $0.id }))
+                    let old = Set(AudioFiles.ids)
+                    old.subtracting(new).forEach({
+                        guard let file = AudioFiles.remove(at: $0) else { return }
+                        let target = AudioFiles.directory.appendingPathComponent(
+                            "\(file.id).\(file.pathExtension)"
+                        )
+                        try? FileManager.default.removeItem(at: target)
+                    })
+                    
+                } catch {
+                    print(error)
+                }
+                
+            default:
+                break
+            }
         }
     }
     
     func session(_ session: WCSession, didReceive file: WCSessionFile) {
-        guard
-            let identifier = file.metadata?["identifier"] as? String,
-            let data = file.metadata?["data"] as? [String: Any] else {
-            return
-        }
-        
-        switch identifier {
-        case Watch.Identifier.Sync.File:    // 同步音频文件
-            guard let id = data["id"] as? String else { return }
-            
-            let target = AudioFiles.directory.appendingPathComponent(
-                "\(id).\(file.fileURL.pathExtension)"
-            )
-            
-            do {
-                // 将文件从临时存储目录移动到指定目录
-                if FileManager.default.fileExists(atPath: target.path) {
-                    // 如果目标路径存在 则先清理
-                    try FileManager.default.removeItem(at: target)
-                }
-                try FileManager.default.moveItem(at: file.fileURL, to: target)
-                // 添加音频文件记录
-                AudioFiles.append(.init(id: id, pathExtension: file.fileURL.pathExtension))
-                
-            } catch {
-                print(error)
+        DispatchQueue.main.async {
+            guard
+                let identifier = file.metadata?["identifier"] as? String,
+                let data = file.metadata?["data"] as? [String: Any] else {
+                return
             }
-        
-        default:
-            break
+            
+            switch identifier {
+            case Watch.Identifier.Sync.File:    // 同步音频文件
+                guard let id = data["id"] as? String else { return }
+                
+                let target = AudioFiles.directory.appendingPathComponent(
+                    "\(id).\(file.fileURL.pathExtension)"
+                )
+                
+                do {
+                    // 将文件从临时存储目录移动到指定目录
+                    if FileManager.default.fileExists(atPath: target.path) {
+                        // 如果目标路径存在 则先清理
+                        try FileManager.default.removeItem(at: target)
+                    }
+                    try FileManager.default.moveItem(at: file.fileURL, to: target)
+                    // 添加音频文件记录
+                    AudioFiles.append(.init(id: id, pathExtension: file.fileURL.pathExtension))
+                    
+                } catch {
+                    print(error)
+                }
+            
+            default:
+                break
+            }
         }
     }
     
@@ -254,6 +276,11 @@ extension WatchSession: WCSessionDelegate {
     }
     
     func request<T: Codable, R: Codable>(message model: T?, for identifier: String, with completion: @escaping (Response<R>) -> Void) {
+        guard
+            WCSession.isSupported(),
+            WCSession.default.activationState == .activated else {
+            return
+        }
         
         var message: [String: Any] = ["identifier": identifier]
         if

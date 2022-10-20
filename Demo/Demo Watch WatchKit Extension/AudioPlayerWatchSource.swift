@@ -38,6 +38,10 @@ class AudioPlayerWatchSource: NSObject, AudioPlayerSource {
         AudioPlayerWatchList.shared.$items.sink { [weak self] items in
             guard let self = self else { return }
             self.manager.queue = .init(items)
+            // 如果新队列中不包含当前播放的项 则清空
+            if let item = self.manager.item, !self.manager.queue.contains(item) {
+                self.update(nil)
+            }
             
         }.store(in: &subscriptions)
         

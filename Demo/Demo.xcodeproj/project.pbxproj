@@ -11,6 +11,7 @@
 		9B26547328783F4700325A9E /* AudioPlayerManager.RemoteControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B26547228783F4700325A9E /* AudioPlayerManager.RemoteControl.swift */; };
 		9B2654752879A20500325A9E /* AudioPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2654742879A20500325A9E /* AudioPlayerItem.swift */; };
 		9B2654772879A2C800325A9E /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2654762879A2C800325A9E /* AudioPlayerManager.swift */; };
+		9B2DF8F729014DD900A2A8B1 /* WatchSessionState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B2DF8F629014DD900A2A8B1 /* WatchSessionState.swift */; };
 		9B5349B728800C1E009E07D7 /* AudioPlayerButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */; };
 		9B80471328DB2A0600FFBDFB /* AudioPlayerQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471228DB2A0600FFBDFB /* AudioPlayerQueue.swift */; };
 		9B80471528DB2A4D00FFBDFB /* AudioPlayerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B80471428DB2A4D00FFBDFB /* AudioPlayerItem.swift */; };
@@ -116,6 +117,7 @@
 		9B26547228783F4700325A9E /* AudioPlayerManager.RemoteControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.RemoteControl.swift; sourceTree = "<group>"; };
 		9B2654742879A20500325A9E /* AudioPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerItem.swift; sourceTree = "<group>"; };
 		9B2654762879A2C800325A9E /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
+		9B2DF8F629014DD900A2A8B1 /* WatchSessionState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSessionState.swift; sourceTree = "<group>"; };
 		9B5349B628800C1E009E07D7 /* AudioPlayerButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerButton.swift; sourceTree = "<group>"; };
 		9B80471228DB2A0600FFBDFB /* AudioPlayerQueue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerQueue.swift; sourceTree = "<group>"; };
 		9B80471428DB2A4D00FFBDFB /* AudioPlayerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerItem.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				9BD3806D28E57FED00A55620 /* Extensions */,
 				9B80471828DB429200FFBDFB /* View */,
 				9BE975BA28C610EE00453995 /* WatchSession.swift */,
+				9B2DF8F629014DD900A2A8B1 /* WatchSessionState.swift */,
 				9BD090B128C05E0300334171 /* DemoApp.swift */,
 				9BD090BB28C05E0400334171 /* Assets.xcassets */,
 				9BD090C028C05E0400334171 /* Info.plist */,
@@ -600,6 +603,7 @@
 				9B80471528DB2A4D00FFBDFB /* AudioPlayerItem.swift in Sources */,
 				9BB4FD1B28E1AC030017E5F8 /* AudioPlayerPhoneList.swift in Sources */,
 				9BB4FD1D28E1D1170017E5F8 /* UserDefaultsExtension.swift in Sources */,
+				9B2DF8F729014DD900A2A8B1 /* WatchSessionState.swift in Sources */,
 				9BD090B828C05E0300334171 /* NotificationView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
