@@ -136,38 +136,36 @@ extension WatchSession: WCSessionDelegate {
     }
     
     func session(_ session: WCSession, didReceive file: WCSessionFile) {
-        DispatchQueue.main.async {
-            guard
-                let identifier = file.metadata?["identifier"] as? String,
-                let data = file.metadata?["data"] as? [String: Any] else {
-                return
-            }
+        guard
+            let identifier = file.metadata?["identifier"] as? String,
+            let data = file.metadata?["data"] as? [String: Any] else {
+            return
+        }
+        
+        switch identifier {
+        case Watch.Identifier.Sync.File:    // 同步音频文件
+            guard let id = data["id"] as? String else { return }
             
-            switch identifier {
-            case Watch.Identifier.Sync.File:    // 同步音频文件
-                guard let id = data["id"] as? String else { return }
-                
-                let target = AudioFiles.directory.appendingPathComponent(
-                    "\(id).\(file.fileURL.pathExtension)"
-                )
-                
-                do {
-                    // 将文件从临时存储目录移动到指定目录
-                    if FileManager.default.fileExists(atPath: target.path) {
-                        // 如果目标路径存在 则先清理
-                        try FileManager.default.removeItem(at: target)
-                    }
-                    try FileManager.default.moveItem(at: file.fileURL, to: target)
-                    // 添加音频文件记录
-                    AudioFiles.append(.init(id: id, pathExtension: file.fileURL.pathExtension))
-                    
-                } catch {
-                    print(error)
+            let target = AudioFiles.directory.appendingPathComponent(
+                "\(id).\(file.fileURL.pathExtension)"
+            )
+            
+            do {
+                // 将文件从临时存储目录移动到指定目录
+                if FileManager.default.fileExists(atPath: target.path) {
+                    // 如果目标路径存在 则先清理
+                    try FileManager.default.removeItem(at: target)
                 }
-            
-            default:
-                break
+                try FileManager.default.moveItem(at: file.fileURL, to: target)
+                // 添加音频文件记录
+                AudioFiles.append(.init(id: id, pathExtension: file.fileURL.pathExtension))
+                
+            } catch {
+                print(error)
             }
+        
+        default:
+            break
         }
     }
     
