@@ -92,6 +92,7 @@ struct AudioPlayerTitleView: View {
                         .lineLimit(1)
                         .font(.init(subtitle.1))
                         .offset(x: 0 - offset)
+                        .foregroundColor(.white.opacity(0.64))
                         .fixedSize(horizontal: true, vertical: true)
                         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .leading)
                     
@@ -99,6 +100,7 @@ struct AudioPlayerTitleView: View {
                         .lineLimit(1)
                         .font(.init(subtitle.1))
                         .offset(x: subtitleSize.width + subtitleSize.height * 2 - offset)
+                        .foregroundColor(.white.opacity(0.64))
                         .fixedSize(horizontal: true, vertical: true)
                         .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .leading)
                         .opacity(subtitleSize.width > geo.size.width ? 1 : 0)
