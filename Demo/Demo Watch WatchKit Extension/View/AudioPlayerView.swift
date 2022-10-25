@@ -32,30 +32,11 @@ struct AudioPlayerView: View {
                 
                 Spacer(minLength: 8)
                 
-                MarqueeText(
-                    text: manager.item?.title ?? "没有正在播放的内容",
-                    font: UIFont.systemFont(ofSize: 15, weight: .semibold),
-                    leftFade: 16,
-                    rightFade: 16,
-                    startDelay: 3,
-                    alignment: .leading
+                AudioPlayerTitleView(
+                    title: (manager.item?.title ?? "没有正在播放的内容", .systemFont(ofSize: 15, weight: .semibold)),
+                    subtitle: (manager.item?.author ?? " ", .systemFont(ofSize: 13))
                 )
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .lineLimit(1)
-                .padding(.horizontal)
-                
-                MarqueeText(
-                    text: manager.item?.author ?? " ",
-                    font: UIFont.systemFont(ofSize: 13),
-                    leftFade: 16,
-                    rightFade: 16,
-                    startDelay: 3,
-                    alignment: .leading
-                )
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.system(size: 13))
-                .foregroundColor(Color(.sRGB, red: 1, green: 1, blue: 1, opacity: 0.64))
-                .lineLimit(1)
+                .frame(maxWidth: .infinity)
                 .padding(.horizontal)
                 
                 Spacer()
