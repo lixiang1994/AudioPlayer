@@ -52,6 +52,12 @@ class AudioPlayerWatchSession: WatchSession {
             
         }, for: Watch.Identifier.Player.Play)
         
+        // 接收重新播放请求
+        receive(handle: {
+            AudioPlayerManager.shared.replay()
+            
+        }, for: Watch.Identifier.Player.Replay)
+        
         // 接收播放控制状态
         receive(handle: { (state: Int) in
             switch state {

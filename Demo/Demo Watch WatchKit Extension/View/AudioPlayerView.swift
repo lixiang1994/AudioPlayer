@@ -17,6 +17,9 @@ struct AudioPlayerView: View {
     @Environment(\.scenePhase)
     private var scenePhase
     
+    @State
+    private var isShowAlert = false
+    
     var body: some View {
         ZStack {
             
@@ -83,7 +86,7 @@ struct AudioPlayerView: View {
                     }
                     .frame(width: 56, height: 56)
                     .buttonStyle(.plain)
-                    .disabled(manager.item == nil)
+                    .disabled(playButtonDisabled())
 
                     Spacer()
                     
@@ -172,8 +175,27 @@ struct AudioPlayerView: View {
                 AudioPlayerManager.shared.sync()
             }
         }
+        .onChange(of: manager.state, perform: { state in
+            isShowAlert = state == .failed(.none)
+        })
         .navigationTitle("Player")
         .navigationBarTitleDisplayMode(.inline)
+        .alert("Error", isPresented: $isShowAlert) {
+            Button("Retry") {
+                manager.replay()
+            }
+            Button("Cancel") {
+
+            }
+
+        } message: {
+            Text("Playback failed")
+        }
+    }
+    
+    
+    private func playButtonDisabled() -> Bool {
+        manager.item == nil || (manager.state == .prepare || manager.state == .stopped)
     }
 }
 

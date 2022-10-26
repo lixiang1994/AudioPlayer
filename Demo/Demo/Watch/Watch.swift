@@ -13,6 +13,7 @@ enum Watch {
         
         enum Player {
             static let Play = "com.audio.player.play"
+            static let Replay = "com.audio.player.replay"
             
             static let Queue = "com.audio.player.queue"
             static let Item = "com.audio.player.item"

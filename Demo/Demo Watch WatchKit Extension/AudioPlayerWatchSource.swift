@@ -123,7 +123,15 @@ class AudioPlayerWatchSource: NSObject, AudioPlayerSource {
                 guard let self = self else { return }
                 guard error == nil else { return }
                 DispatchQueue.main.async {
-                    self.player.play()
+                    switch self.player.state {
+                    case .failed:
+                        // 失败状态时点击播放按钮 调用重播
+                        self.replay()
+                        
+                    default:
+                        // 开始播放
+                        self.player.play()
+                    }
                 }
             }
             
@@ -134,6 +142,11 @@ class AudioPlayerWatchSource: NSObject, AudioPlayerSource {
     
     func pause() {
         player.pause()
+    }
+    
+    func replay() {
+        guard let item = manager.item else { return }
+        update(item)
     }
     
     func set(rate: Double) {
@@ -186,24 +199,32 @@ extension AudioPlayerWatchSource: AudioPlayerDelegate {
         switch state {
         case .prepare:
             // 准备阶段
-            break
+            audioPlayer(player, updatedDuration: player.duration)
+            audioPlayer(player, updatedCurrent: player.current)
+            audioPlayer(player, updatedBuffer: player.buffer)
             
         case .playing:
             // 播放阶段
-            break
+            audioPlayer(player, updatedDuration: player.duration)
+            audioPlayer(player, updatedCurrent: player.current)
+            audioPlayer(player, updatedBuffer: player.buffer)
             
         case .stopped:
             // 停止阶段
-            break
+            audioPlayer(player, updatedDuration: player.duration)
+            audioPlayer(player, updatedCurrent: player.current)
+            audioPlayer(player, updatedBuffer: player.buffer)
             
         case .finished:
             // 完成阶段
             // 播放下一首
             next()
             
-        case .failed(let error):
+        case .failed:
             // 失败阶段
-            print(error?.localizedDescription ?? "")
+            audioPlayer(player, updatedDuration: player.duration)
+            audioPlayer(player, updatedCurrent: player.current)
+            audioPlayer(player, updatedBuffer: player.buffer)
         }
     }
     

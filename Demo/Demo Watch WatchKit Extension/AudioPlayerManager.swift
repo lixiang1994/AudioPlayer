@@ -20,6 +20,7 @@ protocol AudioPlayerSource {
     func next()
     func play()
     func pause()
+    func replay()
     
     func set(rate: Double)
 }
@@ -126,7 +127,31 @@ class AudioPlayerManager: ObservableObject {
         __source?.pause()
     }
     
+    func replay() {
+        __source?.replay()
+    }
+    
     func set(rate: Double) {
         __source?.set(rate: rate)
+    }
+}
+
+extension AudioPlayer.State: Equatable {
+    
+    public static func == (lhs: AudioPlayer.State, rhs: AudioPlayer.State) -> Bool {
+        switch (lhs, rhs) {
+        case (.prepare, .prepare):
+            return true
+        case (.playing, .playing):
+            return true
+        case (.stopped, .stopped):
+            return true
+        case (.finished, .finished):
+            return true
+        case (.failed, .failed):
+            return true
+        default:
+            return false
+        }
     }
 }

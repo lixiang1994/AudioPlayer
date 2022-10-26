@@ -151,6 +151,10 @@ class AudioPlayerPhoneSource: AudioPlayerSource {
         WatchSession.shared.request(message: 1, for: Watch.Identifier.Player.ControlState)
     }
     
+    func replay() {
+        WatchSession.shared.request(for: Watch.Identifier.Player.Replay)
+    }
+    
     func set(rate: Double) {
         WatchSession.shared.request(message: rate, for: Watch.Identifier.Player.Rate)
     }
