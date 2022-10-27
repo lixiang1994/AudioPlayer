@@ -174,6 +174,9 @@ extension AudioPlayerController: AudioPlayerDelegate {
             container.slider.isEnabled = false
             container.playButton.isEnabled = false
             
+            // 关闭模态控制器 (场景一: wacth端的失败alert点击了replay)
+            presentedViewController?.dismiss(animated: true)
+            
         case .playing:
             // 播放阶段
             container.slider.isEnabled = true

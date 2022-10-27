@@ -90,49 +90,49 @@ class AudioPlayerManager: ObservableObject {
     /// 来源
     @Published
     var source: Source = .phone
-    private var __source: AudioPlayerSource?
+    private lazy var __source: AudioPlayerSource = AudioPlayerPhoneSource(self)
     
     func play(_ item: AudioPlayerItem, for queue: AudioPlayerQueue, in source: Source) {
         switch source {
-        case .phone where __source == nil || self.source != source:
+        case .phone where self.source != source:
             __source = AudioPlayerPhoneSource(self)
             
-        case .watch where __source == nil || self.source != source:
+        case .watch where self.source != source:
             __source = AudioPlayerWatchSource(self)
             
         default:
             break
         }
         self.source = source
-        __source?.play(item, for: queue)
+        __source.play(item, for: queue)
     }
     
     func sync() {
-        __source?.sync()
+        __source.sync()
     }
     
     func prev() {
-        __source?.prev()
+        __source.prev()
     }
     
     func next() {
-        __source?.next()
+        __source.next()
     }
     
     func play() {
-        __source?.play()
+        __source.play()
     }
     
     func pause() {
-        __source?.pause()
+        __source.pause()
     }
     
     func replay() {
-        __source?.replay()
+        __source.replay()
     }
     
     func set(rate: Double) {
-        __source?.set(rate: rate)
+        __source.set(rate: rate)
     }
 }
 

@@ -69,7 +69,12 @@ struct AudioPlayerView: View {
                         }
                         
                     } label: {
-                        CircleProgressView(value: $manager.progress) {
+                        ZStack {
+                            Circle()
+                                .fill(Color.white.opacity(0.15))
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                                .padding(1.5)
+                            
                             if manager.controlState == .playing {
                                 Image("pause")
                                     .resizable()
@@ -81,6 +86,14 @@ struct AudioPlayerView: View {
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 32, height: 32)
+                            }
+                            
+                            switch manager.loadingState {
+                            case .began:
+                                CircleIndicatorView()
+                                
+                            case .ended:
+                                CircleProgressView(value: $manager.progress)
                             }
                         }
                     }
@@ -212,58 +225,93 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-struct CircleProgressView<Label>: View where Label: View {
+fileprivate struct CircleProgressView: View {
     
     var colors: [Color] = [Color(#colorLiteral(red: 0.5764705882, green: 0.9607843137, blue: 0.9333333333, alpha: 1)), Color(#colorLiteral(red: 0.6549019608, green: 0.4823529412, blue: 0.9568627451, alpha: 1))]
     var lineWidth: CGFloat = 3
     
-    @Binding var value: Double
+    @Binding
+    var value: Double
     
-    @ViewBuilder let label: Label
+    var body: some View {
+        Circle()
+            .stroke(
+                .white.opacity(0.42),
+                style: StrokeStyle(lineWidth: lineWidth)
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        
+        Circle()
+            .trim(from: 1.0 - value, to: 1)
+            .stroke(
+                LinearGradient(
+                    gradient: Gradient(colors: colors),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                ),
+                style: StrokeStyle(
+                    lineWidth: lineWidth,
+                    lineCap: .round,
+                    lineJoin: .round
+                )
+            )
+            .rotationEffect(Angle(degrees: 90))
+            .rotation3DEffect(
+                Angle(degrees: 180),
+                axis: (x: 1, y: 0, z: 0)
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+    }
+}
+
+fileprivate struct CircleIndicatorView: View {
+
+    let colors: [Color] = [Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)), Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))]
+    let lineWidth: CGFloat = 3
+    
+    @State
+    private var rotation: Double = 0
     
     var body: some View {
         return ZStack {
             Circle()
-                .fill(Color.white.opacity(0.15))
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                .padding(lineWidth / 2)
-            
-            Circle()
                 .stroke(
-                    Color.white.opacity(0.42),
+                    .white.opacity(0.42),
                     style: StrokeStyle(lineWidth: lineWidth)
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             
+            let conic = AngularGradient(
+                gradient: Gradient(colors: colors),
+                center: .center,
+                startAngle: .zero,
+                endAngle: .degrees(360)
+            )
+
+            let animation = Animation
+                .linear(duration: 1.5)
+                .repeatForever(autoreverses: false)
+            
             Circle()
-                .trim(from: 1.0 - value, to: 1)
-                .stroke(
-                    LinearGradient(
-                        gradient: Gradient(
-                            colors: colors
-                        ),
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ),
-                    style: StrokeStyle(
-                        lineWidth: lineWidth,
-                        lineCap: .round,
-                        lineJoin: .round
-                    )
-                )
-                .rotationEffect(Angle(degrees: 90))
-                .rotation3DEffect(
-                    Angle(degrees: 180),
-                    axis: (x: 1, y: 0, z: 0)
-                )
+                .stroke(colors.first ?? .white, lineWidth: lineWidth)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             
-            label
+            Circle()
+                .trim(from: lineWidth / 500, to: 1 - lineWidth / 100)
+                .stroke(conic, style: StrokeStyle(lineWidth: lineWidth, lineCap: .butt))
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .rotationEffect(.degrees(rotation))
+                .onAppear {
+                    rotation = 0
+                    withAnimation(animation) {
+                        rotation = 360
+                    }
+                }
         }
     }
 }
 
-struct VolumeView: WKInterfaceObjectRepresentable {
+fileprivate struct VolumeView: WKInterfaceObjectRepresentable {
     
     typealias WKInterfaceObjectType = WKInterfaceVolumeControl
     
@@ -282,7 +330,7 @@ struct VolumeView: WKInterfaceObjectRepresentable {
     }
 }
 
-struct BarView: View {
+fileprivate struct BarView: View {
     
     @Binding
     var progress: Double

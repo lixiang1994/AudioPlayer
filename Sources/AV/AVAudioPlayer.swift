@@ -313,27 +313,31 @@ extension AVAudioPlayer {
             itemStatusObservation = observation
         }
         do {
-            let observation = item.observe(\.duration) {
+            let observation = item.observe(\.duration, options: [.new, .old]) {
                 [weak self] (observer, change) in
                 guard let self = self else { return }
+                guard change.newValue != change.oldValue else { return }
+                
                 let time = observer.duration.seconds.isNaN ? 0 : observer.duration.seconds
                 self.delegate { $0.audioPlayer(self, updatedDuration: time) }
             }
             itemDurationObservation = observation
         }
         do {
-            let observation = item.observe(\.loadedTimeRanges) {
+            let observation = item.observe(\.loadedTimeRanges, options: [.new, .old]) {
                 [weak self] (observer, change) in
                 guard let self = self else { return }
+                guard change.newValue != change.oldValue else { return }
                 
                 self.delegate { $0.audioPlayer(self, updatedBuffer: self.buffer) }
             }
             itemLoadedTimeRangesObservation = observation
         }
         do {
-            let observation = item.observe(\.isPlaybackLikelyToKeepUp) {
+            let observation = item.observe(\.isPlaybackLikelyToKeepUp, options: [.new, .old]) {
                 [weak self] (observer, change) in
                 guard let self = self else { return }
+                guard change.newValue != change.oldValue else { return }
                 
                 self.loading = !observer.isPlaybackLikelyToKeepUp ? .began : .ended
             }
