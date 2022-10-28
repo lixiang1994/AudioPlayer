@@ -143,8 +143,6 @@ struct AudioPlayerView: View {
                             temp = 0.8
                         case 9 ... 10:
                             temp = 1.0
-                        case 11 ... 13:
-                            temp = 1.3
                         case 14 ... 15:
                             temp = 1.5
                         case 16 ... 17:
