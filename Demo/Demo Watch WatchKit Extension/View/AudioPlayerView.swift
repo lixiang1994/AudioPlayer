@@ -137,22 +137,23 @@ struct AudioPlayerView: View {
 
                     Button {
                         var temp = manager.rate + 0.1
-                        switch temp {
-                        case 0.5 ..< 0.8:
+                        // 解决精度问题
+                        switch (temp * 10).rounded(.toNearestOrAwayFromZero) {
+                        case 6 ... 8:
                             temp = 0.8
-                        case 0.8 ..< 1.0:
+                        case 9 ... 10:
                             temp = 1.0
-                        case 1.0 ..< 1.3:
+                        case 11 ... 13:
                             temp = 1.3
-                        case 1.3 ..< 1.5:
+                        case 14 ... 15:
                             temp = 1.5
-                        case 1.5 ..< 1.7:
+                        case 16 ... 17:
                             temp = 1.7
-                        case 1.7 ..< 2.0:
+                        case 18 ... 20:
                             temp = 2.0
-                        case 2.0 ..< 3.0:
+                        case 21 ... 30:
                             temp = 3.0
-                        case 3.0 ..< .greatestFiniteMagnitude:
+                        case 31 ... .greatestFiniteMagnitude:
                             temp = 0.5
                         default:
                             break
