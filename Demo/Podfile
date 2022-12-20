@@ -12,6 +12,7 @@ target 'Demo' do
   pod 'Loading', '~>1.1.0'
   pod 'UIImageColors'
   pod 'Kingfisher', '~> 7.0'
+  pod
 
 end
 

@@ -1,10 +1,10 @@
 PODS:
-  - AudioPlayer (1.4.0):
-    - AudioPlayer/AVPlayer (= 1.4.0)
-    - AudioPlayer/Core (= 1.4.0)
-  - AudioPlayer/AVPlayer (1.4.0):
+  - AudioPlayer (1.4.2):
+    - AudioPlayer/AVPlayer (= 1.4.2)
+    - AudioPlayer/Core (= 1.4.2)
+  - AudioPlayer/AVPlayer (1.4.2):
     - AudioPlayer/Core
-  - AudioPlayer/Core (1.4.0)
+  - AudioPlayer/Core (1.4.2)
   - Kingfisher (7.4.0)
   - Loading (1.1.2)
   - SnapKit (5.0.1)
@@ -32,7 +32,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  AudioPlayer: 710e5444af9c2ededbcab1a29488842f256a0b66
+  AudioPlayer: e0c3a04aa34e97d2071eb5a5f52a295d69baa936
   Kingfisher: 596b207973051aae5e4c54a1c1cb39837ea10d36
   Loading: 2b6313aec5819f190cae382bb872cd5b4f689cd3
   SnapKit: 97b92857e3df3a0c71833cce143274bf6ef8e5eb
@@ -41,4 +41,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 5bed5c91753f7f8d2bb2cad20c14f5ebb0e17e5c
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
