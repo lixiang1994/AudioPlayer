@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
 s.name         = "AudioPlayer"
-s.version      = "1.4.2"
+s.version      = "1.5.0"
 s.summary      = "音频播放器"
 
 s.homepage     = "https://github.com/lixiang1994/AudioPlayer"
@@ -27,6 +27,7 @@ s.default_subspec = 'Core', 'AVPlayer'
 
 s.subspec 'Core' do |sub|
 sub.source_files  = 'Sources/Core/*.swift'
+sub.dependency 'AudioPlayer/Privacy'
 end
 
 s.subspec 'AVPlayer' do |sub|
@@ -34,4 +35,9 @@ sub.dependency 'AudioPlayer/Core'
 sub.source_files = 'Sources/AV/*.swift'
 end
 
+  s.subspec 'Privacy' do |ss|
+      ss.resource_bundles = {
+        "Privacy" => 'Sources/PrivacyInfo.xcprivacy'
+      }
+  end
 end
