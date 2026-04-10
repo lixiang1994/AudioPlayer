@@ -13,10 +13,10 @@ import AVFoundation
 
 public extension AudioPlayer {
     
-    static let av: Builder = .init { AVAudioPlayer($0) }
+    static let av: Builder = .init { AudioPlayerAVEngine($0) }
 }
 
-class AVAudioPlayer: NSObject {
+class AudioPlayerAVEngine: NSObject {
     
     /// 当前URL
     private(set) var resource: AudioPlayerURLAsset?
@@ -143,7 +143,7 @@ class AVAudioPlayer: NSObject {
     }
 }
 
-extension AVAudioPlayer {
+extension AudioPlayerAVEngine {
     
     /// 错误
     private func error(_ value: Swift.Error?) {
@@ -412,7 +412,7 @@ extension AVAudioPlayer {
     }
 }
 
-extension AVAudioPlayer {
+extension AudioPlayerAVEngine {
     
     /// 播放中断通知
     @objc
@@ -488,7 +488,7 @@ extension AVAudioPlayer {
 }
 
 #if os(iOS)
-extension AVAudioPlayer {
+extension AudioPlayerAVEngine {
 
     @objc
     private func willEnterForeground(_ notification: Notification) {
@@ -530,7 +530,7 @@ extension AVAudioPlayer {
 }
 #endif
 
-extension AVAudioPlayer: AudioPlayerable {
+extension AudioPlayerAVEngine: AudioPlayerable {
     
     func prepare(resource: AudioPlayerURLAsset) {
         // 清理原有资源
@@ -697,7 +697,7 @@ extension AVAudioPlayer: AudioPlayerable {
     }
 }
 
-extension AVAudioPlayer: AudioPlayerDelegates {
+extension AudioPlayerAVEngine: AudioPlayerDelegates {
     
     typealias Element = AudioPlayerDelegate
 }
