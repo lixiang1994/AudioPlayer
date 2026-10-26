@@ -287,22 +287,26 @@ extension AudioPlayerAVEngine {
     private func updatePlaybackState() {
         guard case .playing = state else { return }
         let generation = self.generation
-        // pause 后底层状态可能稍晚才更新，不能把已撤销的播放意图广播成 playing。
-        control = intendedToPlay && !isInterrupted && seekRequest == nil && player.timeControlStatus == .playing ? .playing : .pausing
+        // pause 后系统状态可能迟到；后台限制和用户意图都必须优先于瞬时 timeControlStatus。
+        control = isPlaybackPermitted && player.timeControlStatus == .playing ? .playing : .pausing
         guard self.generation == generation else { return }
-        loading = intendedToPlay && !isInterrupted && seekRequest == nil && player.timeControlStatus == .waitingToPlayAtSpecifiedRate ? .began : .ended
+        // control 代理可能同步暂停、seek 或改变后台策略，因此这里重新读取许可，不能缓存旧值。
+        loading = isPlaybackPermitted && player.timeControlStatus == .waitingToPlayAtSpecifiedRate ? .began : .ended
+    }
+
+    /// 控制状态和起播共用同一许可条件，每次读取都反映代理重入后的最新意图及策略。
+    private var isPlaybackPermitted: Bool {
+        #if os(iOS)
+        guard allowedBackgroundPlayback || !isInBackground else { return false }
+        #endif
+        return intendedToPlay && !isInterrupted && seekRequest == nil
     }
 
     /// 恢复播放只消费当前意图；中断和后台策略优先于自动播放。
     private func applyPlaybackIntent() {
         guard case .playing = state, seekRequest == nil else { return }
         let generation = self.generation
-        #if os(iOS)
-        let backgroundBlocked = !allowedBackgroundPlayback && isInBackground
-        #else
-        let backgroundBlocked = false
-        #endif
-        if intendedToPlay, !isInterrupted, !backgroundBlocked {
+        if isPlaybackPermitted {
             player.playImmediately(atRate: .init(rate))
         } else {
             player.pause()
@@ -462,8 +466,12 @@ extension AudioPlayerAVEngine: AudioPlayerable {
     func prepare(resource: AudioPlayerURLAsset) {
         let generation = clear()
         guard self.generation == generation else { return }
-        let asset = resource as? AVURLAsset ?? AVURLAsset(url: resource.value)
+        // 专用资源必须复用构建 mix 时的 asset，避免重建后丢失加载选项或音轨绑定。
+        let avResource = resource as? AVAudioPlayerResource
+        let asset = avResource?.asset ?? (resource as? AVURLAsset) ?? AVURLAsset(url: resource.value)
         let item = AVPlayerItem(asset: asset)
+        // 在 item 交给 AVPlayer 之前安装配置；普通资源显式使用 nil，不继承上一首的处理。
+        item.audioMix = avResource?.audioMix
         item.canUseNetworkResourcesForLiveStreamingWhilePaused = true
         item.preferredForwardBufferDuration = configuration.preferredBufferDuration
         item.audioTimePitchAlgorithm = .spectral
@@ -619,6 +627,19 @@ extension AudioPlayerAVEngine: AudioPlayerable {
 extension AudioPlayerAVEngine: AudioPlayerDelegates {
     
     typealias Element = AudioPlayerDelegate
+}
+
+extension AudioPlayerAVEngine: AVAudioMixControlling {
+    /// 返回当前 item 的配置；停止、失败和切换清理后自然返回 nil。
+    var audioMix: AVAudioMix? { player.currentItem?.audioMix }
+
+    /// 只修改已绑定 item；先校验 asset 身份，外部异步构建的旧 mix 不能污染其他资源。
+    @discardableResult
+    func update(audioMix: AVAudioMix?, for asset: AVURLAsset) -> Bool {
+        guard let item = player.currentItem, item.asset === asset else { return false }
+        item.audioMix = audioMix
+        return true
+    }
 }
 
 extension AVURLAsset: AudioPlayerURLAsset {

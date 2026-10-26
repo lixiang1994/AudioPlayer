@@ -17,6 +17,9 @@ protocol AudioPlayerManagerDelegate: AnyObject {
     func audioPlayerManager(_ manager: AudioPlayerManager, changed item: AudioPlayerItem?)
     
     func audioPlayerManager(_ manager: AudioPlayerManager, changed queue: AudioPlayerQueue)
+
+    /// 增强偏好或处理链准备结果变化；实际生效状态还需在进度回调中读取。
+    func audioPlayerManagerVolumeBoostChanged(_ manager: AudioPlayerManager)
 }
 
 extension AudioPlayerManagerDelegate {
@@ -28,6 +31,8 @@ extension AudioPlayerManagerDelegate {
     func audioPlayerManager(_ manager: AudioPlayerManager, changed item: AudioPlayerItem?) { }
     
     func audioPlayerManager(_ manager: AudioPlayerManager, changed queue: AudioPlayerQueue) { }
+
+    func audioPlayerManagerVolumeBoostChanged(_ manager: AudioPlayerManager) { }
 }
 
 class AudioPlayerManager: NSObject {
@@ -36,6 +41,35 @@ class AudioPlayerManager: NSObject {
      
     /// 播放器
     let player = AudioPlayer.av.instance()
+    /// 增强偏好跨切歌保留；开关变化只更新当前处理器，不重载媒体。
+    private(set) var isVolumeBoostEnabled = false
+    /// 每首资源独立持有处理器；原音模式也保留 tap，避免切换时重配播放链。
+    private(set) var volumeBoost: AudioMixVolumeBoost?
+    /// 当前准备的 asset 身份，用于拒绝异步加载的旧结果。
+    private var boostAsset: AVURLAsset?
+    /// 音轨加载任务；停止、失败、切歌及销毁时取消。
+    private var boostPreparation: Task<Void, Never>?
+    /// 准备失败或不适用原因；不阻断普通音频播放。
+    private var boostUnavailableReason: String?
+
+    /// 区分用户目标和真实 PCM 处理；供页面刷新，不能把开关选中当作生效证据。
+    var volumeBoostStatus: String {
+        if let reason = boostUnavailableReason { return reason }
+        guard let boost = volumeBoost else {
+            return boostPreparation == nil ? "等待播放资源" : "正在准备增强；当前原音播放"
+        }
+        if boost.hasPreparedFormat && !boost.isSupported { return "当前 PCM 格式不支持增强，保持原音" }
+        guard boost.processedFrames > 0, boost.isSupported else { return "等待 PCM 回调，尚未确认增强可用" }
+        return isVolumeBoostEnabled ? "2× 目标已设置 · PCM 处理已运行" : "原始音量 1× · PCM 处理已运行"
+    }
+
+    /// 主线程修改偏好；暂停时不触发播放，准备完成后读取最新值。
+    func setVolumeBoostEnabled(_ enabled: Bool) {
+        isVolumeBoostEnabled = enabled
+        volumeBoost?.setEnabled(enabled)
+        delegate { $0.audioPlayerManagerVolumeBoostChanged(self) }
+    }
+
     /// 播放模式 默认顺序播放
     var mode: PlaybackMode = .sequential {
         didSet {
@@ -69,6 +103,10 @@ class AudioPlayerManager: NSObject {
         setupNotification()
     }
     
+    deinit {
+        boostPreparation?.cancel()
+    }
+
     /// 播放队列的项目
     func play(_ item: AudioPlayerItem, for queue: AudioPlayerQueue) {
         // 更新当前队列
@@ -170,12 +208,16 @@ extension AudioPlayerManager {
     }
     
     private func update(_ item: AudioPlayerItem?) {
+        // 旧音轨加载不得跨切歌提交；先清理身份，再建立新资源。
+        cancelVolumeBoost()
         // 置空当前Item, 防止状态被错误更新
         self.item = nil
         
         if let item = item {
             // 准备播放资源
-            player.prepare(resource: item.resource)
+            let asset = AVURLAsset(url: item.resource)
+            boostAsset = asset
+            player.prepare(resource: asset)
             // 处理Item状态
             if let state = item.state {
                 switch state {
@@ -201,6 +243,7 @@ extension AudioPlayerManager {
             
             // 设置当前Item
             self.item = item
+            prepareVolumeBoost(for: asset)
             
         } else {
             // 播放器停止
@@ -212,6 +255,45 @@ extension AudioPlayerManager {
         delegate { $0.audioPlayerManager(self, changed: item) }
     }
     
+    /// 与原播放并行加载音轨；保留准备阶段 pause、seek 和历史恢复的既有时序。
+    private func prepareVolumeBoost(for asset: AVURLAsset) {
+        // prepare 的同步代理可能已停止或切换资源，不再为失效的 asset 创建任务。
+        guard boostAsset === asset else { return }
+        // HLS 不属于此示例的增强路径，不影响它使用原音播放。
+        guard asset.url.pathExtension.lowercased() != "m3u8" else {
+            boostUnavailableReason = "HLS 不支持此增强示例，保持原音"
+            return
+        }
+        boostPreparation = Task { @MainActor [weak self] in
+            do {
+                let tracks = try await asset.loadTracks(withMediaType: .audio)
+                guard !Task.isCancelled, let self = self, self.boostAsset === asset else { return }
+                let boost = try AudioMixVolumeBoost(tracks: tracks)
+                boost.setEnabled(self.isVolumeBoostEnabled)
+                // 只绑定当前 item；失败时保持原有播放，不回退重建资源。
+                let applied = (self.player as? AVAudioMixControlling)?.update(audioMix: boost.mix, for: asset) == true
+                self.volumeBoost = applied ? boost : nil
+                self.boostUnavailableReason = applied ? nil : "处理链未安装，保持原音"
+                self.boostPreparation = nil
+                self.delegate { $0.audioPlayerManagerVolumeBoostChanged(self) }
+            } catch {
+                guard !Task.isCancelled, let self = self, self.boostAsset === asset else { return }
+                self.boostPreparation = nil
+                self.boostUnavailableReason = "增强准备失败，保持原音：\(error.localizedDescription)"
+                self.delegate { $0.audioPlayerManagerVolumeBoostChanged(self) }
+            }
+        }
+    }
+
+    /// 取消任务并清理外部持有状态；tap 的最终释放由 AVPlayerItem 与系统共同决定。
+    private func cancelVolumeBoost() {
+        boostPreparation?.cancel()
+        boostPreparation = nil
+        boostAsset = nil
+        volumeBoost = nil
+        boostUnavailableReason = nil
+    }
+
     private func updateItemState() {
         switch player.state {
         case .playing:
@@ -259,6 +341,7 @@ extension AudioPlayerManager: AudioPlayerDelegate {
             break
             
         case .stopped:
+            cancelVolumeBoost()
             // 停止阶段
             
             // 设置音频会话模式
@@ -289,6 +372,7 @@ extension AudioPlayerManager: AudioPlayerDelegate {
             }
             
         case .failed(let error):
+            cancelVolumeBoost()
             // 失败阶段
             print(error?.localizedDescription ?? "")
         }

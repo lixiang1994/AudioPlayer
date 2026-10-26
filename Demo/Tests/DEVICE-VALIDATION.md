@@ -92,3 +92,55 @@ Podfile 现在会在安装时统一依赖及其资源 bundle 的部署版本；i
 - Podfile 语法、工程 plist、锁文件一致性和 git diff --check 通过。
 
 [默认配置构建日志](/private/tmp/audioplayer-fix/normal-run-fixed.log) · [默认配置测试结果](/private/tmp/audioplayer-fix/normal-config-tests-fixed.xcresult) · [默认配置测试日志](/private/tmp/audioplayer-fix/normal-config-tests-fixed.log)
+
+## audioMix 资源扩展验证
+
+新增 AVAudioPlayerResource 将 AVURLAsset 和可选 AVAudioMix 绑定；初始化时复制 mix，后端复用同一个 asset，并在交给 AVPlayer 前赋给新 item。原有 URL/AVURLAsset 行为保持兼容。
+
+新增 6 项回归后，在同一 iPhone 16e / iOS 27.0.1 使用默认工程配置执行 **70 项全部通过，0 失败**。独立 framework 编译通过（沿用当前 SDK 支持的 iOS 15 编译覆盖参数），Demo 真机测试未覆盖部署版本或签名。测试验证 mix 参数与播放生命周期，不代表 tap 音效、扬声器输出幅度或 HLS 处理已验证。
+
+[70 项真机测试结果](/private/tmp/audioplayer-fix/audio-mix-tests.xcresult) · [真机测试日志](/private/tmp/audioplayer-fix/audio-mix-tests.log) · [独立 framework 构建日志](/private/tmp/audioplayer-fix/audio-mix-framework.log)
+
+## Demo AudioMix 试听案例
+
+列表新增 AudioMix 页面，提供原始 URL、nil mix、25% 音量、5 秒淡入、淡出/静音/恢复五种案例。使用内置音频，独立播放器，进入暂停主播放、退出停止试听；异步音轨加载具有取消和代次校验。
+
+新增 5 项 Demo 集成测试，验证 mix 时间包络参数、五种页面模式实际播放、暂停恢复、退出清理、快速切换/停止/销毁及缺失资源提示。真机全量 **75 项通过、0 失败**。模拟器实际点击列表入口、25% 模式和暂停，截图检查布局正常；这不代表扬声器音量已经测量。
+
+[75 项真机测试结果](/private/tmp/audioplayer-fix/mix-demo-full.xcresult) · [运行日志](/private/tmp/audioplayer-fix/mix-demo-full.log)
+
+## Castbox 式原音 / 2 倍增强切换
+
+将试听页调整为同一首歌的增强开关。准备时安装一份包含 MTAudioProcessingTap 的 mix；原音/增强只原子更新处理器的 1/2 倍目标，块内平滑并限幅，不 prepare、seek、重建 item 或替换 mix。当前实现以 Demo 内置本地歌曲为试听资源。目标影响下一次处理，系统已排队的音频可能造成听感延迟。
+
+库新增 AVAudioMixControlling.update(audioMix:for:)：同步校验当前 asset 实例并赋给现有 item，支持 nil 移除，不缓存到新资源。任意 mix 替换可能引发系统处理链重配置，因此增强开关复用 tap。
+
+验证：
+
+- 真机实际 tap 处理低振幅 PCM，峰值比依次为 1、2、1；稳定增强处理帧计数增加。
+- 0.75 输入峰值经 2 倍增强后输出限幅为 1，无数值溢出。
+- 连续切换 20 次保持资源、处理器、进度和播放控制；暂停时切换保持暂停，继续后原位置推进。
+- 加载期间使用最新偏好，暂停/停止取消；反复创建并播放后停止，C 状态最终全部 finalize，页面不被异步任务持有。
+- 通用 mix 更新保留同一个 item/进度/播放意图，支持 nil，拒绝旧 asset 和停止后的更新。
+- 模拟器实际点击播放、增强、暂停、恢复原音：暂停保持在 48.8 秒，已处理帧数与目标状态可见，布局正常。
+- 独立 framework 编译通过（当前 SDK 使用 iOS 15 编译覆盖）；Demo 默认配置真机 **80 项通过、0 失败**，测试约 174 秒。
+
+完整回归曾发现原有后台暂停状态竞态：底层 timeControlStatus 迟到为 playing，覆盖了后台策略。新增可控播放器确定性复现失败后，统一播放许可判断，状态广播和实际起播都优先遵守后台策略，并在代理重入后重新读取最新许可。该回归已包含在 80 项中。
+
+此验证不等于对扬声器响度、零缓冲延迟、HLS/AirPlay、所有 PCM 格式或数小时稳定性作保证。2 倍为 PCM 振幅增益，接近满幅内容会产生限幅失真。
+
+[最终 80 项真机测试结果](/private/tmp/audioplayer-fix/live-boost-verified.xcresult) · [运行日志](/private/tmp/audioplayer-fix/live-boost-verified.log) · [独立 framework 构建日志](/private/tmp/audioplayer-fix/live-mix-framework-final.log)
+
+## 原播放页增强与 AudioMix 多案例（最新）
+
+在同一 iPhone 16e / iOS 27.0.1 使用 Demo 默认配置执行 **88 项测试全部通过，0 失败**。本次新增 8 项 Demo 集成回归，完整执行约 188 秒（测试阶段）。模拟器先执行 87 项全量通过，随后新增的原播放页开关测试单独通过。
+
+- 原播放页新增“音量增强 2×”开关：同一 asset / tap 上修改增益，验证暂停、进度、倍速保留，以及切歌继承增强偏好。
+- 本机 HTTP WAV、AAC/M4A、MP3 均通过真实 Manager 加载与解码，实际 tap 峰值依次为 1、2、1；增强时播放时钟继续推进，暂停切换保持位置。
+- 延迟网络加载被切歌或清空取消，迟到结果不能覆盖当前资源或重新起播。
+- AudioMix 独立页增加无 mix、固定 25%、5 秒淡入、2 秒淡出/2 秒恢复；验证当前 asset、进度、暂停及音量包络参数，加载中采用最新案例。
+- 原播放页测试通过真实 UISwitch 的 valueChanged 事件驱动共享管理器，检查处理器目标、资源身份、暂停位置及控件可见布局。这是 App 内集成测试，不计作独立 DevicePlayback UI 自动化通过。
+
+网络服务仅监听 127.0.0.1。上述结论不覆盖公网 HTTPS/TLS、所有编码组合、持续弱网供数时的增强、HLS tap、DRM、蓝牙或 AirPlay。包络验证检查系统参数和播放推进，没有测量扬声器声压。既有同步 AVAudioSession 调用仍有主线程性能提示，不影响本轮测试结果。
+
+[88 项真机结果](/private/tmp/audioplayer-fix/main-boost-device.xcresult) · [真机日志](/private/tmp/audioplayer-fix/main-boost-device.log) · [87 项模拟器结果](/private/tmp/audioplayer-fix/main-boost-full.xcresult) · [原播放页开关模拟器结果](/private/tmp/audioplayer-fix/main-boost-ui-switch.xcresult)

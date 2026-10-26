@@ -42,10 +42,20 @@ extension AudioPlayerListController {
     
     private func setup() {
         tableView.contentInset = .init(top: 40, left: 0, bottom: 0, right: 0)
+        // 保留现有队列和 Watch 入口；案例使用独立播放器，不改写歌曲记录。
+        let mixButton = UIBarButtonItem(title: "AudioMix", style: .plain, target: self, action: #selector(showAudioMixExamples))
+        mixButton.accessibilityIdentifier = "mix.open"
+        navigationItem.rightBarButtonItems = [mixButton] + (navigationItem.rightBarButtonItems ?? [])
         // 添加代理
         manager.add(delegate: self)
     }
     
+    /// 进入独立试听页前暂停主播放，避免两路声音叠加干扰音量对比。
+    @objc private func showAudioMixExamples() {
+        manager.player.pause()
+        navigationController?.pushViewController(AudioMixExampleController(), animated: true)
+    }
+
     private func loadData() {
         var group: [String: [AudioPlayerItem]] = [:]
         for item in AudioPlayerList.items {

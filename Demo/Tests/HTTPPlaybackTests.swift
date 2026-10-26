@@ -213,7 +213,7 @@ final class HTTPPlaybackTests: PlaybackTestCase {
 }
 
 /// 最小测试 HTTP 服务器，支持 HEAD、字节范围和重定向，仅监听本机临时端口。
-private final class AudioHTTPServer {
+final class AudioHTTPServer {
     /// 媒体数据固定在内存中，避免网络处理线程触碰测试播放器状态。
     private let data: Data
     /// 专用网络队列，连接接收和发送均串行处理。

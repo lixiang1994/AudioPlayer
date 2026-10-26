@@ -6,6 +6,22 @@ import UIKit
 
 /// 使用系统通知验证中断策略，锁屏速率必须反映实际播放状态。
 final class SessionAndRemoteTests: PlaybackTestCase {
+    /// 系统 timeControlStatus 迟到仍为 playing 时，后台策略也不能向业务层报告正在播放。
+    func testBackgroundPolicyOverridesStaleSystemPlayingStatus() {
+        engine.stop()
+        var configuration = AudioPlayerConfiguration()
+        configuration.isAutoplay = false
+        engine = AudioPlayerAVEngine(configuration, player: StalePlayingStatusPlayer())
+        prepare()
+        engine.allowedBackgroundPlayback = false
+        engine.play()
+        XCTAssertEqual(engine.control, .playing)
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        XCTAssertEqual(engine.control, .pausing)
+        engine.play()
+        XCTAssertEqual(engine.control, .pausing)
+    }
+
     /// 禁止后台播放时，进入后台暂停，回到前台应恢复此前保留的播放意图。
     func testForegroundRestoresPlaybackBlockedByBackgroundPolicy() {
         prepare()
@@ -127,4 +143,9 @@ final class SessionAndRemoteTests: PlaybackTestCase {
     private func interruption(_ type: AVAudioSession.InterruptionType, options: AVAudioSession.InterruptionOptions = []) {
         NotificationCenter.default.post(name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance(), userInfo: [AVAudioSessionInterruptionTypeKey: type.rawValue, AVAudioSessionInterruptionOptionKey: options.rawValue])
     }
+}
+
+/// 确定性模拟暂停后底层状态尚未更新，真实 AVPlayer 仍负责资源加载及控制。
+private final class StalePlayingStatusPlayer: AVPlayer {
+    override var timeControlStatus: AVPlayer.TimeControlStatus { .playing }
 }

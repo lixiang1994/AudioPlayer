@@ -4,6 +4,162 @@ import AVFoundation
 
 /// 验证 Demo 实际使用的 AVPlayer 后端，包括暂停、倍速、准备阶段恢复进度和错误恢复。
 final class PlaybackTests: PlaybackTestCase {
+
+    /// 更新当前 mix 不能换 item、重置时间或改变控制状态；nil 可恢复默认处理。
+    func testLiveAudioMixUpdatePreservesItemAndPlayback() throws {
+        let player = useControlledPlayer()
+        let asset = AVURLAsset(url: audio)
+        engine.prepare(resource: asset)
+        engine.play()
+        eventually("先实际播放") { self.engine.current > 0.3 }
+        let item = try XCTUnwrap(player.currentItem)
+        let capability: AVAudioMixControlling = try XCTUnwrap(engine)
+        let mix = try makeAudioMix(asset: asset, volume: 0.25)
+        for _ in 0..<10 {
+            let before = engine.current
+            XCTAssertTrue(capability.update(audioMix: mix, for: asset))
+            XCTAssertTrue(player.currentItem === item)
+            XCTAssertEqual(engine.current, before, accuracy: 0.1)
+            XCTAssertEqual(engine.control, .playing)
+            XCTAssertNotNil(capability.audioMix)
+            XCTAssertTrue(capability.update(audioMix: nil, for: asset))
+            XCTAssertNil(capability.audioMix)
+        }
+        let before = engine.current
+        eventually("修改后仍应继续推进") { self.engine.current > before + 0.2 }
+    }
+
+    /// 暂停及准备阶段设置 mix 都保留控制意图，修改原始 mutable mix 不影响当前 item。
+    func testLiveAudioMixUpdatePreservesPauseAndCopiesConfiguration() throws {
+        let player = useControlledPlayer()
+        let asset = AVURLAsset(url: audio)
+        engine.prepare(resource: asset)
+        let mix = try makeAudioMix(asset: asset, volume: 0.25)
+        XCTAssertTrue(engine.update(audioMix: mix, for: asset))
+        mix.inputParameters = []
+        XCTAssertEqual(engine.audioMix?.inputParameters.count, 1)
+        pump(0.2)
+        XCTAssertEqual(engine.control, .pausing)
+        XCTAssertEqual(engine.current, 0, accuracy: 0.05)
+        XCTAssertTrue(player.currentItem?.asset === asset)
+    }
+
+    /// 旧 asset（即使 URL 相同）、停止后或尚无资源时的更新都应拒绝，不污染下一首。
+    func testLiveAudioMixUpdateRejectsStaleAssetAndStoppedResource() throws {
+        let player = useControlledPlayer()
+        let asset = AVURLAsset(url: audio)
+        engine.prepare(resource: asset)
+        let mix = try makeAudioMix(asset: asset, volume: 0.25)
+        XCTAssertFalse(engine.update(audioMix: mix, for: AVURLAsset(url: audio)))
+        XCTAssertNil(engine.audioMix)
+        engine.prepare(resource: otherAudio)
+        let next = player.currentItem
+        XCTAssertFalse(engine.update(audioMix: mix, for: asset))
+        XCTAssertTrue(player.currentItem === next)
+        XCTAssertNil(engine.audioMix)
+        engine.stop()
+        XCTAssertFalse(engine.update(audioMix: mix, for: asset))
+        XCTAssertNil(engine.audioMix)
+        prepare()
+        XCTAssertNil(engine.audioMix)
+    }
+
+    /// 资源对可变 mix 取快照，提交后修改原配置不能改变资源的音轨参数。
+    func testAudioMixResourceCopiesMutableConfiguration() throws {
+        let asset = AVURLAsset(url: audio)
+        let mix = try makeAudioMix(asset: asset, volume: 0.25)
+        let resource = AVAudioPlayerResource(asset: asset, audioMix: mix)
+        XCTAssertTrue(resource.asset === asset)
+        XCTAssertEqual(resource.value, audio)
+        XCTAssertFalse(resource.audioMix === mix)
+        mix.inputParameters = []
+        XCTAssertEqual(resource.audioMix?.inputParameters.count, 1)
+    }
+
+    /// 使用真实音轨创建 mix，必须在播放前绑定到原 asset，准备和实际播放仍正常。
+    func testAudioMixResourceUsesOriginalAssetAndPlays() throws {
+        let player = useControlledPlayer()
+        let asset = AVURLAsset(url: audio)
+        let mix = try makeAudioMix(asset: asset, volume: 0.25)
+        engine.prepare(resource: AVAudioPlayerResource(asset: asset, audioMix: mix))
+        let item = try XCTUnwrap(player.currentItem)
+        XCTAssertTrue(item.asset === asset)
+        let parameters = try XCTUnwrap(item.audioMix?.inputParameters.first)
+        XCTAssertEqual(parameters.trackID, mix.inputParameters.first?.trackID)
+        var volume: Float = 0
+        var endVolume: Float = 0
+        var range = CMTimeRange.zero
+        XCTAssertTrue(parameters.getVolumeRamp(for: .zero, startVolume: &volume, endVolume: &endVolume, timeRange: &range))
+        XCTAssertEqual(volume, 0.25, accuracy: 0.001)
+        engine.play()
+        eventually("携带 mix 的资源应实际播放") { self.engine.current > 0.2 }
+    }
+
+    /// 每次切资源创建独立 item；新音轨的 mix 不能继续使用上一资源的参数。
+    func testAudioMixResourceSwitchReplacesMix() throws {
+        let player = useControlledPlayer()
+        let first = AVURLAsset(url: audio)
+        engine.prepare(resource: AVAudioPlayerResource(asset: first, audioMix: try makeAudioMix(asset: first, volume: 0.25)))
+        let oldItem = try XCTUnwrap(player.currentItem)
+        let next = AVURLAsset(url: otherAudio)
+        engine.prepare(resource: AVAudioPlayerResource(asset: next, audioMix: try makeAudioMix(asset: next, volume: 0.75)))
+        XCTAssertFalse(player.currentItem === oldItem)
+        XCTAssertTrue(player.currentItem?.asset === next)
+        var volume: Float = 0
+        var endVolume: Float = 0
+        var range = CMTimeRange.zero
+        XCTAssertTrue(player.currentItem?.audioMix?.inputParameters.first?.getVolumeRamp(for: .zero, startVolume: &volume, endVolume: &endVolume, timeRange: &range) == true)
+        XCTAssertEqual(volume, 0.75, accuracy: 0.001)
+    }
+
+    /// 专用资源的 nil mix、普通 URL 与直接 AVURLAsset 都不能继承上一首的 mix。
+    func testResourcesWithoutMixClearPreviousMix() throws {
+        let player = useControlledPlayer()
+        let asset = AVURLAsset(url: audio)
+        let mixed = AVAudioPlayerResource(asset: asset, audioMix: try makeAudioMix(asset: asset, volume: 0.25))
+        let plain: [AudioPlayerURLAsset] = [AVAudioPlayerResource(asset: asset), otherAudio, asset]
+        for resource in plain {
+            engine.prepare(resource: mixed)
+            XCTAssertNotNil(player.currentItem?.audioMix)
+            engine.prepare(resource: resource)
+            XCTAssertNil(player.currentItem?.audioMix)
+        }
+        XCTAssertTrue(player.currentItem?.asset === asset)
+    }
+
+    /// 停止会解除引擎对专用资源和 item 的持有，重新播放普通资源不能带回旧配置。
+    func testAudioMixResourceStopClearsItemAndResource() throws {
+        let player = useControlledPlayer()
+        let asset = AVURLAsset(url: audio)
+        engine.prepare(resource: AVAudioPlayerResource(asset: asset, audioMix: try makeAudioMix(asset: asset, volume: 0.25)))
+        engine.stop()
+        XCTAssertNil(player.currentItem)
+        XCTAssertNil(engine.resource)
+        prepare()
+        XCTAssertNil(player.currentItem?.audioMix)
+    }
+
+    /// 当前 item 播放失败后，原清理链路同样必须解除专用资源与 mix 的关联。
+    func testAudioMixResourceFailureClearsItemAndResource() throws {
+        let player = useControlledPlayer()
+        let asset = AVURLAsset(url: audio)
+        engine.prepare(resource: AVAudioPlayerResource(asset: asset, audioMix: try makeAudioMix(asset: asset, volume: 0.25)))
+        let item = try XCTUnwrap(player.currentItem)
+        NotificationCenter.default.post(name: .AVPlayerItemFailedToPlayToEndTime, object: item)
+        eventually("失败应清空当前 item 和资源") { player.currentItem == nil && self.engine.resource == nil }
+        prepare()
+        XCTAssertNil(player.currentItem?.audioMix)
+    }
+
+    /// 仅测试使用同步音轨查询；调用方在生产环境应异步加载音轨后再准备资源。
+    private func makeAudioMix(asset: AVURLAsset, volume: Float) throws -> AVMutableAudioMix {
+        let track = try XCTUnwrap(asset.tracks(withMediaType: .audio).first)
+        let parameters = AVMutableAudioMixInputParameters(track: track)
+        parameters.setVolume(volume, at: .zero)
+        let mix = AVMutableAudioMix()
+        mix.inputParameters = [parameters]
+        return mix
+    }
     /// 低码率 MP3 使用实际系统解码，向后 seek 后验证实际媒体时间。
     func testMP3PlaybackAndBackwardSeek() {
         let url = Bundle.main.url(forResource: "tone", withExtension: "mp3", subdirectory: "Fixtures")!

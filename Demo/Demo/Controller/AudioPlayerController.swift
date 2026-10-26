@@ -13,12 +13,17 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
     private let manager = AudioPlayerManager.shared
     
     private var isDraging = false
+    /// 增强选择直接绑定管理器，页面关闭后仍由当前播放资源持有处理器。
+    private let boostSwitch = UISwitch()
+    /// 显示实际处理链状态，避免网络不支持时误报增强成功。
+    private let boostStatusLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setup()
         setupManager()
+        setupVolumeBoost()
     }
     
     private func setup() {
@@ -42,6 +47,49 @@ class AudioPlayerController: ViewController<AudioPlayerView> {
         audioPlayerManager(manager, changed: manager.mode)
     }
     
+    /// 在原页面作者下方添加增强开关；不改变原播放、队列与进度控件的约束。
+    private func setupVolumeBoost() {
+        let title = UILabel()
+        title.text = "音量增强 2×"
+        title.textColor = .white
+        title.font = .systemFont(ofSize: 15)
+        boostSwitch.accessibilityIdentifier = "player.boost"
+        boostSwitch.accessibilityLabel = "音量增强"
+        boostSwitch.addTarget(self, action: #selector(volumeBoostChanged), for: .valueChanged)
+        let row = UIStackView(arrangedSubviews: [title, boostSwitch])
+        row.spacing = 12
+        row.alignment = .center
+        boostStatusLabel.textColor = .white
+        boostStatusLabel.font = .systemFont(ofSize: 11)
+        boostStatusLabel.numberOfLines = 2
+        boostStatusLabel.textAlignment = .center
+        boostStatusLabel.accessibilityIdentifier = "player.boost.status"
+        let stack = UIStackView(arrangedSubviews: [row, boostStatusLabel])
+        stack.axis = .vertical
+        stack.alignment = .center
+        stack.spacing = 4
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        container.addSubview(stack)
+        NSLayoutConstraint.activate([
+            stack.topAnchor.constraint(equalTo: container.authorLabel.bottomAnchor, constant: 12),
+            stack.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+            stack.widthAnchor.constraint(lessThanOrEqualTo: container.widthAnchor, constant: -40)
+        ])
+        updateVolumeBoost()
+    }
+
+    /// 开关只更新目标增益，不能调用 prepare 或 seek。
+    @objc private func volumeBoostChanged() {
+        manager.setVolumeBoostEnabled(boostSwitch.isOn)
+        updateVolumeBoost()
+    }
+
+    /// 初次展示与进度推进时同步真实状态；暂停切换后也立即更新目标提示。
+    private func updateVolumeBoost() {
+        boostSwitch.isOn = manager.isVolumeBoostEnabled
+        boostStatusLabel.text = manager.volumeBoostStatus
+    }
+
     @objc
     func close() {
         dismiss(animated: true)
@@ -132,6 +180,12 @@ extension AudioPlayerController {
 }
 
 extension AudioPlayerController: AudioPlayerManagerDelegate {
+
+    /// 异步安装结果或其他入口修改增强偏好时刷新当前页面。
+    func audioPlayerManagerVolumeBoostChanged(_ manager: AudioPlayerManager) {
+        updateVolumeBoost()
+    }
+
     
     func audioPlayerManager(_ manager: AudioPlayerManager, changed mode: AudioPlayerManager.PlaybackMode) {
         container.set(playbackMode: mode)
@@ -164,6 +218,7 @@ extension AudioPlayerController: AudioPlayerManagerDelegate {
 extension AudioPlayerController: AudioPlayerDelegate {
     
     func audioPlayerState(_ player: AudioPlayerable, state: AudioPlayer.State) {
+        updateVolumeBoost()
         switch state {
         case .prepare:
             // 准备阶段
@@ -247,6 +302,7 @@ extension AudioPlayerController: AudioPlayerDelegate {
     }
     
     func audioPlayer(_ player: AudioPlayerable, updatedCurrent time: Double) {
+        updateVolumeBoost()
         guard !isDraging else { return }
         // 为拖动Slider时 更新当前时间
         container.set(current: time)

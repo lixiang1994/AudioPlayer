@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A17D80CA581A436FB1B3AC31 /* AudioMixVolumeBoost.c in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB31 /* AudioMixVolumeBoost.c */; };
+		A17D80CA581A436FB1B3AC33 /* AudioMixVolumeBoost.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB33 /* AudioMixVolumeBoost.swift */; };
+		A17D80CA581A436FB1B3AB21 /* AudioMixExampleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB22 /* AudioMixExampleController.swift */; };
 		1165DBBD50A8DA47CDA4B720 /* HTTPPlaybackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E234CA5E1A5F7D3EBDD0665 /* HTTPPlaybackTests.swift */; };
 		19367178F66F6AC2F3E8A050 /* DemoIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B367691DBAFB285800FF7C6 /* DemoIntegrationTests.swift */; };
 		1BC74C31AEA823F47EBCDB6B /* SessionAndRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540804A53436AF02252F99A7 /* SessionAndRemoteTests.swift */; };
@@ -133,6 +136,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A17D80CA581A436FB1B3AB31 /* AudioMixVolumeBoost.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioMixVolumeBoost.c; sourceTree = "<group>"; };
+		A17D80CA581A436FB1B3AB32 /* AudioMixVolumeBoost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioMixVolumeBoost.h; sourceTree = "<group>"; };
+		A17D80CA581A436FB1B3AB33 /* AudioMixVolumeBoost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixVolumeBoost.swift; sourceTree = "<group>"; };
+		A17D80CA581A436FB1B3AB22 /* AudioMixExampleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixExampleController.swift; sourceTree = "<group>"; };
 		08E3556F8F9A181D69D8C765 /* libPods-Demo Watch WatchKit Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Demo Watch WatchKit Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		109D31C1887E43D8269039D3 /* Fixtures */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Fixtures; path = Tests/Fixtures; sourceTree = "<group>"; };
 		1609575CF217440700D5A952 /* DevicePlaybackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DevicePlaybackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -250,6 +257,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+        A17D80CA581A436FB1B3AB34 /* AudioProcessing */ = {
+            isa = PBXGroup;
+            children = (
+                A17D80CA581A436FB1B3AB31 /* AudioMixVolumeBoost.c */,
+                A17D80CA581A436FB1B3AB32 /* AudioMixVolumeBoost.h */,
+                A17D80CA581A436FB1B3AB33 /* AudioMixVolumeBoost.swift */,
+            );
+            path = AudioProcessing;
+            sourceTree = "<group>";
+        };
+
 		116A1577BF49B151501ADD05 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -309,6 +327,7 @@
 				9BD3F7872877DB8D00015754 /* AudioPlayerController.swift */,
 				9BB4FD1E28E2D90E0017E5F8 /* AudioPlayerQueueController.swift */,
 				9BD3F78F28780E1C00015754 /* AudioPlayerListController.swift */,
+				A17D80CA581A436FB1B3AB22 /* AudioMixExampleController.swift */,
 				9BD3807028E585AC00A55620 /* SyncToWatchController.swift */,
 			);
 			path = Controller;
@@ -415,6 +434,7 @@
 				9BD3806428E5727100A55620 /* Resources */,
 				9BB4FD2228E2D9C10017E5F8 /* View */,
 				9BB4FD2128E2D9BC0017E5F8 /* Controller */,
+				A17D80CA581A436FB1B3AB34 /* AudioProcessing */,
 				9BB4FD2028E2D91D0017E5F8 /* Extensions */,
 				9BD3F7732876D58D00015754 /* AppDelegate.swift */,
 				9BD3F7752876D58D00015754 /* SceneDelegate.swift */,
@@ -818,6 +838,9 @@
 				9BE975B728C5FD3400453995 /* AudioPlayerWatchSession.swift in Sources */,
 				9BD3806F28E57FFD00A55620 /* UserDefaultsExtension.swift in Sources */,
 				9BD3F79028780E1C00015754 /* AudioPlayerListController.swift in Sources */,
+				A17D80CA581A436FB1B3AB21 /* AudioMixExampleController.swift in Sources */,
+				A17D80CA581A436FB1B3AC31 /* AudioMixVolumeBoost.c in Sources */,
+				A17D80CA581A436FB1B3AC33 /* AudioMixVolumeBoost.swift in Sources */,
 				9BD3F7882877DB8D00015754 /* AudioPlayerController.swift in Sources */,
 				9BE975AD28C5D25E00453995 /* WatchSession.swift in Sources */,
 				9B26547328783F4700325A9E /* AudioPlayerManager.RemoteControl.swift in Sources */,
@@ -1195,6 +1218,7 @@
 				DEVELOPMENT_TEAM = 8G74YECJ4Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
+				SWIFT_OBJC_BRIDGING_HEADER = "Demo/Demo-Bridging-Header.h";
 				INFOPLIST_KEY_CFBundleDisplayName = AudioPlayer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1226,6 +1250,7 @@
 				DEVELOPMENT_TEAM = 8G74YECJ4Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
+				SWIFT_OBJC_BRIDGING_HEADER = "Demo/Demo-Bridging-Header.h";
 				INFOPLIST_KEY_CFBundleDisplayName = AudioPlayer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A17D80CA581A436FB1B3AB11 /* AVAudioPlayerResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB12 /* AVAudioPlayerResource.swift */; };
 		01E27AAAB118A70DD868D163 /* AudioPlayerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A334FACFB4501AF94D5114 /* AudioPlayerConfiguration.swift */; };
 		9BD3F75F2876D34C00015754 /* AudioPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F75B2876D34C00015754 /* AudioPlayerDelegate.swift */; };
 		9BD3F7602876D34C00015754 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F75C2876D34C00015754 /* AudioPlayer.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A17D80CA581A436FB1B3AB12 /* AVAudioPlayerResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AVAudioPlayerResource.swift; sourceTree = "<group>"; };
 		3AF41860838A4FC97A843309 /* Pods_VideoPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_VideoPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9BD3F75B2876D34C00015754 /* AudioPlayerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerDelegate.swift; sourceTree = "<group>"; };
 		9BD3F75C2876D34C00015754 /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
@@ -54,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				9BD3F7632876D37700015754 /* AVAudioPlayer.swift */,
+				A17D80CA581A436FB1B3AB12 /* AVAudioPlayerResource.swift */,
 			);
 			path = AV;
 			sourceTree = "<group>";
@@ -182,6 +185,7 @@
 				9BD3F75F2876D34C00015754 /* AudioPlayerDelegate.swift in Sources */,
 				9BD3F7622876D34C00015754 /* AudioPlayerable.swift in Sources */,
 				9BD3F7642876D37700015754 /* AVAudioPlayer.swift in Sources */,
+				A17D80CA581A436FB1B3AB11 /* AVAudioPlayerResource.swift in Sources */,
 				9BD3F7602876D34C00015754 /* AudioPlayer.swift in Sources */,
 				9BD3F7662876D3C400015754 /* AudioPlayerRemoteControl.swift in Sources */,
 				9BD3F7612876D34C00015754 /* AudioPlayerDelegates.swift in Sources */,
