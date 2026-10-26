@@ -1,0 +1,254 @@
+import XCTest
+import AVFoundation
+@testable import AudioPlayer
+
+/// 验证 Demo 实际使用的 AVPlayer 后端，包括暂停、倍速、准备阶段恢复进度和错误恢复。
+final class PlaybackTests: PlaybackTestCase {
+    /// 低码率 MP3 使用实际系统解码，向后 seek 后验证实际媒体时间。
+    func testMP3PlaybackAndBackwardSeek() {
+        let url = Bundle.main.url(forResource: "tone", withExtension: "mp3", subdirectory: "Fixtures")!
+        prepare(url, seek: 65)
+        engine.seek(to: .init(time: 3))
+        eventually("MP3 向后 seek 应完成") { self.recorder.seekEnds.contains(3) }
+        XCTAssertEqual(engine.current, 3, accuracy: 0.15)
+        engine.play()
+        eventually("MP3 应实际推进") { self.engine.current > 3.3 }
+    }
+
+    /// 真实后端反复切资源并寻时，检查每次取消 completion、停止和资源释放。
+    func testRepeatedResourceSwitchSeekAndStop() {
+        for index in 0..<40 {
+            engine.prepare(resource: index % 2 == 0 ? audio : otherAudio)
+            var result: [Bool] = []
+            engine.seek(to: .init(time: 6, completion: { result.append($0) }))
+            engine.stop()
+            XCTAssertEqual(result, [false])
+            XCTAssertNil(engine.resource)
+            XCTAssertEqual(engine.current, 0)
+            if index % 5 == 0 { pump(0.02) }
+        }
+        prepare()
+        engine.play()
+        eventually("多轮取消后仍应正常播放") { self.engine.current > 0.2 }
+    }
+
+    /// 多次创建和释放已安装观察者的实例，底层播放器不能反向保留引擎。
+    func testRepeatedEngineDeallocation() {
+        for _ in 0..<40 {
+            autoreleasepool {
+                let player = ControlledPlayer()
+                var temporary: AudioPlayerAVEngine? = AudioPlayerAVEngine(.init(), player: player)
+                weak var weakEngine = temporary
+                temporary?.prepare(resource: audio)
+                temporary = nil
+                XCTAssertNil(weakEngine)
+                XCTAssertNil(player.currentItem)
+                XCTAssertEqual(player.removedTimeObservers, 1)
+            }
+        }
+        pump(0.1)
+    }
+
+    /// 两分钟连续播放烟测，每十秒检查实际推进；这不能替代数小时耗电与内存测试。
+    func testTwoMinuteContinuousPlayback() {
+        let url = Bundle.main.url(forResource: "tone", withExtension: "mp3", subdirectory: "Fixtures")!
+        prepare(url)
+        engine.play()
+        eventually("先实际播放") { self.engine.current > 0.2 }
+        var previous = engine.current
+        for _ in 0..<12 {
+            pump(10)
+            XCTAssertEqual(engine.control, .playing)
+            XCTAssertGreaterThan(engine.current - previous, 8)
+            previous = engine.current
+        }
+        XCTAssertGreaterThan(engine.current, 118)
+    }
+
+    /// 禁止自动播放时，ready 后也不能偷偷推进播放进度。
+    func testPrepareWithoutAutoplayRemainsPaused() {
+        prepare()
+        pump(0.3)
+        XCTAssertEqual(engine.control, .pausing)
+        XCTAssertEqual(engine.current, 0, accuracy: 0.05)
+    }
+    
+    /// 默认自动播放应在准备完成后实际推进时间。
+    func testAutoplayAdvancesActualTime() {
+        engine.stop()
+        engine = AudioPlayerAVEngine(.init())
+        engine.prepare(resource: audio)
+        eventually("自动播放应实际推进") { self.engine.current > 0.15 }
+        XCTAssertEqual(engine.control, .playing)
+    }
+    
+    /// 暂停、修改倍速、恢复不能丢失暂停意图或起播位置。
+    func testPauseRateAndResume() {
+        prepare()
+        engine.play()
+        eventually("播放应推进") { self.engine.current > 0.15 }
+        engine.pause()
+        pump(0.05)
+        let current = engine.current
+        engine.rate = 1.5
+        pump(0.2)
+        XCTAssertEqual(engine.control, .pausing)
+        XCTAssertEqual(engine.current, current, accuracy: 0.06)
+        engine.play()
+        eventually("恢复应继续推进") { self.engine.current > current + 0.15 }
+    }
+    
+    /// Demo 在 prepare 后立即恢复播放记录，必须等待真正寻时完成且保持暂停。
+    func testSeekBeforeReady() {
+        prepare(seek: 8)
+        pump(0.1)
+        XCTAssertEqual(engine.current, 8, accuracy: 0.1)
+        XCTAssertEqual(engine.control, .pausing)
+        XCTAssertFalse(recorder.receivedOffMain)
+    }
+    
+    /// 快速重复拖动应落在最后目标，而不是只返回乐观进度。
+    func testRapidSeeksReachLastPosition() {
+        prepare()
+        engine.seek(to: .init(time: 4))
+        engine.seek(to: .init(time: 12))
+        engine.seek(to: .init(time: 6))
+        eventually("最后一次寻时应完成") { self.recorder.seekEnds.contains(6) }
+        pump(0.1)
+        XCTAssertEqual(engine.current, 6, accuracy: 0.1)
+        XCTAssertEqual(engine.control, .pausing)
+    }
+    
+    /// 寻时期间收到暂停，完成后不得自动恢复。
+    func testPauseDuringSeek() {
+        prepare()
+        engine.play()
+        recorder.onSeekBegan = { self.engine.pause() }
+        engine.seek(to: .init(time: 10))
+        eventually("寻时应完成") { self.recorder.seekEnds.contains(10) }
+        pump(0.15)
+        XCTAssertEqual(engine.control, .pausing)
+        XCTAssertEqual(engine.current, 10, accuracy: 0.1)
+    }
+    
+    /// 向前或向后 seek 完成后切资源，不应保留旧资源的校准进度。
+    func testNewResourceClearsSeekCalibration() {
+        prepare()
+        engine.seek(to: .init(time: 18))
+        eventually("先完成旧资源寻时") { self.recorder.seekEnds.contains(18) }
+        prepare(otherAudio)
+        pump(0.1)
+        XCTAssertEqual(engine.current, 0, accuracy: 0.05)
+        XCTAssertEqual(engine.resource?.value, otherAudio)
+    }
+    
+    /// 同 URL 重载同样是新资源，旧进度和请求必须全部失效。
+    func testSameURLReloadStartsAtZero() {
+        prepare(seek: 9)
+        prepare(audio)
+        pump(0.1)
+        XCTAssertEqual(engine.current, 0, accuracy: 0.05)
+    }
+    
+    /// 非法时间应以失败结束，不能留下永远无法消费的 seek 意图。
+    func testInvalidAndStoppedSeekCompleteFalse() {
+        var results: [Bool] = []
+        engine.seek(to: .init(time: 2, completion: { results.append($0) }))
+        prepare()
+        engine.seek(to: .init(time: .nan, completion: { results.append($0) }))
+        engine.seek(to: .init(time: .infinity, completion: { results.append($0) }))
+        XCTAssertEqual(results, [false, false, false])
+        XCTAssertEqual(engine.current, 0, accuracy: 0.05)
+    }
+    
+    /// 负数目标限制在零，不应在失败时保留负数校准值。
+    func testNegativeSeekClampsToStart() {
+        prepare(seek: 8)
+        engine.seek(to: .init(time: -5))
+        eventually("负数寻时应结束") { self.recorder.seekEnds.contains(-5) }
+        XCTAssertEqual(engine.current, 0, accuracy: 0.05)
+    }
+    
+    /// 自然结束后再次 play，应实际从头播放。
+    func testFinishAndReplay() {
+        prepare(PlaybackFixtures.shortAudio)
+        engine.play()
+        eventually("短音频应自然结束") { if case .finished = self.engine.state { return true }; return false }
+        engine.play()
+        eventually("重播应恢复出声状态") { self.engine.control == .playing && self.engine.current > 0.05 && self.engine.current < 0.5 }
+    }
+    
+    /// 单曲循环依靠真实结束事件恢复，不能停在 finished。
+    func testLoopRestartsPlayback() {
+        prepare(PlaybackFixtures.shortAudio)
+        engine.isLoop = true
+        engine.play()
+        eventually("循环应至少触发一次回到起点的 seek") { self.recorder.seekEnds.contains(0) }
+        eventually("循环后应继续播放") { self.engine.control == .playing }
+    }
+    
+    /// 失败后允许重新准备正常资源，不残留失败状态。
+    func testFailureThenPrepareValidResource() {
+        engine.prepare(resource: URL(fileURLWithPath: "/does-not-exist/audio.wav"))
+        eventually("无效资源应失败") { if case .failed = self.engine.state { return true }; return false }
+        prepare()
+        engine.play()
+        eventually("失败恢复后应正常推进") { self.engine.current > 0.1 }
+    }
+    
+    /// 本地 AAC 文件验证系统压缩格式解码和向后 seek。
+    func testCompressedAudioAndBackwardSeek() {
+        prepare(PlaybackFixtures.compressedAudio, seek: 14)
+        engine.seek(to: .init(time: 3))
+        eventually("向后寻时应完成") { self.recorder.seekEnds.contains(3) }
+        XCTAssertEqual(engine.current, 3, accuracy: 0.1)
+    }
+    
+    /// NaN、无穷与无法转换为 Float 的倍速不能传入 AVPlayer。
+    func testInvalidRatePreservesPreviousSetting() {
+        engine.rate = 1.5
+        for value in [Double.nan, Double.infinity, Double.greatestFiniteMagnitude, 0, -1] {
+            engine.rate = value
+            XCTAssertEqual(engine.rate, 1.5)
+        }
+    }
+    
+    /// 已结束资源可先设置新的目标，再 play；同一个业务 completion 不应先取消再成功。
+    func testSeekAfterFinishCompletesOnceWhenReplayed() {
+        prepare(PlaybackFixtures.shortAudio)
+        engine.play()
+        eventually("先等待结束") { if case .finished = self.engine.state { return true }; return false }
+        var results: [Bool] = []
+        engine.seek(to: .init(time: 0.1, completion: { results.append($0) }))
+        engine.play()
+        eventually("重播应完成待处理寻时") { !results.isEmpty }
+        pump(0.05)
+        XCTAssertEqual(results, [true])
+    }
+    
+    /// ready 后的播放失败通知必须携带原始错误进入 failed，随后释放资源。
+    func testFailureToEndPreservesUnderlyingError() {
+        engine.stop()
+        let player = ControlledPlayer()
+        engine = AudioPlayerAVEngine(.init(), player: player)
+        prepare()
+        let error = NSError(domain: "AudioPlayer.Tests", code: 123)
+        NotificationCenter.default.post(name: .AVPlayerItemFailedToPlayToEndTime, object: player.currentItem!, userInfo: [AVPlayerItemFailedToPlayToEndTimeErrorKey: error])
+        eventually("播放中失败应被消费") { if case .failed = self.engine.state { return true }; return false }
+        if case .failed(let actual) = engine.state {
+            XCTAssertEqual((actual as NSError?)?.domain, error.domain)
+            XCTAssertEqual((actual as NSError?)?.code, error.code)
+        }
+        XCTAssertNil(engine.resource)
+    }
+    
+    /// 零回调频率不能构造无效 timescale 或让播放器崩溃。
+    func testZeroCallbackFrequencyIsSafe() {
+        engine.stop()
+        var configuration = AudioPlayerConfiguration()
+        configuration.currentTimeCallbackPeriodicInterval = 0
+        engine = AudioPlayerAVEngine(configuration)
+        engine.prepare(resource: audio)
+        eventually("无效频率应安全降为每秒一次") { self.engine.current > 0.1 }
+    }
+}

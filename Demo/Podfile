@@ -1,4 +1,7 @@
-platform :ios, '14.0'
+# Demo 的最低系统版本统一用于依赖构建，不改变 AudioPlayer podspec 对外声明的兼容范围。
+ios_deployment_target = '17.6'
+watchos_deployment_target = '10.0'
+platform :ios, ios_deployment_target
 inhibit_all_warnings!
 
 source 'https://github.com/CocoaPods/Specs.git'
@@ -12,13 +15,47 @@ target 'Demo' do
   pod 'Loading', '~>1.1.0'
   pod 'UIImageColors'
   pod 'Kingfisher', '~> 7.0'
-  pod
+
+  target 'DemoTests' do
+    inherit! :search_paths
+  end
 
 end
 
 target 'Demo Watch WatchKit Extension' do
-  platform :watchos, '8.0'
+  platform :watchos, watchos_deployment_target
   
   pod 'AudioPlayer', :path => "../"
   
+end
+
+# 兼容 Demo 锁定的旧版 Kingfisher：placeholder 返回非可选 AnyView，不能再次进行可选绑定。
+# 更新依赖后若旧代码已不存在，此补丁自动跳过，不改变新版实现。
+post_install do |installer|
+  # CocoaPods 仍会采用各依赖 podspec 的旧部署版本，单独提高 App 版本不会同步这些 target。
+  # 同时处理库和隐私资源 bundle；保留依赖自身更高的要求，避免意外降低其最低版本。
+  installer.pods_project.targets.each do |target|
+    deployment = case target.platform_name
+                 when :ios then ['IPHONEOS_DEPLOYMENT_TARGET', ios_deployment_target]
+                 when :watchos then ['WATCHOS_DEPLOYMENT_TARGET', watchos_deployment_target]
+                 end
+    next unless deployment
+
+    key, minimum = deployment
+    target.build_configurations.each do |config|
+      current = config.build_settings[key]
+      if current.nil? || Gem::Version.new(current) < Gem::Version.new(minimum)
+        config.build_settings[key] = minimum
+      end
+    end
+  end
+
+  # 仅修复锁定版本中的已知编译错误，不对新版 Kingfisher 进行额外改写。
+  path = installer.sandbox.root + 'Kingfisher/Sources/SwiftUI/KFImageRenderer.swift'
+  if path.exist?
+    source = path.read
+    old = "if let placeholder = context.placeholder, let view = placeholder(binder.progress) {\n                        view"
+    replacement = "if let placeholder = context.placeholder {\n                        placeholder(binder.progress)"
+    path.write(source.sub(old, replacement)) if source.include?(old)
+  end
 end

@@ -7,12 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		01E27AAAB118A70DD868D163 /* AudioPlayerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A334FACFB4501AF94D5114 /* AudioPlayerConfiguration.swift */; };
 		9BD3F75F2876D34C00015754 /* AudioPlayerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F75B2876D34C00015754 /* AudioPlayerDelegate.swift */; };
 		9BD3F7602876D34C00015754 /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F75C2876D34C00015754 /* AudioPlayer.swift */; };
 		9BD3F7612876D34C00015754 /* AudioPlayerDelegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F75D2876D34C00015754 /* AudioPlayerDelegates.swift */; };
 		9BD3F7622876D34C00015754 /* AudioPlayerable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F75E2876D34C00015754 /* AudioPlayerable.swift */; };
 		9BD3F7642876D37700015754 /* AVAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7632876D37700015754 /* AVAudioPlayer.swift */; };
-		9BD3F7662876D3C400015754 /* AudioPlayerRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7652876D3C400015754 /* AudioPlayerRemote.swift */; };
+		9BD3F7662876D3C400015754 /* AudioPlayerRemoteControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD3F7652876D3C400015754 /* AudioPlayerRemoteControl.swift */; };
 		C9D0289522607AD100B5E061 /* AudioPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = C9D0289322607AD100B5E061 /* AudioPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -23,7 +24,8 @@
 		9BD3F75D2876D34C00015754 /* AudioPlayerDelegates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerDelegates.swift; sourceTree = "<group>"; };
 		9BD3F75E2876D34C00015754 /* AudioPlayerable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerable.swift; sourceTree = "<group>"; };
 		9BD3F7632876D37700015754 /* AVAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AVAudioPlayer.swift; sourceTree = "<group>"; };
-		9BD3F7652876D3C400015754 /* AudioPlayerRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerRemote.swift; sourceTree = "<group>"; };
+		9BD3F7652876D3C400015754 /* AudioPlayerRemoteControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayerRemoteControl.swift; sourceTree = "<group>"; };
+		A0A334FACFB4501AF94D5114 /* AudioPlayerConfiguration.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AudioPlayerConfiguration.swift; sourceTree = "<group>"; };
 		C9D0289022607AD100B5E061 /* AudioPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AudioPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9D0289322607AD100B5E061 /* AudioPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioPlayer.h; sourceTree = "<group>"; };
 		C9D0289422607AD100B5E061 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -63,7 +65,8 @@
 				9BD3F75E2876D34C00015754 /* AudioPlayerable.swift */,
 				9BD3F75B2876D34C00015754 /* AudioPlayerDelegate.swift */,
 				9BD3F75D2876D34C00015754 /* AudioPlayerDelegates.swift */,
-				9BD3F7652876D3C400015754 /* AudioPlayerRemote.swift */,
+				9BD3F7652876D3C400015754 /* AudioPlayerRemoteControl.swift */,
+				A0A334FACFB4501AF94D5114 /* AudioPlayerConfiguration.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -180,8 +183,9 @@
 				9BD3F7622876D34C00015754 /* AudioPlayerable.swift in Sources */,
 				9BD3F7642876D37700015754 /* AVAudioPlayer.swift in Sources */,
 				9BD3F7602876D34C00015754 /* AudioPlayer.swift in Sources */,
-				9BD3F7662876D3C400015754 /* AudioPlayerRemote.swift in Sources */,
+				9BD3F7662876D3C400015754 /* AudioPlayerRemoteControl.swift in Sources */,
 				9BD3F7612876D34C00015754 /* AudioPlayerDelegates.swift in Sources */,
+				01E27AAAB118A70DD868D163 /* AudioPlayerConfiguration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

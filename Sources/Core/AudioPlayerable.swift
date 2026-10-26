@@ -14,6 +14,7 @@ public protocol AudioPlayerURLAsset {
     var value: URL { get }
 }
 
+/// 播放器由主线程持有和控制，属性读取、代理增删也应在主线程完成；事件回调在主线程派发。
 public protocol AudioPlayerable: NSObjectProtocol {
     
     /// 准备
@@ -24,7 +25,7 @@ public protocol AudioPlayerable: NSObjectProtocol {
     func pause()
     /// 停止
     func stop()
-    /// 快速定位到指定播放时间点 (多次调用 以最后一次为准)
+    /// 快速定位到指定播放时间点，多次调用以最后一次为准；被覆盖或停止的请求以 false 完成。
     func seek(to target: AudioPlayer.Seek)
     
     /// 资源

@@ -16,6 +16,11 @@ open class AudioPlayerRemoteControl: NSObject {
     
     public let player: AudioPlayerable
     
+    /// 上次同步的媒体时间，用于纠正 seek；正常播放由系统自行推算进度。
+    private var lastReportedTime: TimeInterval = 0
+    /// 上次同步的用户倍速，用于在没有控制状态变化时发现倍速设置变更。
+    private var lastReportedRate: Double = 1
+
     public init(_ player: AudioPlayerable) {
         self.player = player
         super.init()
@@ -47,10 +52,19 @@ open class AudioPlayerRemoteControl: NSObject {
     public func updatePlayingInfo() {
         var info = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
         info[MPMediaItemPropertyPlaybackDuration] = player.duration
-        info[MPNowPlayingInfoPropertyPlaybackRate] = player.rate
-        info[MPNowPlayingInfoPropertyDefaultPlaybackRate] = 1.0
+        // 用户选择的倍速和当前实际播放速率含义不同，暂停时必须告诉系统速率为零。
+        let playbackRate: Double
+        if case .playing = player.state, player.control == .playing {
+            playbackRate = player.rate
+        } else {
+            playbackRate = 0
+        }
+        info[MPNowPlayingInfoPropertyPlaybackRate] = playbackRate
+        info[MPNowPlayingInfoPropertyDefaultPlaybackRate] = player.rate
         info[MPNowPlayingInfoPropertyElapsedPlaybackTime] = player.current
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
+        lastReportedTime = player.current
+        lastReportedRate = player.rate
     }
     
     public func cleanPlayingInfo() {
@@ -93,6 +107,7 @@ open class AudioPlayerRemoteControl: NSObject {
         info[MPNowPlayingInfoPropertyMediaType] = MPNowPlayingInfoMediaType.audio.rawValue
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = info
+        updatePlayingInfo()
     }
 
     @objc
@@ -153,7 +168,10 @@ extension AudioPlayerRemoteControl: AudioPlayerDelegate {
     }
     
     public func audioPlayer(_ player: AudioPlayerable, updatedCurrent time: Double) {
-        updatePlayingInfo()
+        // 播放时钟由系统推算，媒体时间累计偏移超过五秒或倍速改变时校准，避免每秒十次重写锁屏信息。
+        if abs(time - lastReportedTime) > 5 || player.rate != lastReportedRate {
+            updatePlayingInfo()
+        }
     }
     
     public func audioPlayer(_ player: AudioPlayerable, updatedDuration time: Double) {

@@ -11,12 +11,22 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+
+    #if DEBUG
+    /// 仅显式启用真机测试模式时持有，默认 Demo 启动路径保持原样。
+    private var playbackDiagnostics: PlaybackDeviceDiagnostics?
+    #endif
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
         // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let _ = (scene as? UIWindowScene) else { return }
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("--playback-device-tests"), let window = window {
+            playbackDiagnostics = PlaybackDeviceDiagnostics(window: window)
+        }
+        #endif
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
