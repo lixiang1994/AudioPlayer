@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A17D80CA581A436FB1B3AC31 /* AudioMixVolumeBoost.c in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB31 /* AudioMixVolumeBoost.c */; };
-		A17D80CA581A436FB1B3AC33 /* AudioMixVolumeBoost.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB33 /* AudioMixVolumeBoost.swift */; };
-		A17D80CA581A436FB1B3AB21 /* AudioMixExampleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB22 /* AudioMixExampleController.swift */; };
+		B27D80CA581A436FB1B3AC41 /* AudioMixSilenceAcceleration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B27D80CA581A436FB1B3AC42 /* AudioMixSilenceAcceleration.swift */; };
 		1165DBBD50A8DA47CDA4B720 /* HTTPPlaybackTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E234CA5E1A5F7D3EBDD0665 /* HTTPPlaybackTests.swift */; };
 		19367178F66F6AC2F3E8A050 /* DemoIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B367691DBAFB285800FF7C6 /* DemoIntegrationTests.swift */; };
 		1BC74C31AEA823F47EBCDB6B /* SessionAndRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540804A53436AF02252F99A7 /* SessionAndRemoteTests.swift */; };
@@ -45,7 +43,6 @@
 		9BD090BA28C05E0300334171 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BD090B928C05E0300334171 /* ComplicationController.swift */; };
 		9BD090BC28C05E0400334171 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BD090BB28C05E0400334171 /* Assets.xcassets */; };
 		9BD090BF28C05E0400334171 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9BD090BE28C05E0400334171 /* Preview Assets.xcassets */; };
-		9BD090C428C05E0400334171 /* Demo Watch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 9BD090A428C05E0200334171 /* Demo Watch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9BD3806628E5729300A55620 /* audios.json in Resources */ = {isa = PBXBuildFile; fileRef = 9BD3806528E5729300A55620 /* audios.json */; };
 		9BD3806828E572E100A55620 /* 夜曲-周杰伦.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9BD3806728E572E100A55620 /* 夜曲-周杰伦.wav */; };
 		9BD3806A28E5730F00A55620 /* 江南-林俊杰.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9BD3806928E5730F00A55620 /* 江南-林俊杰.wav */; };
@@ -72,6 +69,9 @@
 		9BE975BB28C610EE00453995 /* WatchSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975BA28C610EE00453995 /* WatchSession.swift */; };
 		9BE975BD28C6136C00453995 /* AudioPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE975BC28C6136C00453995 /* AudioPlayerManager.swift */; };
 		9BFBD82B28E5945E00FF2647 /* AudioPlayerList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BFBD82A28E5945E00FF2647 /* AudioPlayerList.swift */; };
+		A17D80CA581A436FB1B3AB21 /* AudioMixExampleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB22 /* AudioMixExampleController.swift */; };
+		A17D80CA581A436FB1B3AC31 /* AudioMixVolumeBoost.c in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB31 /* AudioMixVolumeBoost.c */; };
+		A17D80CA581A436FB1B3AC33 /* AudioMixVolumeBoost.swift in Sources */ = {isa = PBXBuildFile; fileRef = A17D80CA581A436FB1B3AB33 /* AudioMixVolumeBoost.swift */; };
 		B88E95EA6AEBEDB64D8FED1F /* PlaybackTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D7FFC5AB357A7596DC6754A /* PlaybackTestCase.swift */; };
 		C14310F9220A32B0560CCDF3 /* PlaybackDeviceDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230EB65E2653856A70CDB56E /* PlaybackDeviceDiagnostics.swift */; };
 		CAAB4AB6C1BDA4386DF23F4E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47ACD51C91C7E89D2052B2F8 /* Foundation.framework */; };
@@ -86,13 +86,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 9BD090AB28C05E0300334171;
 			remoteInfo = "Demo Watch WatchKit Extension";
-		};
-		9BD090C228C05E0400334171 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9BD3F7682876D58D00015754 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9BD090A328C05E0200334171;
-			remoteInfo = "Demo Watch";
 		};
 		DBB7F395AC070AC5308D3DA3 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -111,17 +104,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9BD090C528C05E0400334171 /* Embed Watch Content */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
-			dstSubfolderSpec = 16;
-			files = (
-				9BD090C428C05E0400334171 /* Demo Watch.app in Embed Watch Content */,
-			);
-			name = "Embed Watch Content";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		9BD090C828C05E0400334171 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -136,10 +118,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A17D80CA581A436FB1B3AB31 /* AudioMixVolumeBoost.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioMixVolumeBoost.c; sourceTree = "<group>"; };
-		A17D80CA581A436FB1B3AB32 /* AudioMixVolumeBoost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioMixVolumeBoost.h; sourceTree = "<group>"; };
-		A17D80CA581A436FB1B3AB33 /* AudioMixVolumeBoost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixVolumeBoost.swift; sourceTree = "<group>"; };
-		A17D80CA581A436FB1B3AB22 /* AudioMixExampleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixExampleController.swift; sourceTree = "<group>"; };
+		B27D80CA581A436FB1B3AC42 /* AudioMixSilenceAcceleration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixSilenceAcceleration.swift; sourceTree = "<group>"; };
 		08E3556F8F9A181D69D8C765 /* libPods-Demo Watch WatchKit Extension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Demo Watch WatchKit Extension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		109D31C1887E43D8269039D3 /* Fixtures */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = folder; name = Fixtures; path = Tests/Fixtures; sourceTree = "<group>"; };
 		1609575CF217440700D5A952 /* DevicePlaybackUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DevicePlaybackUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -215,6 +194,10 @@
 		9BE975BA28C610EE00453995 /* WatchSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchSession.swift; sourceTree = "<group>"; };
 		9BE975BC28C6136C00453995 /* AudioPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerManager.swift; sourceTree = "<group>"; };
 		9BFBD82A28E5945E00FF2647 /* AudioPlayerList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayerList.swift; sourceTree = "<group>"; };
+		A17D80CA581A436FB1B3AB22 /* AudioMixExampleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixExampleController.swift; sourceTree = "<group>"; };
+		A17D80CA581A436FB1B3AB31 /* AudioMixVolumeBoost.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AudioMixVolumeBoost.c; sourceTree = "<group>"; };
+		A17D80CA581A436FB1B3AB32 /* AudioMixVolumeBoost.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioMixVolumeBoost.h; sourceTree = "<group>"; };
+		A17D80CA581A436FB1B3AB33 /* AudioMixVolumeBoost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioMixVolumeBoost.swift; sourceTree = "<group>"; };
 		AF53DFC18AAD1258388DE7D7 /* DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B922B186FA516DD7F132AD81 /* DevicePlaybackUITests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DevicePlaybackUITests.swift; sourceTree = "<group>"; };
 		F4D362776D85DF60134451AC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -257,17 +240,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-        A17D80CA581A436FB1B3AB34 /* AudioProcessing */ = {
-            isa = PBXGroup;
-            children = (
-                A17D80CA581A436FB1B3AB31 /* AudioMixVolumeBoost.c */,
-                A17D80CA581A436FB1B3AB32 /* AudioMixVolumeBoost.h */,
-                A17D80CA581A436FB1B3AB33 /* AudioMixVolumeBoost.swift */,
-            );
-            path = AudioProcessing;
-            sourceTree = "<group>";
-        };
-
 		116A1577BF49B151501ADD05 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -283,7 +255,6 @@
 				230EB65E2653856A70CDB56E /* PlaybackDeviceDiagnostics.swift */,
 				B922B186FA516DD7F132AD81 /* DevicePlaybackUITests.swift */,
 			);
-			name = DeviceTests;
 			path = DeviceTests;
 			sourceTree = "<group>";
 		};
@@ -463,6 +434,17 @@
 				9BD3807228E5862C00A55620 /* SyncToWatch.swift */,
 			);
 			path = Watch;
+			sourceTree = "<group>";
+		};
+		A17D80CA581A436FB1B3AB34 /* AudioProcessing */ = {
+			isa = PBXGroup;
+			children = (
+				A17D80CA581A436FB1B3AB31 /* AudioMixVolumeBoost.c */,
+				A17D80CA581A436FB1B3AB32 /* AudioMixVolumeBoost.h */,
+				A17D80CA581A436FB1B3AB33 /* AudioMixVolumeBoost.swift */,
+				B27D80CA581A436FB1B3AC42 /* AudioMixSilenceAcceleration.swift */,
+			);
+			path = AudioProcessing;
 			sourceTree = "<group>";
 		};
 		ABC56C3ED5B48EEF244B610C /* Tests */ = {
@@ -686,9 +668,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -769,9 +755,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo Watch WatchKit Extension/Pods-Demo Watch WatchKit Extension-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Demo Watch WatchKit Extension/Pods-Demo Watch WatchKit Extension-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -841,6 +831,7 @@
 				A17D80CA581A436FB1B3AB21 /* AudioMixExampleController.swift in Sources */,
 				A17D80CA581A436FB1B3AC31 /* AudioMixVolumeBoost.c in Sources */,
 				A17D80CA581A436FB1B3AC33 /* AudioMixVolumeBoost.swift in Sources */,
+				B27D80CA581A436FB1B3AC41 /* AudioMixSilenceAcceleration.swift in Sources */,
 				9BD3F7882877DB8D00015754 /* AudioPlayerController.swift in Sources */,
 				9BE975AD28C5D25E00453995 /* WatchSession.swift in Sources */,
 				9B26547328783F4700325A9E /* AudioPlayerManager.RemoteControl.swift in Sources */,
@@ -875,11 +866,6 @@
 			isa = PBXTargetDependency;
 			target = 9BD090AB28C05E0300334171 /* Demo Watch WatchKit Extension */;
 			targetProxy = 9BD090AE28C05E0300334171 /* PBXContainerItemProxy */;
-		};
-		9BD090C328C05E0400334171 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9BD090A328C05E0200334171 /* Demo Watch */;
-			targetProxy = 9BD090C228C05E0400334171 /* PBXContainerItemProxy */;
 		};
 		F570F4B653CBDD2DBBC2FE60 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1218,7 +1204,6 @@
 				DEVELOPMENT_TEAM = 8G74YECJ4Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
-				SWIFT_OBJC_BRIDGING_HEADER = "Demo/Demo-Bridging-Header.h";
 				INFOPLIST_KEY_CFBundleDisplayName = AudioPlayer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1234,6 +1219,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.audio.player.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Demo/Demo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1250,7 +1236,6 @@
 				DEVELOPMENT_TEAM = 8G74YECJ4Z;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Demo/Info.plist;
-				SWIFT_OBJC_BRIDGING_HEADER = "Demo/Demo-Bridging-Header.h";
 				INFOPLIST_KEY_CFBundleDisplayName = AudioPlayer;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -1266,6 +1251,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.audio.player.demo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Demo/Demo-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

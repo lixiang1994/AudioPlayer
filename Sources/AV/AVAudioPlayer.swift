@@ -670,3 +670,32 @@ private class AudioPlayerSeekRequest {
         target.completion?(finished)
     }
 }
+
+extension AudioPlayerAVEngine: AVAudioPlaybackMonitoring {
+    /// 合并当前位置连续可达的缓冲；输入可乱序，毫秒内的误差可衔接，真实缺口不得跨过。
+    /// 调用方保证 position 是非负有限媒体秒数；无效或空区间不提供可用缓冲。
+    static func contiguousBufferedEnd(position: TimeInterval, ranges: [CMTimeRange]) -> TimeInterval {
+        let valid = ranges.filter {
+            $0.start.seconds.isFinite && $0.duration.seconds.isFinite && $0.duration.seconds > 0 && $0.end.seconds.isFinite
+        }.sorted { $0.start.seconds < $1.start.seconds }
+        var end = position
+        for range in valid {
+            if range.start.seconds <= end + 0.001, range.end.seconds > end { end = range.end.seconds }
+        }
+        return end
+    }
+
+    /// 从实际 item 读取快进能力，缓冲只合并当前位置可连续抵达的区间。
+    var playbackCapacity: AVAudioPlaybackCapacity? {
+        guard let item = player.currentItem, item.status == .readyToPlay else { return nil }
+        let position = item.currentTime().seconds
+        guard position.isFinite, position >= 0 else { return nil }
+        let duration = item.duration.seconds
+        let local = (item.asset as? AVURLAsset)?.url.isFileURL == true
+        let end = Self.contiguousBufferedEnd(position: position, ranges: item.loadedTimeRanges.map { $0.timeRangeValue })
+        let finiteEnd = duration.isFinite && duration > 0
+        let toEnd = finiteEnd && (local || end >= duration - 0.001)
+        let available = local && finiteEnd ? max(0, duration - position) : max(0, end - position)
+        return .init(canPlayFastForward: item.canPlayFastForward, bufferedDuration: available, isBufferedToEnd: toEnd)
+    }
+}

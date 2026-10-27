@@ -7,6 +7,10 @@
 
 /// 回调只使用平台保证无锁的整型原子；音频线程不分配、不加锁、不调用 Swift。
 _Static_assert(ATOMIC_INT_LOCK_FREE == 2 && ATOMIC_LLONG_LOCK_FREE == 2, "需要无锁整型原子");
+/// 固定容量约容纳 40 秒检测窗；满时丢弃新观测，不能阻塞音频输出。
+#define AP_SILENCE_CAPACITY 2048
+/// 检测最多支持 32 声道；超过时只保留原有增益功能，不猜测未检查声道。
+#define AP_SILENCE_CHANNELS 32
 /// 每个 tap 独立持有状态；format/currentGain 仅由串行音频回调访问，其余字段跨线程发布。
 typedef struct {
     /// 主线程发布的目标，只取 1 或 2；音频线程在块边界读取。
@@ -15,10 +19,8 @@ typedef struct {
     atomic_ullong processedFrames;
     /// 已稳定达到 2 倍增益的帧数，排除平滑过渡块。
     atomic_ullong boostedFrames;
-    /// 最近块输入峰值的 Float32 位模式。
-    atomic_uint inputPeakBits;
-    /// 最近块输出峰值的 Float32 位模式，与输入统计仅作观测。
-    atomic_uint outputPeakBits;
+    /// 同一块输入和输出峰值的 Float32 位模式；一次发布，防止主线程读到跨块比值。
+    atomic_ullong peakPairBits;
     /// 当前格式是否可处理，不支持时只拉取源音频并旁路。
     atomic_uint supported;
     /// prepare/unprepare 生命周期标记，不代表已经处理过 PCM。
@@ -27,6 +29,13 @@ typedef struct {
     AudioStreamBasicDescription format;
     /// 上一个块的最终增益，供本块平滑衔接，仅音频线程访问。
     float currentGain;
+    /// 音频线程写、主线程读；release/acquire 保证槽位完整后才可读取或复用。
+    APSilenceWindow silence[AP_SILENCE_CAPACITY];
+    atomic_uint silenceWrite, silenceRead, silenceGeneration, silenceEnabled;
+    /// 以下检测累积字段只在系统串行音频回调内访问，主线程仅请求代次重置。
+    uint32_t detectorGeneration, windowFrames;
+    uint64_t streamID;
+    double energy[AP_SILENCE_CHANNELS], windowPeak, windowStart, expectedTime;
 } APVolumeBoostContext;
 /// 只统计处理状态，不持有 tap，便于确认反复切换资源后没有遗留分配。
 static atomic_uint liveContexts = 0;
@@ -46,11 +55,15 @@ static void initialize(MTAudioProcessingTapRef tap, void *clientInfo, void **sto
     atomic_init(&context->targetGain, 1);
     atomic_init(&context->processedFrames, 0);
     atomic_init(&context->boostedFrames, 0);
-    atomic_init(&context->inputPeakBits, 0);
-    atomic_init(&context->outputPeakBits, 0);
+    atomic_init(&context->peakPairBits, 0);
     atomic_init(&context->supported, 0);
     atomic_init(&context->prepared, 0);
     context->currentGain = 1;
+    atomic_init(&context->silenceWrite, 0);
+    atomic_init(&context->silenceRead, 0);
+    atomic_init(&context->silenceGeneration, 1);
+    atomic_init(&context->silenceEnabled, 0);
+    context->expectedTime = -1;
     atomic_fetch_add_explicit(&liveContexts, 1, memory_order_relaxed);
 }
 
@@ -67,6 +80,8 @@ static void prepare(MTAudioProcessingTapRef tap, CMItemCount maxFrames, const Au
     APVolumeBoostContext *context = MTAudioProcessingTapGetStorage(tap);
     if (!context) return;
     context->format = *format;
+    context->expectedTime = -1;
+    context->windowFrames = 0;
     atomic_store_explicit(&context->prepared, 1, memory_order_relaxed);
     unsigned int flags = format->mFormatFlags;
     bool linear = format->mFormatID == kAudioFormatLinearPCM &&
@@ -86,14 +101,90 @@ static void unprepare(MTAudioProcessingTapRef tap) {
     }
 }
 
+/// 将完整观测发布到固定队列；队列满时留出时间缺口，让消费端保守退出加速。
+static void publishSilence(APVolumeBoostContext *context, APSilenceWindow window) {
+    unsigned int write = atomic_load_explicit(&context->silenceWrite, memory_order_relaxed);
+    unsigned int read = atomic_load_explicit(&context->silenceRead, memory_order_acquire);
+    if ((unsigned int)(write - read) >= AP_SILENCE_CAPACITY) return;
+    context->silence[write % AP_SILENCE_CAPACITY] = window;
+    atomic_store_explicit(&context->silenceWrite, write + 1, memory_order_release);
+}
+
+/// 仅音频线程清空跨块累积；增益与静音检测独立，不重置 targetGain。
+static void resetDetector(APVolumeBoostContext *context, uint32_t generation) {
+    context->detectorGeneration = generation;
+    context->streamID++;
+    context->windowFrames = 0;
+    context->windowPeak = 0;
+    memset(context->energy, 0, sizeof(context->energy));
+    context->expectedTime = -1;
+}
+
+/// 在任何放大前读取原始 PCM；跨缓冲积累每声道 RMS，防止单声道有人声被平均稀释。
+static void analyzeSilence(APVolumeBoostContext *context, AudioBufferList *buffers, CMItemCount frames,
+                           CMTimeRange range, MTAudioProcessingTapFlags flags, uint32_t generation) {
+    double start = CMTimeGetSeconds(range.start), duration = CMTimeGetSeconds(range.duration);
+    if (!isfinite(start) || !isfinite(duration) || start < 0 || duration <= 0 ||
+        context->format.mChannelsPerFrame > AP_SILENCE_CHANNELS || context->format.mSampleRate <= 0) {
+        resetDetector(context, generation);
+        publishSilence(context, (APSilenceWindow){ .start = -1, .end = -1, .streamID = context->streamID, .generation = generation });
+        return;
+    }
+    if (context->detectorGeneration != generation || (flags & kMTAudioProcessingTapFlag_StartOfStream) ||
+        context->expectedTime < 0 || fabs(start - context->expectedTime) > 0.003) resetDetector(context, generation);
+    unsigned int bits = context->format.mBitsPerChannel;
+    bool floating = context->format.mFormatFlags & kAudioFormatFlagIsFloat;
+    uint32_t windowSize = (uint32_t)fmax(1, round(context->format.mSampleRate * 0.02));
+    for (CMItemCount frame = 0; frame < frames; frame++) {
+        if (context->windowFrames == 0) context->windowStart = start + duration * frame / frames;
+        unsigned int channel = 0;
+        bool complete = true;
+        for (UInt32 b = 0; b < buffers->mNumberBuffers; b++) {
+            AudioBuffer buffer = buffers->mBuffers[b];
+            for (UInt32 c = 0; c < buffer.mNumberChannels; c++, channel++) {
+                size_t index = (size_t)frame * buffer.mNumberChannels + c;
+                if (channel >= AP_SILENCE_CHANNELS || !buffer.mData || (index + 1) * (bits / 8) > buffer.mDataByteSize) {
+                    complete = false;
+                    continue;
+                }
+                double value = floating ? ((float *)buffer.mData)[index] : bits == 16 ?
+                    ((int16_t *)buffer.mData)[index] / 32768.0 : ((int32_t *)buffer.mData)[index] / 2147483648.0;
+                // 非有限样本属于未知声音，不允许作为静音证据。
+                if (!isfinite(value)) { complete = false; value = 1; }
+                context->energy[channel] += value * value;
+                context->windowPeak = fmax(context->windowPeak, fabs(value));
+            }
+        }
+        if (!complete || channel != context->format.mChannelsPerFrame) context->windowPeak = 1;
+        context->windowFrames++;
+        if (context->windowFrames >= windowSize) {
+            double maximumEnergy = 0;
+            for (unsigned int c = 0; c < AP_SILENCE_CHANNELS; c++) maximumEnergy = fmax(maximumEnergy, context->energy[c]);
+            APSilenceWindow window = { .start = context->windowStart, .end = start + duration * (frame + 1) / frames,
+                .rms = sqrt(maximumEnergy / context->windowFrames), .peak = context->windowPeak,
+                .streamID = context->streamID, .generation = generation };
+            publishSilence(context, window);
+            context->windowFrames = 0;
+            context->windowPeak = 0;
+            memset(context->energy, 0, sizeof(context->energy));
+        }
+    }
+    context->expectedTime = start + duration;
+}
+
 /// 拉取系统 PCM 后原地放大，按块平滑切换增益，并限制在 [-1, 1] 防止数值溢出。
 static void process(MTAudioProcessingTapRef tap, CMItemCount requestedFrames, MTAudioProcessingTapFlags flags,
                     AudioBufferList *buffers, CMItemCount *framesOut, MTAudioProcessingTapFlags *flagsOut) {
     *framesOut = 0;
-    OSStatus status = MTAudioProcessingTapGetSourceAudio(tap, requestedFrames, buffers, flagsOut, NULL, framesOut);
     APVolumeBoostContext *context = MTAudioProcessingTapGetStorage(tap);
+    // 拉取前捕获代次，避免主线程 seek 期间完成的旧读取被标记为新结果。
+    uint32_t generation = context ? atomic_load_explicit(&context->silenceGeneration, memory_order_acquire) : 0;
+    CMTimeRange range = kCMTimeRangeInvalid;
+    OSStatus status = MTAudioProcessingTapGetSourceAudio(tap, requestedFrames, buffers, flagsOut, &range, framesOut);
     if (status != noErr || *framesOut <= 0 || !context ||
         !atomic_load_explicit(&context->supported, memory_order_relaxed)) return;
+    if (atomic_load_explicit(&context->silenceEnabled, memory_order_relaxed))
+        analyzeSilence(context, buffers, *framesOut, range, *flagsOut, generation);
     float target = (float)atomic_load_explicit(&context->targetGain, memory_order_relaxed);
     float start = context->currentGain;
     float inputPeak = 0, outputPeak = 0;
@@ -122,8 +213,9 @@ static void process(MTAudioProcessingTapRef tap, CMItemCount requestedFrames, MT
         }
     }
     context->currentGain = target;
-    atomic_store_explicit(&context->inputPeakBits, peakBits(inputPeak), memory_order_relaxed);
-    atomic_store_explicit(&context->outputPeakBits, peakBits(outputPeak), memory_order_relaxed);
+    // 两个峰值组成一个无锁快照；无需依赖其他统计字段的可见顺序。
+    unsigned long long pair = ((unsigned long long)peakBits(inputPeak) << 32) | peakBits(outputPeak);
+    atomic_store_explicit(&context->peakPairBits, pair, memory_order_relaxed);
     atomic_fetch_add_explicit(&context->processedFrames, *framesOut, memory_order_relaxed);
     if (target == 2 && start == 2) atomic_fetch_add_explicit(&context->boostedFrames, *framesOut, memory_order_relaxed);
 }
@@ -156,8 +248,10 @@ APVolumeBoostStats APVolumeBoostGetStats(MTAudioProcessingTapRef tap) {
     if (!context) return stats;
     stats.processedFrames = atomic_load_explicit(&context->processedFrames, memory_order_relaxed);
     stats.boostedFrames = atomic_load_explicit(&context->boostedFrames, memory_order_relaxed);
-    unsigned int input = atomic_load_explicit(&context->inputPeakBits, memory_order_relaxed);
-    unsigned int output = atomic_load_explicit(&context->outputPeakBits, memory_order_relaxed);
+    // 只读取一次，随后在本地拆包；各帧计数仍是独立观测，不承诺整份统计同一时刻。
+    unsigned long long pair = atomic_load_explicit(&context->peakPairBits, memory_order_relaxed);
+    unsigned int input = (unsigned int)(pair >> 32);
+    unsigned int output = (unsigned int)pair;
     memcpy(&stats.inputPeak, &input, sizeof(input));
     memcpy(&stats.outputPeak, &output, sizeof(output));
     stats.supported = atomic_load_explicit(&context->supported, memory_order_relaxed);
@@ -167,4 +261,26 @@ APVolumeBoostStats APVolumeBoostGetStats(MTAudioProcessingTapRef tap) {
 
 uint32_t APVolumeBoostLiveContexts(void) {
     return atomic_load_explicit(&liveContexts, memory_order_relaxed);
+}
+
+uint32_t APVolumeBoostReadSilence(MTAudioProcessingTapRef tap, APSilenceWindow *output, uint32_t capacity) {
+    APVolumeBoostContext *context = MTAudioProcessingTapGetStorage(tap);
+    if (!context) return 0;
+    unsigned int read = atomic_load_explicit(&context->silenceRead, memory_order_relaxed);
+    unsigned int write = atomic_load_explicit(&context->silenceWrite, memory_order_acquire);
+    uint32_t count = (uint32_t)(write - read);
+    if (count > capacity) count = capacity;
+    for (uint32_t i = 0; i < count; i++) output[i] = context->silence[(read + i) % AP_SILENCE_CAPACITY];
+    atomic_store_explicit(&context->silenceRead, read + count, memory_order_release);
+    return count;
+}
+
+uint32_t APVolumeBoostResetSilence(MTAudioProcessingTapRef tap) {
+    APVolumeBoostContext *context = MTAudioProcessingTapGetStorage(tap);
+    return context ? atomic_fetch_add_explicit(&context->silenceGeneration, 1, memory_order_acq_rel) + 1 : 0;
+}
+
+void APVolumeBoostSetSilenceDetection(MTAudioProcessingTapRef tap, bool enabled) {
+    APVolumeBoostContext *context = MTAudioProcessingTapGetStorage(tap);
+    if (context) atomic_store_explicit(&context->silenceEnabled, enabled, memory_order_relaxed);
 }

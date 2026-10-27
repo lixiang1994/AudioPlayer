@@ -32,6 +32,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--device", required=True, help="已连接测试机的 UDID")
     parser.add_argument("--output", required=True, type=Path, help="本次独立证据目录")
+    parser.add_argument("--silence", action="store_true", help="验证 AudioMix 真实静音加速与增强的后台组合")
     arguments = parser.parse_args()
     output = arguments.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -40,7 +41,7 @@ def main():
         for allowed in [True, False]:
             name = "allowed" if allowed else "blocked"
             run(arguments.device, "process", "launch", "--terminate-existing",
-                "--environment-variables", json.dumps({"PLAYBACK_ALLOW_BACKGROUND": "1" if allowed else "0"}),
+                "--environment-variables", json.dumps({"PLAYBACK_ALLOW_BACKGROUND": "1" if allowed else "0", "PLAYBACK_SILENCE": "1" if arguments.silence else "0"}),
                 "com.audio.player.demo", "--playback-device-tests")
             time.sleep(3)
             before = snapshot(arguments.device, output, name + "-before")
@@ -59,6 +60,14 @@ def main():
             after = snapshot(arguments.device, output, name + "-after")
             # 必须是同一实例收到前后台事件，重新创建诊断器后的默认零值不算成功。
             assert after["foregroundCount"] > 0 and after["control"] == "playing", after
+            if arguments.silence:
+                assert before["silenceExample"] and during["silenceExample"], during
+                if allowed:
+                    # 后台期间进入另一段静音，并继续执行真实增益处理；只推进媒体时间不足以证明仲裁器在运行。
+                    assert during["accelerationCount"] > before["accelerationCount"], (before, during)
+                    assert during["boostedFrames"] > before["boostedFrames"], (before, during)
+                else:
+                    assert not during["accelerating"] and during["rate"] == 1, during
             delta = after["backgroundDelta"]
             assert delta > 5 if allowed else abs(delta) < 0.6, after
             run(arguments.device, "capture", "screenshot", "--destination", str(output / (name + ".png")))

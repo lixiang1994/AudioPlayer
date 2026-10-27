@@ -131,7 +131,7 @@ Podfile 现在会在安装时统一依赖及其资源 bundle 的部署版本；i
 
 [最终 80 项真机测试结果](/private/tmp/audioplayer-fix/live-boost-verified.xcresult) · [运行日志](/private/tmp/audioplayer-fix/live-boost-verified.log) · [独立 framework 构建日志](/private/tmp/audioplayer-fix/live-mix-framework-final.log)
 
-## 原播放页增强与 AudioMix 多案例（最新）
+## 原播放页增强与 AudioMix 多案例（2026-10-26）
 
 在同一 iPhone 16e / iOS 27.0.1 使用 Demo 默认配置执行 **88 项测试全部通过，0 失败**。本次新增 8 项 Demo 集成回归，完整执行约 188 秒（测试阶段）。模拟器先执行 87 项全量通过，随后新增的原播放页开关测试单独通过。
 
@@ -144,3 +144,102 @@ Podfile 现在会在安装时统一依赖及其资源 bundle 的部署版本；i
 网络服务仅监听 127.0.0.1。上述结论不覆盖公网 HTTPS/TLS、所有编码组合、持续弱网供数时的增强、HLS tap、DRM、蓝牙或 AirPlay。包络验证检查系统参数和播放推进，没有测量扬声器声压。既有同步 AVAudioSession 调用仍有主线程性能提示，不影响本轮测试结果。
 
 [88 项真机结果](/private/tmp/audioplayer-fix/main-boost-device.xcresult) · [真机日志](/private/tmp/audioplayer-fix/main-boost-device.log) · [87 项模拟器结果](/private/tmp/audioplayer-fix/main-boost-full.xcresult) · [原播放页开关模拟器结果](/private/tmp/audioplayer-fix/main-boost-ui-switch.xcresult)
+
+
+## 静音加速与独立开关（2026-10-27，初次验证）
+
+本轮修改仅在 Demo：复用同一 tap，先检测原始 PCM，再执行独立的 1× / 2× 振幅增益；主线程根据最新媒体时间窗口在连续安静 300ms 后临时调速，最高 2×。保存用户倍速，暂停、seek、关闭、停止和观测过期时恢复。未修改播放器库公共 API。
+
+iPhone 18 Pro / iOS 27 模拟器全量 **98 项通过、0 失败、0 跳过**，测试阶段约 192 秒。新增 10 项验证：时间线确认与过期、滞回与有声退出、四种开关组合的真实 PCM、用户倍速/暂停/seek/案例切换、右声道声音保护、HTTP WAV 实际加速、样本生成取消、实际控件事件以及页面/定时器/tap 释放。既有两分钟连续播放测试也通过。
+
+首次定向测试发现 tap 的实际前瞻通常只有几十毫秒，350ms 前瞻要求会让加速始终不触发，已根据真实 PCM 与媒体时间证据改成实时检测。检测与调速有延迟，不能保证语音起点完全不被加速；合成信号验证不代表自然播客听感已通过。未验证长时间自然语音、持续弱网下的该功能、全部 PCM 格式、HLS tap、DRM、蓝牙或 AirPlay。继承的同步 AVAudioSession 主线程性能提示仍存在。
+
+已尝试在 iPhone 16e 运行本轮全量测试：签名构建完成，设备因锁屏无法启动 DemoTests，取消等待。因此**本轮没有真机通过结果**。设备日志保留锁屏错误，取消等待后的退出信息不作为产品运行失败。
+
+[98 项模拟器测试结果](/private/tmp/audioplayer-fix/silence-simulator-full.xcresult) · [本轮真机启动日志](/private/tmp/audioplayer-fix/silence-device-full.log)
+
+
+## 静音加速三轮复审（2026-10-27，模拟器阶段）
+
+本轮复审覆盖未暂存改动及新增文件，暂存区为空；保留已有工程修改，播放器库核心仍未修改。发现并修复 4 项：
+
+- 关闭静音加速后仍进行 PCM 分析：独立运行开关控制 C 检测，关闭时清时间线并保留音量增强。
+- 媒体时钟冻结时旧观测不失效：采用可注入的单调时钟，250ms 未收到新观测则判过期。
+- 连续静音中速率反复切换：实测同段进入加速 6 次。系统调速会短暂重建 tap，并改变解码前瞻；已增加最多 250ms 自身重配置保护，并用连续静音范围判断当前位置。修复后的完整静音段只进入一次加速，自然结束重播也重新启用检测。
+- 批量读取中短有声窗口被末尾静音覆盖：累计有声代次跨时间线重置保留，延续加速须匹配代次；出现新声音后重新确认连续静音，过渡保护不能绕过该条件。
+
+新增 4 项回归均先复现失败、再验证修复。Demo 集成测试 **30 项全部通过**，最终 iPhone 18 Pro / iOS 27 模拟器全量 **102 项通过、0 失败、0 跳过**，测试约 206 秒。既有同步 AVAudioSession 主线程性能提示仍存在。本轮不增加真机通过声明；此前设备锁屏未执行的限制仍然有效，自然语音、弱网及远程输出路由仍需另外评测。
+
+[最终 102 项全量结果](/private/tmp/audioplayer-fix/silence-review-full.xcresult) · [30 项 Demo 集成结果](/private/tmp/audioplayer-fix/silence-review-integration.xcresult)
+
+## 再次三轮复审与真机验证（2026-10-27）
+
+本次 iPhone 16e 已解锁，成功执行测试，不再沿用上轮锁屏阻塞结论。首先完成既有 102 项真机回归；补齐缺口、修复断流许可后 109 项通过；实际后台又发现冷启动会话问题，修复并补测试后，最新真机全量 **110 项通过、0 失败、0 跳过**。其中 Demo 集成 38 项，主播放和 AudioMix 的允许 / 禁止后台四条脚本链路另行统计。
+
+三轮复审检查检测与并发、播放生命周期组合、测试及工程证据。本轮修复两项确证问题：
+
+- **断流许可**：时间缺口或 streamID 改变后，没有新声音也不能跨连续段沿用原静音许可。增加连续证据代次，重新确认 300ms；自身调速 250ms 有界保护保留。新增回归先失败后通过，正常倍速和 0.5× 下连续静音均稳定。
+- **冷启动后台**：直接进入独立页时未配置音频会话，真实后台停在约 5.87 秒。原主播放页会配置会话，导致先播放过列表时掩盖该问题。独立页播放时现在自行配置并激活 playback；只停止自己的播放，不在退出时停用全局会话。补充从 ambient 类别开始的冷启动回归，并重新执行真实后台和完整测试。
+
+| 本次场景 | 真机证据与边界 |
+| --- | --- |
+| 基本播放 / seek / 结束重播 / 取消 / 释放 | 110 项中包含既有核心回归及真实页面集成；未替换 AVFoundation 解码 |
+| 双开关与用户倍速 | 四组合、原始信号检测、0.5× / 1× / 1.5× / 2×、非法值、临时速率恢复、30 轮快速操作、同一资源与暂停意图 |
+| 网络静音 PCM | HTTP WAV、MP3、AAC/M4A 实际检测并加速，有声时恢复；MP3/AAC 同时开启增强并检查实际处理帧数 |
+| 静音与真实卡顿 | 长 MP3 停止供数并收到系统 PlaybackStalled 后撤销加速；恢复供数继续播放；再次卡顿中暂停后恢复供数仍保持底层 rate=0 |
+| 会话组合 | 静音活跃时中断开始 / 有许可恢复 / 中断中用户暂停、输出失效、服务重置；通知注入只验证策略，不能算真实来电或蓝牙操作 |
+| 稳定性 | 连续静音不反复调速、结束重播、30 轮双开关 / 倍速 / seek，另有既有 40 轮操作 / 释放与两分钟连续播放；不是数小时压力或耗电评估 |
+| AudioMix 真实后台 | Settings / Demo 实际切换，生命周期计数增加。允许后台媒体差约 8.783 秒，加速次数 1→2，增强帧数 124707→461038；禁止后台进度差 0 秒、基础速率 1×，回前台恢复 |
+| 主播放页真实后台 | 同样系统切换：允许后台差约 6.668 秒；禁止后台差 0 秒；两条均回前台恢复 |
+| 系统 UI | 重试 DevicePlayback，runner 在执行用例前启用自动化模式超时，四项用例仍未通过 |
+
+后台测试数据与截图保留在独立证据目录；它们不等同于真实 Home、锁屏或控制中心远程命令验证。系统重置测试保留处理器引用以确认停止检测，避免把页面主动清空引用误判失败。校正后的短有声批量回归包含在最终 110 项中。
+
+修改仅在 Demo 与验证资料，保留既有工程修改，未改播放器库 Sources。工程 plist、脚本语法及 git diff --check 通过。仍有同步 AVAudioSession 主线程性能提示。
+
+[110 项真机结果](/private/tmp/audioplayer-fix/silence-review-device-110.xcresult) · [全量日志](/private/tmp/audioplayer-fix/silence-review-device-110.log) · [38 项集成结果](/private/tmp/audioplayer-fix/silence-review-session-final.xcresult) · [静音后台证据](/private/tmp/audioplayer-fix/silence-review-background-fixed/summary.json) · [主播放后台证据](/private/tmp/audioplayer-fix/silence-review-main-background/summary.json) · [UI runner 阻塞结果](/private/tmp/audioplayer-fix/silence-review-device-ui.xcresult)
+
+未覆盖：真实来电 / Siri、物理蓝牙 / 耳机 / AirPlay、实际锁屏及控制中心命令、公网网络切换 / TLS / 长时间弱网、静音功能的 HLS / DRM、多音轨与全部 PCM 格式、自然语音轻声 / 噪声听感、多设备 / iOS 版本、数小时稳定性 / 能耗 / Leaks。不能把合成信号与通知测试等同于上述场景已通过。
+
+
+## 静音 3× 与缓冲回退（2026-10-27）
+
+当前静音目标为 3×，不支持超过 2× 时回退 2×，网络连续缓冲不足恢复用户倍速；音量增强仍独立。新增库的可选只读能力快照，算法与缓冲策略仍在 Demo。
+
+- iPhone 16e / iOS 27.0.1 真机全量 **113 项通过、0 失败、0 跳过**，约 252 秒；其中 Demo 集成 41 项。
+- 新增能力回退、缓冲滞回 / 尾段 / 非法值和快照生命周期 3 项；原有 HTTP WAV/MP3/AAC、真实卡顿恢复、双开关、暂停 / seek / 重播 / 释放及 0.5× / 2× 组合回归通过。
+- 允许后台：实际 3×，后台期间新静音加速次数 1→2，增强帧数 128486→457259，回前台继续播放。禁止后台：暂停，rate=1，后台进度差 0 秒，回前台继续。
+- 首轮资源准备连续超时，发现安装更新前的旧 Demo 与测试宿主并存；清理旧进程后 3 项单独复测及完整回归通过。首轮失败记录保留，不据此推断产品场景全部无问题。
+
+[113 项结果](/private/tmp/audioplayer-silence3-full.xcresult) · [日志](/private/tmp/audioplayer-silence3-full.log) · [后台证据](/private/tmp/audioplayer-silence3-background/summary.json) · [首轮失败](/private/tmp/audioplayer-silence3-01.xcresult)
+
+合成信号与通知测试不能替代自然播客试听、真实电话 / 路由、锁屏及多系统版本验证；3× 也不保证语音起点完全不受调速延迟影响。原有主线程音频会话性能提示仍存在。
+
+
+## AudioMix 页面交互优化（2026-10-27）
+
+- 页面按资源、播放进度、效果对比分区；原音频可直接控制增强与静音，不再要求选择单独的静音案例。
+- 实时处理、无 mix、25%、淡入与淡出五项对比；包络模式保留双开关偏好但暂停应用，操作功能开关返回实时处理，保留资源与暂停位置。
+- 声音 / 静音样本自动开启静音且保留增强；支持回到最初资源、取消未完成样本生成、暂停时跳至样本静音段。再次应用效果只重设包络起点。
+- 开关旁显示用户／实际倍率、能力目标、等待／暂停／缓冲状态、加速次数、PCM 峰值比；包络模式显示插值后的音量目标，合成样本标出有声／静音段。这些数值不代表扬声器实测响度。
+
+新增 3 项交互测试，覆盖默认开关与全部包络返回、控件事件、暂停及 item 身份、资源往返与取消、快捷 seek、包络再次应用与状态展示；既有静音关闭测试更新为切到无 mix 的新交互语义。最终 iPhone 16e / iOS 27.0.1 **44 项 Demo 集成测试全部通过，0 失败**，约 90 秒。首轮 44 项也通过；最终轮包含后续增加的包络目标显示断言。
+
+本轮未重跑其余库测试；当前 scheme 共 116 项，之前库与 Demo 的完整回归为 113 项。真机截图核对最终布局，页面已运行，诊断记录确认实际 PCM 处理。自然语音、外部路由与旧系统版本的验证边界保持此前说明；仍有既有同步音频会话的主线程性能提示。
+
+[最终 44 项结果](/private/tmp/audioplayer-mix-ui-final.xcresult) · [测试日志](/private/tmp/audioplayer-mix-ui-final.log) · [真机截图](/private/tmp/audioplayer-mix-ui-device-final.png)
+
+
+## Review 修复后的最终验证（2026-10-27）
+
+修复目标倍率误标与输入/输出峰值跨块配对，补连续缓冲区间边界测试。当前共 122 项：Demo 集成 49、Playback 32、Seek 16、HTTP 15、Session 10。
+
+- iPhone 16e / iOS 27.0.1，用户确认独占测试机后，最终一轮 **122 通过、0 失败、0 跳过**，约 287 秒。
+- 本地 WAV 的 AVPlayer.rate 为 3；本地 WAV、HTTP MP3、HTTP AAC 的媒体进度 / 单调时钟均约为 2.99997×，附件保存在结果包中。
+- 两分钟连续播放推进至 120.25 秒，所有十秒采样持续播放；该轮附件未记录到中断或退后台。没有自动恢复或放宽连续推进断言。
+- 前两轮分别 114/122、115/122 通过。第一轮有一条未同步的旧“实际倍率”文案断言，已改为目标倍率与播放状态；其余失败集中在意外暂停后的播放及会话用例。截图显示当时 Castbox 在前台，第一轮另有旧 Demo 进程；这提示可能存在并发干扰，不能据此证明唯一原因。两轮失败结果均保留，未计为通过。
+- 修复后重新 review，未发现新的可确认代码问题。自然播客、真实来电、外部路由、旧系统与长时能耗仍未在本轮补测；既有同步会话激活的主线程风险提示仍存在。
+
+[最终 122 项结果](/private/tmp/audioplayer-review-fixes-exclusive.xcresult) · [最终日志](/private/tmp/audioplayer-review-fixes-exclusive.log) · [测量与中断附件](/private/tmp/audioplayer-review-fixes-exclusive-attachments/manifest.json) · [修复后 Review](/private/tmp/audioplayer-review-fixes-review.md)
+
+[首轮 114/122](/private/tmp/audioplayer-review-fixes-full.xcresult) · [第二轮 115/122](/private/tmp/audioplayer-review-fixes-final.xcresult)

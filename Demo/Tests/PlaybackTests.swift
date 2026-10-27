@@ -1,9 +1,25 @@
 import XCTest
 import AVFoundation
+import UIKit
 @testable import AudioPlayer
 
 /// 验证 Demo 实际使用的 AVPlayer 后端，包括暂停、倍速、准备阶段恢复进度和错误恢复。
 final class PlaybackTests: PlaybackTestCase {
+
+    /// 缓冲计算只合并当前位置连续可达的片段，覆盖乱序、重叠、毫秒误差和真实空洞。
+    func testContiguousBufferRangesRejectHolesAndInvalidTimes() {
+        // 使用高精度媒体时间，避免测试数据自身的舍入掩盖缺口。
+        func range(_ start: Double, _ duration: Double) -> CMTimeRange {
+            return CMTimeRange(start: CMTime(seconds: start, preferredTimescale: 1000000), duration: CMTime(seconds: duration, preferredTimescale: 1000000))
+        }
+        XCTAssertEqual(AudioPlayerAVEngine.contiguousBufferedEnd(position: 5, ranges: []), 5)
+        XCTAssertEqual(AudioPlayerAVEngine.contiguousBufferedEnd(position: 5, ranges: [range(0, 2), range(6, 4)]), 5)
+        XCTAssertEqual(AudioPlayerAVEngine.contiguousBufferedEnd(position: 5, ranges: [range(9, 1), range(6, 3), range(4, 2)]), 10)
+        XCTAssertEqual(AudioPlayerAVEngine.contiguousBufferedEnd(position: 5, ranges: [range(4, 3), range(6, 4), range(10, 2)]), 12)
+        XCTAssertEqual(AudioPlayerAVEngine.contiguousBufferedEnd(position: 5, ranges: [range(5, 1), range(6.0005, 1)]), 7.0005, accuracy: 0.00001)
+        XCTAssertEqual(AudioPlayerAVEngine.contiguousBufferedEnd(position: 5, ranges: [range(5, 1), range(6.01, 4)]), 6)
+        XCTAssertEqual(AudioPlayerAVEngine.contiguousBufferedEnd(position: 5, ranges: [range(0, 5), range(5, 0), .invalid, range(9, -1)]), 5)
+    }
 
     /// 更新当前 mix 不能换 item、重置时间或改变控制状态；nil 可恢复默认处理。
     func testLiveAudioMixUpdatePreservesItemAndPlayback() throws {
@@ -207,6 +223,32 @@ final class PlaybackTests: PlaybackTestCase {
 
     /// 两分钟连续播放烟测，每十秒检查实际推进；这不能替代数小时耗电与内存测试。
     func testTwoMinuteContinuousPlayback() {
+        // 保存系统中断与前后台证据；不自动恢复播放，也不放宽连续推进的验收断言。
+        let player = engine!
+        let start = ProcessInfo.processInfo.systemUptime
+        var events: [String] = []
+        /// 所有通知与控制回调均在主线程收集，只记录当前测试实例的状态。
+        func record(_ event: String) {
+            events.append(String(format: "%.3f current=%.3f target=%.1f control=%@ app=%d %@", ProcessInfo.processInfo.systemUptime - start, player.current, player.rate, String(describing: player.control), UIApplication.shared.applicationState.rawValue, event))
+        }
+        let names: [Notification.Name] = [AVAudioSession.interruptionNotification, AVAudioSession.routeChangeNotification, UIApplication.didEnterBackgroundNotification, UIApplication.willEnterForegroundNotification]
+        let tokens = names.map { name in
+            NotificationCenter.default.addObserver(forName: name, object: nil, queue: .main) { notification in
+                let type = notification.userInfo?[AVAudioSessionInterruptionTypeKey] as? UInt
+                let options = notification.userInfo?[AVAudioSessionInterruptionOptionKey] as? UInt
+                record("\(name.rawValue) type=\(String(describing: type)) options=\(String(describing: options))")
+            }
+        }
+        recorder.onControl = { state in record("control=\(state)") }
+        defer {
+            recorder.onControl = nil
+            tokens.forEach { NotificationCenter.default.removeObserver($0) }
+            let trace = XCTAttachment(string: events.joined(separator: "\n"))
+            trace.name = "两分钟播放的系统中断与生命周期"
+            trace.lifetime = .keepAlways
+            add(trace)
+        }
+        record("start")
         let url = Bundle.main.url(forResource: "tone", withExtension: "mp3", subdirectory: "Fixtures")!
         prepare(url)
         engine.play()
@@ -214,6 +256,7 @@ final class PlaybackTests: PlaybackTestCase {
         var previous = engine.current
         for _ in 0..<12 {
             pump(10)
+            record("sample")
             XCTAssertEqual(engine.control, .playing)
             XCTAssertGreaterThan(engine.current - previous, 8)
             previous = engine.current

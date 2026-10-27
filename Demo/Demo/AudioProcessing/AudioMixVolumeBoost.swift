@@ -11,6 +11,41 @@ final class AudioMixVolumeBoost {
     /// UI 所选目标；音频线程只消费 C 原子字段，不读取 Swift 属性。
     private(set) var isEnabled = false
 
+    /// 主线程消费的检测时间线；单音轨包含多个声道，多音轨暂保守禁用静音加速。
+    private(set) var silenceTimeline = AudioMixSilenceTimeline()
+    /// 检测的独立运行状态；默认关闭，关闭后不再消费或计算静音窗口。
+    private(set) var isSilenceDetectionEnabled = false
+    /// 主线程取消代次，与 C 回调已发布窗口逐个比对。
+    private var silenceGeneration: UInt32 = 1
+
+    /// 开始/停止观测与音量增强无关；仅独立案例使用，不增加主播放页的检测开销。
+    func setSilenceDetection(_ enabled: Bool) {
+        guard isSilenceDetectionEnabled != enabled else { return }
+        isSilenceDetectionEnabled = enabled
+        // 先使旧代次失效，再发布运行状态；已在音频线程执行的旧块不能恢复旧时间线。
+        resetSilenceDetection()
+        taps.forEach { APVolumeBoostSetSilenceDetection($0, enabled) }
+    }
+
+    /// seek 前及完成后清理候选，不把旧资源、旧位置的分析结果用于加速。
+    func resetSilenceDetection() {
+        silenceTimeline.reset()
+        for tap in taps { silenceGeneration = APVolumeBoostResetSilence(tap) }
+    }
+
+    /// 仅主线程读取固定队列；每轮有界排空，多音轨无法证明所有轨道安静时不加速。
+    func collectSilenceWindows() {
+        guard isSilenceDetectionEnabled, taps.count == 1, let tap = taps.first, isSupported else { silenceTimeline.reset(); return }
+        var windows = [APSilenceWindow](repeating: APSilenceWindow(), count: 128)
+        for _ in 0..<16 {
+            let count = windows.withUnsafeMutableBufferPointer { APVolumeBoostReadSilence(tap, $0.baseAddress!, UInt32($0.count)) }
+            for window in windows.prefix(Int(count)) where window.generation == silenceGeneration {
+                silenceTimeline.append(start: window.start, end: window.end, rms: window.rms, peak: window.peak, streamID: window.streamID)
+            }
+            if count < 128 { break }
+        }
+    }
+
     /// 所有音轨已处理的帧数，证明系统实际执行过 PCM 回调。
     var processedFrames: UInt64 { taps.reduce(0) { $0 + APVolumeBoostGetStats($1).processedFrames } }
     /// 稳定在 2 倍增益时处理的帧数，不含切换过渡块。

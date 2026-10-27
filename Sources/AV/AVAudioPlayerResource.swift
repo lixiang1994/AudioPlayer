@@ -41,3 +41,26 @@ public protocol AVAudioMixControlling: AudioPlayerable {
     @discardableResult
     func update(audioMix: AVAudioMix?, for asset: AVURLAsset) -> Bool
 }
+
+/// 当前 item 的速率与缓冲快照；数值仅反映读取瞬间，不保证后续网络吞吐。
+public struct AVAudioPlaybackCapacity {
+    /// 系统是否允许超过 2× 的正向播放；false 时仍可在 0～2× 范围播放。
+    public let canPlayFastForward: Bool
+    /// 从当前位置起连续可用的媒体秒数，不包含后方跨缺口的已加载片段。
+    public let bufferedDuration: TimeInterval
+    /// 本地资源或连续缓冲已抵达有限媒体结尾；尾段无需等待无法达到的缓冲门槛。
+    public let isBufferedToEnd: Bool
+
+    /// 保存主线程读取的快照；bufferedDuration 应为非负有限媒体秒数。
+    public init(canPlayFastForward: Bool, bufferedDuration: TimeInterval, isBufferedToEnd: Bool) {
+        self.canPlayFastForward = canPlayFastForward
+        self.bufferedDuration = bufferedDuration
+        self.isBufferedToEnd = isBufferedToEnd
+    }
+}
+
+/// AVPlayer 后端的只读播放能力；在主线程按需读取，不改变通用后端的必选协议。
+public protocol AVAudioPlaybackMonitoring: AudioPlayerable {
+    /// 当前 item 未就绪或已经清理时返回 nil；不能把上一首的能力缓存用于下一首。
+    var playbackCapacity: AVAudioPlaybackCapacity? { get }
+}
