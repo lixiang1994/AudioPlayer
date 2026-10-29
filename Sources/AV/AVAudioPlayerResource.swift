@@ -64,3 +64,21 @@ public protocol AVAudioPlaybackMonitoring: AudioPlayerable {
     /// 当前 item 未就绪或已经清理时返回 nil；不能把上一首的能力缓存用于下一首。
     var playbackCapacity: AVAudioPlaybackCapacity? { get }
 }
+
+/// 原生播放状态的瞬时只读快照，不使用 current 的目标进度或校准值。
+public struct AVAudioNativePlaybackSample {
+    /// 当前已就绪 AVPlayerItem 的实际媒体秒数；无资源、未就绪或 seek 未完成时为 nil。
+    /// 不证明扬声器已经输出该位置的声音。
+    public let position: TimeInterval?
+    /// 是否存在有效的 SDK seek 请求，包含准备阶段排队的请求；目标为 0 也为 true。
+    public let seekPending: Bool
+    /// 底层 AVPlayer.rate，暂停时为 0；与用户选择的 AudioPlayerable.rate 分开。
+    public let rate: Double
+    /// ProcessInfo.systemUptime 单调时钟秒数，用于判断本次采样新鲜度，不是媒体时间。
+    public let sampledAt: TimeInterval
+}
+
+/// AVPlayer 后端的可选只读监控能力；所有采样限定主线程，不暴露可变 AVPlayer 或 item。
+public protocol AVAudioNativePlaybackMonitoring: AudioPlayerable {
+    var nativePlaybackSample: AVAudioNativePlaybackSample { get }
+}

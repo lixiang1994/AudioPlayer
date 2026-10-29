@@ -143,9 +143,11 @@ class AudioPlayerAVEngine: NSObject {
     
     /// 注册与资源无关的系统通知；资源通知单独绑定具体 item。
     private func setupNotification() {
-        NotificationCenter.default.addObserver(self, selector: #selector(sessionInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
-        NotificationCenter.default.addObserver(self, selector: #selector(routeChanged), name: AVAudioSession.routeChangeNotification, object: AVAudioSession.sharedInstance())
-        NotificationCenter.default.addObserver(self, selector: #selector(mediaServicesWereReset), name: AVAudioSession.mediaServicesWereResetNotification, object: AVAudioSession.sharedInstance())
+        if configuration.handlesAudioSessionNotifications {
+            NotificationCenter.default.addObserver(self, selector: #selector(sessionInterruption), name: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
+            NotificationCenter.default.addObserver(self, selector: #selector(routeChanged), name: AVAudioSession.routeChangeNotification, object: AVAudioSession.sharedInstance())
+            NotificationCenter.default.addObserver(self, selector: #selector(mediaServicesWereReset), name: AVAudioSession.mediaServicesWereResetNotification, object: AVAudioSession.sharedInstance())
+        }
         #if os(iOS)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
@@ -545,7 +547,17 @@ extension AudioPlayerAVEngine: AudioPlayerable {
         item.cancelPendingSeeks()
         previous?.complete(false)
         guard self.generation == generation, seekRequest === request else { return }
-        guard case .playing = state, item.status == .readyToPlay else { return }
+        guard item.status == .readyToPlay else { return }
+        switch state {
+        case .playing:
+            break
+        case .finished:
+            // EOF 后重新进入已就绪生命周期，保持暂停意图；显式 0 也走完整 seek 生命周期。
+            state = .playing
+            guard self.generation == generation, seekRequest === request else { return }
+        default:
+            return
+        }
         startSeek(request, item: item)
     }
 
@@ -697,5 +709,22 @@ extension AudioPlayerAVEngine: AVAudioPlaybackMonitoring {
         let toEnd = finiteEnd && (local || end >= duration - 0.001)
         let available = local && finiteEnd ? max(0, duration - position) : max(0, end - position)
         return .init(canPlayFastForward: item.canPlayFastForward, bufferedDuration: available, isBufferedToEnd: toEnd)
+    }
+}
+
+extension AudioPlayerAVEngine: AVAudioNativePlaybackMonitoring {
+    var nativePlaybackSample: AVAudioNativePlaybackSample {
+        precondition(Thread.isMainThread)
+        let pending = seekRequest != nil
+        let seconds = player.currentItem?.currentTime().seconds
+        let position: TimeInterval?
+        if !pending, player.currentItem?.status == .readyToPlay,
+           let seconds = seconds, seconds.isFinite, seconds >= 0 {
+            position = seconds
+        } else {
+            position = nil
+        }
+        return .init(position: position, seekPending: pending, rate: Double(player.rate),
+                     sampledAt: ProcessInfo.processInfo.systemUptime)
     }
 }

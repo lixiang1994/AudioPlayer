@@ -4,6 +4,186 @@ import AVFoundation
 
 /// 确定性验证乱序 completion、业务回调重入以及观察者释放。
 final class SeekLifecycleTests: PlaybackTestCase {
+    func testNativeSampleTracksActualPositionAndRate() {
+        let publicPlayer = AudioPlayer.av.instance()
+        XCTAssertNotNil(publicPlayer as? AVAudioNativePlaybackMonitoring)
+        publicPlayer.stop()
+        XCTAssertNil(engine.nativePlaybackSample.position)
+        XCTAssertFalse(engine.nativePlaybackSample.seekPending)
+        XCTAssertEqual(engine.nativePlaybackSample.rate, 0)
+        prepare(seek: 4)
+        engine.rate = 1.5
+        let paused = engine.nativePlaybackSample
+        XCTAssertEqual(paused.position ?? -1, 4, accuracy: 0.05)
+        XCTAssertEqual(paused.rate, 0)
+        XCTAssertLessThanOrEqual(paused.sampledAt, ProcessInfo.processInfo.systemUptime)
+        engine.play()
+        eventually("原生位置和底层速率应实际推进") {
+            let sample = self.engine.nativePlaybackSample
+            return (sample.position ?? 0) > 4.1 && abs(sample.rate - 1.5) < 0.01
+        }
+        engine.pause()
+        let stopped = engine.nativePlaybackSample
+        pump(0.15)
+        XCTAssertEqual(engine.nativePlaybackSample.position ?? -1, stopped.position ?? -1, accuracy: 0.05)
+        XCTAssertEqual(engine.nativePlaybackSample.rate, 0)
+        XCTAssertGreaterThan(engine.nativePlaybackSample.sampledAt, paused.sampledAt)
+    }
+
+    func testNativeSampleHidesPendingTargetAndRestoresActualPositionAfterFailure() {
+        let player = useControlledPlayer()
+        engine.seek(to: .init(time: 20))
+        XCTAssertEqual(engine.current, 20)
+        XCTAssertTrue(engine.nativePlaybackSample.seekPending)
+        XCTAssertNil(engine.nativePlaybackSample.position)
+        XCTAssertEqual(engine.nativePlaybackSample.rate, 0)
+        engine.seek(to: .init(time: 0))
+        player.completions[0](true)
+        pump(0.03)
+        XCTAssertTrue(engine.nativePlaybackSample.seekPending)
+        XCTAssertNil(engine.nativePlaybackSample.position)
+        player.completions[1](false)
+        pump(0.03)
+        XCTAssertFalse(engine.nativePlaybackSample.seekPending)
+        XCTAssertEqual(engine.nativePlaybackSample.position ?? -1, 0, accuracy: 0.05)
+    }
+
+    func testNativeSamplePendingBeforeReadyAndStop() {
+        engine.prepare(resource: audio)
+        XCTAssertNil(engine.nativePlaybackSample.position)
+        engine.seek(to: .init(time: 0))
+        XCTAssertTrue(engine.nativePlaybackSample.seekPending)
+        XCTAssertNil(engine.nativePlaybackSample.position)
+        eventually("准备阶段的 0 seek 应完成") { !self.engine.nativePlaybackSample.seekPending }
+        XCTAssertEqual(engine.nativePlaybackSample.position ?? -1, 0, accuracy: 0.05)
+        engine.stop()
+        XCTAssertNil(engine.nativePlaybackSample.position)
+        XCTAssertFalse(engine.nativePlaybackSample.seekPending)
+        XCTAssertEqual(engine.nativePlaybackSample.rate, 0)
+    }
+
+    func testNativeSampleFailureClearsPendingAndIgnoresLateCompletion() {
+        let player = useControlledPlayer()
+        engine.seek(to: .init(time: 9))
+        NotificationCenter.default.post(name: .AVPlayerItemFailedToPlayToEndTime, object: player.currentItem!)
+        XCTAssertNil(engine.resource)
+        XCTAssertNil(engine.nativePlaybackSample.position)
+        XCTAssertFalse(engine.nativePlaybackSample.seekPending)
+        XCTAssertEqual(engine.nativePlaybackSample.rate, 0)
+        prepare(otherAudio)
+        player.completions[0](true)
+        pump(0.03)
+        XCTAssertEqual(engine.nativePlaybackSample.position ?? -1, 0, accuracy: 0.05)
+        XCTAssertFalse(engine.nativePlaybackSample.seekPending)
+    }
+
+    func testFinishedSeekReadyDelegateCanStop() {
+        let player = useControlledPlayer()
+        NotificationCenter.default.post(name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem!)
+        recorder.onState = { state in
+            if case .playing = state { self.engine.stop() }
+        }
+        var results: [Bool] = []
+        engine.seek(to: .init(time: 0, completion: { results.append($0) }))
+        XCTAssertEqual(results, [false])
+        XCTAssertTrue(player.completions.isEmpty)
+        XCTAssertFalse(engine.nativePlaybackSample.seekPending)
+        if case .stopped = engine.state {} else { XCTFail("重入 stop 后必须保持停止") }
+    }
+
+    func testFinishedSeekReadyDelegateCanSwitchResource() {
+        let player = useControlledPlayer()
+        NotificationCenter.default.post(name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem!)
+        recorder.onState = { state in
+            if case .playing = state {
+                self.recorder.onState = nil
+                self.engine.prepare(resource: self.otherAudio)
+            }
+        }
+        var results: [Bool] = []
+        engine.seek(to: .init(time: 2, completion: { results.append($0) }))
+        XCTAssertEqual(results, [false])
+        XCTAssertEqual(engine.resource?.value, otherAudio)
+        XCTAssertTrue(player.completions.isEmpty)
+        eventually("新资源应就绪") { self.engine.nativePlaybackSample.position != nil }
+        XCTAssertEqual(engine.nativePlaybackSample.position ?? -1, 0, accuracy: 0.05)
+    }
+
+    func testFinishedSeekReadyDelegateCanSupersedeRequest() {
+        let player = useControlledPlayer()
+        NotificationCenter.default.post(name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem!)
+        recorder.onState = { state in
+            if case .playing = state { self.engine.seek(to: .init(time: 7)) }
+        }
+        var results: [Bool] = []
+        engine.seek(to: .init(time: 2, completion: { results.append($0) }))
+        XCTAssertEqual(results, [false])
+        XCTAssertEqual(player.completions.count, 1)
+        XCTAssertEqual(recorder.seekBegins, [7])
+        XCTAssertTrue(engine.nativePlaybackSample.seekPending)
+        player.completions[0](true)
+        pump(0.03)
+        XCTAssertEqual(recorder.seekEnds, [7])
+        XCTAssertFalse(engine.nativePlaybackSample.seekPending)
+    }
+
+    func testRealEOFPauseSeekCompletesWithoutPlayThenExplicitZero() {
+        let player = prepareAtRealEOF()
+        engine.pause()
+        var results: [Bool] = []
+        engine.seek(to: .init(time: 2, completion: { results.append($0) }))
+        eventually("EOF 后暂停 seek 必须完成，无需 play", timeout: 3) { !results.isEmpty }
+        XCTAssertEqual(results, [true])
+        if case .playing = engine.state {} else { XCTFail("seek 应重新进入 ready 生命周期") }
+        XCTAssertEqual(player.currentItem!.currentTime().seconds, 2, accuracy: 0.05)
+        XCTAssertFalse(engine.nativePlaybackSample.seekPending)
+        XCTAssertEqual(engine.nativePlaybackSample.position ?? -1, 2, accuracy: 0.05)
+        XCTAssertEqual(engine.nativePlaybackSample.rate, 0)
+        XCTAssertEqual(player.rate, 0)
+        pump(0.3)
+        XCTAssertEqual(player.currentItem!.currentTime().seconds, 2, accuracy: 0.05)
+        engine.seek(to: .init(time: 0, completion: { results.append($0) }))
+        eventually("显式 0 seek 必须完成", timeout: 3) { results.count == 2 }
+        XCTAssertEqual(results, [true, true])
+        XCTAssertFalse(engine.nativePlaybackSample.seekPending)
+        XCTAssertEqual(engine.nativePlaybackSample.position ?? -1, 0, accuracy: 0.05)
+        XCTAssertEqual(engine.nativePlaybackSample.rate, 0)
+        XCTAssertEqual(recorder.seekBegins.suffix(2), [2, 0])
+        XCTAssertEqual(recorder.seekEnds.suffix(2), [2, 0])
+        XCTAssertEqual(player.currentItem!.currentTime().seconds, 0, accuracy: 0.05)
+        XCTAssertEqual(player.rate, 0)
+        XCTAssertEqual(engine.control, .pausing)
+    }
+
+    func testExplicitZeroSeekDirectlyAfterRealEOFStaysPaused() {
+        let player = prepareAtRealEOF()
+        var results: [Bool] = []
+        engine.seek(to: .init(time: 0, completion: { results.append($0) }))
+        eventually("EOF 后显式 0 seek 必须完成", timeout: 3) { !results.isEmpty }
+        XCTAssertEqual(results, [true])
+        if case .playing = engine.state {} else { XCTFail("0 seek 应重新进入 ready 生命周期") }
+        XCTAssertEqual(player.currentItem!.currentTime().seconds, 0, accuracy: 0.05)
+        XCTAssertEqual(player.rate, 0)
+        engine.play()
+        eventually("随后 play 应从 0 继续") { player.currentItem!.currentTime().seconds > 0.1 && player.rate > 0 }
+    }
+
+    private func prepareAtRealEOF() -> AVPlayer {
+        engine.stop()
+        let player = AVPlayer()
+        var configuration = AudioPlayerConfiguration()
+        configuration.isAutoplay = false
+        engine = AudioPlayerAVEngine(configuration, player: player)
+        engine.add(delegate: recorder)
+        prepare(seek: 23.7)
+        engine.play()
+        eventually("必须等待真实 EOF 通知，不能注入通知代替", timeout: 3) {
+            if case .finished = self.engine.state { return true }; return false
+        }
+        XCTAssertEqual(player.currentItem!.currentTime().seconds, 24, accuracy: 0.05)
+        return player
+    }
+
     /// 第一个代理在旧 seekBegan 内再次寻时，后续代理只能收到仍有效的新请求。
     func testReentrantSeekDoesNotDeliverStaleBeganToOtherDelegates() {
         let player = useControlledPlayer()

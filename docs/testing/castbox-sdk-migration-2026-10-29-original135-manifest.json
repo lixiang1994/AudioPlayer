@@ -1,0 +1,462 @@
+{
+  "completed_at": "2026-10-29T18:47:59.519446+08:00",
+  "repository": "/Users/lee/Documents/Code/Github/AudioPlayer",
+  "head": "2e3ebcf02add3c536ac177a34242bef19564a5eb",
+  "device": "00008140-000D1962348A801C",
+  "configuration": "Debug",
+  "source_changed_during_run": [],
+  "command": "xcodebuild test-without-building -workspace Demo/Demo.xcworkspace -scheme Demo -destination 'platform=iOS,id=00008140-000D1962348A801C' -derivedDataPath /private/tmp/audioplayer-castbox-sdk-20261029/DeviceDerivedData -parallel-testing-enabled NO -collect-test-diagnostics never -resultBundlePath /private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/result.xcresult",
+  "automatic_failure_retry": false,
+  "iterations": 1,
+  "explicit_random_seed": null,
+  "random_execution_configured": false,
+  "actual_order_matches_original": true,
+  "started": 135,
+  "unique_tests": 135,
+  "passed": 135,
+  "failed": 0,
+  "skipped": 0,
+  "failed_tests": [],
+  "order": [
+    "DemoTests.DemoIntegrationTests testAVPlaybackCapacityFollowsItemLifetime",
+    "DemoTests.DemoIntegrationTests testBoostPageHonorsLatestPreferenceAndCancellation",
+    "DemoTests.DemoIntegrationTests testBoostPageReleasesTapContextsAndCancelledPage",
+    "DemoTests.DemoIntegrationTests testBoostPageReportsMissingFixture",
+    "DemoTests.DemoIntegrationTests testBoostPeakPairsRemainConsistentAcrossChangingBlocks",
+    "DemoTests.DemoIntegrationTests testBoostSwitchPreservesResourceProgressAndPause",
+    "DemoTests.DemoIntegrationTests testBoostTapActuallyProcessesOriginalAndDoubleGain",
+    "DemoTests.DemoIntegrationTests testBoostTapLimitsClippingForLoudPCM",
+    "DemoTests.DemoIntegrationTests testDeviceDiagnosticsPreservesAudioMixNavigationAndStopsOnReturn",
+    "DemoTests.DemoIntegrationTests testDeviceDiagnosticsPreservesRegularPlayerNavigation",
+    "DemoTests.DemoIntegrationTests testDisabledSilenceDetectionDoesNotAnalyzePCM",
+    "DemoTests.DemoIntegrationTests testHTTPAACSilenceAcceleration",
+    "DemoTests.DemoIntegrationTests testHTTPMP3SilenceAcceleration",
+    "DemoTests.DemoIntegrationTests testHTTPSilenceAccelerationActuallyProcessesPCM",
+    "DemoTests.DemoIntegrationTests testManagerAutomaticallyAdvancesAfterFinish",
+    "DemoTests.DemoIntegrationTests testManagerBoostCancelsStaleNetworkPreparation",
+    "DemoTests.DemoIntegrationTests testManagerBoostPreservesPlaybackAndPreferenceAcrossTracks",
+    "DemoTests.DemoIntegrationTests testManagerHTTPAACBoostActuallyProcessesPCM",
+    "DemoTests.DemoIntegrationTests testManagerHTTPMP3BoostActuallyProcessesPCM",
+    "DemoTests.DemoIntegrationTests testManagerHTTPWAVBoostActuallyProcessesPCM",
+    "DemoTests.DemoIntegrationTests testManagerRestoresProgressAndSwitchesQueue",
+    "DemoTests.DemoIntegrationTests testMixColdStartConfiguresPlaybackSession",
+    "DemoTests.DemoIntegrationTests testMixDefaultControlsAndEnvelopeReturnPreservePlayback",
+    "DemoTests.DemoIntegrationTests testMixExamplesApplyEnvelopesWithoutRestartingPlayback",
+    "DemoTests.DemoIntegrationTests testMixExampleSelectionDuringPreparationUsesLatestMode",
+    "DemoTests.DemoIntegrationTests testMixRateLabelDistinguishesTargetAndPausedState",
+    "DemoTests.DemoIntegrationTests testMixReapplyEnvelopeAndLiveStatus",
+    "DemoTests.DemoIntegrationTests testMixSourceComparisonAndSilenceShortcut",
+    "DemoTests.DemoIntegrationTests testOriginalPlaybackPageSwitchControlsCurrentResource",
+    "DemoTests.DemoIntegrationTests testSilenceAccelerationRemainsStableAndReplays",
+    "DemoTests.DemoIntegrationTests testSilenceAccelerationRestoresUserRateAndPlaybackIntent",
+    "DemoTests.DemoIntegrationTests testSilenceAndBoostSwitchesAreIndependentDuringPlayback",
+    "DemoTests.DemoIntegrationTests testSilenceBufferThresholdsAndHysteresis",
+    "DemoTests.DemoIntegrationTests testSilenceContinuationCannotHideSoundInsideOneBatch",
+    "DemoTests.DemoIntegrationTests testSilenceContinuationRejectsDiscontinuousEvidence",
+    "DemoTests.DemoIntegrationTests testSilenceDetectorProtectsRightChannelSound",
+    "DemoTests.DemoIntegrationTests testSilenceInterruptionAndRoutePolicies",
+    "DemoTests.DemoIntegrationTests testSilenceMaximumRateAndCapabilityFallback",
+    "DemoTests.DemoIntegrationTests testSilencePageControlsDriveIndependentPreferences",
+    "DemoTests.DemoIntegrationTests testSilencePageReleasesTimerAndTap",
+    "DemoTests.DemoIntegrationTests testSilenceRateLimitsAndRapidOperations",
+    "DemoTests.DemoIntegrationTests testSilenceRateMatchesAVPlayerAndMediaClock",
+    "DemoTests.DemoIntegrationTests testSilenceRealBufferExhaustionAndRecovery",
+    "DemoTests.DemoIntegrationTests testSilenceSampleCancellationAndLatestPreferences",
+    "DemoTests.DemoIntegrationTests testSilenceSlowUserRateRemainsStable",
+    "DemoTests.DemoIntegrationTests testSilenceTimelineExpiresWhileMediaClockIsFrozen",
+    "DemoTests.DemoIntegrationTests testSilenceTimelineHysteresisAndSoundExit",
+    "DemoTests.DemoIntegrationTests testSilenceTimelineRejectsUnsafeEvidence",
+    "DemoTests.DemoIntegrationTests testSilenceTimelineRequiresFreshConfirmedWindows",
+    "DemoTests.HTTPPlaybackTests testConnectionDropThenExplicitRetry",
+    "DemoTests.HTTPPlaybackTests testCorruptMediaFailsAndRecovers",
+    "DemoTests.HTTPPlaybackTests testDelayedResponseEventuallyPlays",
+    "DemoTests.HTTPPlaybackTests testHLSVODSeekAndPlay",
+    "DemoTests.HTTPPlaybackTests testHTTPAuthorizationFailureCanRecover",
+    "DemoTests.HTTPPlaybackTests testHTTPCompressedAudio",
+    "DemoTests.HTTPPlaybackTests testHTTPFailureThenLocalPlayback",
+    "DemoTests.HTTPPlaybackTests testHTTPPrepareSeekAndPlay",
+    "DemoTests.HTTPPlaybackTests testHTTPRedirect",
+    "DemoTests.HTTPPlaybackTests testPauseDuringDelayedResponse",
+    "DemoTests.HTTPPlaybackTests testPauseWhileHTTPPreparing",
+    "DemoTests.HTTPPlaybackTests testPauseWhileStreamStalledPreventsResume",
+    "DemoTests.HTTPPlaybackTests testStopWhileHTTPPreparing",
+    "DemoTests.HTTPPlaybackTests testStreamStallAndRecovery",
+    "DemoTests.HTTPPlaybackTests testSwitchResourceWhileResponseDelayed",
+    "DemoTests.PlaybackTests testAudioMixResourceCopiesMutableConfiguration",
+    "DemoTests.PlaybackTests testAudioMixResourceFailureClearsItemAndResource",
+    "DemoTests.PlaybackTests testAudioMixResourceStopClearsItemAndResource",
+    "DemoTests.PlaybackTests testAudioMixResourceSwitchReplacesMix",
+    "DemoTests.PlaybackTests testAudioMixResourceUsesOriginalAssetAndPlays",
+    "DemoTests.PlaybackTests testAutoplayAdvancesActualTime",
+    "DemoTests.PlaybackTests testCompressedAudioAndBackwardSeek",
+    "DemoTests.PlaybackTests testContiguousBufferRangesRejectHolesAndInvalidTimes",
+    "DemoTests.PlaybackTests testFailureThenPrepareValidResource",
+    "DemoTests.PlaybackTests testFailureToEndPreservesUnderlyingError",
+    "DemoTests.PlaybackTests testFinishAndReplay",
+    "DemoTests.PlaybackTests testInvalidAndStoppedSeekCompleteFalse",
+    "DemoTests.PlaybackTests testInvalidRatePreservesPreviousSetting",
+    "DemoTests.PlaybackTests testLiveAudioMixUpdatePreservesItemAndPlayback",
+    "DemoTests.PlaybackTests testLiveAudioMixUpdatePreservesPauseAndCopiesConfiguration",
+    "DemoTests.PlaybackTests testLiveAudioMixUpdateRejectsStaleAssetAndStoppedResource",
+    "DemoTests.PlaybackTests testLoopRestartsPlayback",
+    "DemoTests.PlaybackTests testMP3PlaybackAndBackwardSeek",
+    "DemoTests.PlaybackTests testNegativeSeekClampsToStart",
+    "DemoTests.PlaybackTests testNewResourceClearsSeekCalibration",
+    "DemoTests.PlaybackTests testPauseDuringSeek",
+    "DemoTests.PlaybackTests testPauseRateAndResume",
+    "DemoTests.PlaybackTests testPrepareWithoutAutoplayRemainsPaused",
+    "DemoTests.PlaybackTests testRapidSeeksReachLastPosition",
+    "DemoTests.PlaybackTests testRepeatedEngineDeallocation",
+    "DemoTests.PlaybackTests testRepeatedResourceSwitchSeekAndStop",
+    "DemoTests.PlaybackTests testResourcesWithoutMixClearPreviousMix",
+    "DemoTests.PlaybackTests testSameURLReloadStartsAtZero",
+    "DemoTests.PlaybackTests testSeekAfterFinishCompletesOnceWhenReplayed",
+    "DemoTests.PlaybackTests testSeekBeforeReady",
+    "DemoTests.PlaybackTests testTwoMinuteContinuousPlayback",
+    "DemoTests.PlaybackTests testZeroCallbackFrequencyIsSafe",
+    "DemoTests.SeekLifecycleTests testCancelledCompletionCanPrepareNewResource",
+    "DemoTests.SeekLifecycleTests testCompletionCanStartAnotherSeek",
+    "DemoTests.SeekLifecycleTests testCompletionCanSwitchResource",
+    "DemoTests.SeekLifecycleTests testDelegateCanStopWhenReady",
+    "DemoTests.SeekLifecycleTests testExplicitZeroSeekDirectlyAfterRealEOFStaysPaused",
+    "DemoTests.SeekLifecycleTests testFailedSeekDoesNotKeepOptimisticProgress",
+    "DemoTests.SeekLifecycleTests testFinishedSeekReadyDelegateCanStop",
+    "DemoTests.SeekLifecycleTests testFinishedSeekReadyDelegateCanSupersedeRequest",
+    "DemoTests.SeekLifecycleTests testFinishedSeekReadyDelegateCanSwitchResource",
+    "DemoTests.SeekLifecycleTests testLateCancelledSeekCannotOverwriteNewSeek",
+    "DemoTests.SeekLifecycleTests testNativeSampleFailureClearsPendingAndIgnoresLateCompletion",
+    "DemoTests.SeekLifecycleTests testNativeSampleHidesPendingTargetAndRestoresActualPositionAfterFailure",
+    "DemoTests.SeekLifecycleTests testNativeSamplePendingBeforeReadyAndStop",
+    "DemoTests.SeekLifecycleTests testNativeSampleTracksActualPositionAndRate",
+    "DemoTests.SeekLifecycleTests testNotificationsFromOldItemAreIgnored",
+    "DemoTests.SeekLifecycleTests testOldSeekCompletionAfterResourceSwitchIsIgnored",
+    "DemoTests.SeekLifecycleTests testPendingSeekCompletesWhenSuperseded",
+    "DemoTests.SeekLifecycleTests testRealEOFPauseSeekCompletesWithoutPlayThenExplicitZero",
+    "DemoTests.SeekLifecycleTests testReentrantFinishDoesNotDeliverStaleReady",
+    "DemoTests.SeekLifecycleTests testReentrantPauseDoesNotDeliverStaleControl",
+    "DemoTests.SeekLifecycleTests testReentrantSeekDoesNotDeliverStaleBeganToOtherDelegates",
+    "DemoTests.SeekLifecycleTests testReentrantSeekDoesNotDeliverStaleEndedToOtherDelegates",
+    "DemoTests.SeekLifecycleTests testReleaseTearsDownPlayer",
+    "DemoTests.SeekLifecycleTests testStopCancelsSeekExactlyOnce",
+    "DemoTests.SeekLifecycleTests testStopFromSeekBeganDoesNotSubmitRequest",
+    "DemoTests.SessionAndRemoteTests testBackgroundPolicyOverridesStaleSystemPlayingStatus",
+    "DemoTests.SessionAndRemoteTests testForegroundRestoresPlaybackBlockedByBackgroundPolicy",
+    "DemoTests.SessionAndRemoteTests testHostManagedSessionIgnoresInterruptionAndDoesNotAutoResume",
+    "DemoTests.SessionAndRemoteTests testHostManagedSessionIgnoresMediaServicesReset",
+    "DemoTests.SessionAndRemoteTests testHostManagedSessionIgnoresRouteChange",
+    "DemoTests.SessionAndRemoteTests testHostManagedSessionStillHonorsBackgroundPolicy",
+    "DemoTests.SessionAndRemoteTests testInterruptionWithoutResumePermissionStaysPaused",
+    "DemoTests.SessionAndRemoteTests testInterruptionWithPermissionResumes",
+    "DemoTests.SessionAndRemoteTests testMediaServicesResetReportsFailure",
+    "DemoTests.SessionAndRemoteTests testNowPlayingRateTracksPauseAndResume",
+    "DemoTests.SessionAndRemoteTests testOldDeviceUnavailablePauses",
+    "DemoTests.SessionAndRemoteTests testPrepareDuringInterruptionWaitsForResume",
+    "DemoTests.SessionAndRemoteTests testUserPauseDuringInterruptionPreventsResume",
+    "DemoTests.SessionAndRemoteTests testUserPauseInBackgroundPreventsForegroundResume"
+  ],
+  "effect_and_pcm_tests": [
+    {
+      "identifier": "DemoIntegrationTests/testBoostTapActuallyProcessesOriginalAndDoubleGain()",
+      "status": "Success",
+      "duration": "0.8096179962158203",
+      "attachments": []
+    },
+    {
+      "identifier": "DemoIntegrationTests/testHTTPAACSilenceAcceleration()",
+      "status": "Success",
+      "duration": "4.308552026748657",
+      "attachments": [
+        {
+          "file": "testHTTPAACSilenceAcceleration-public.plain-text_0_6C55ADEF-8127-4CC7-9F34-7BD5E5C12D36.txt",
+          "sha256": "f1f5f42a2e47022d5455502d73465bf265a3eb16a5a4bf4c66a07361931e069c",
+          "type": "public.plain-text",
+          "text": "HTTP m4a: target=3.0, media/uptime=2.999970258480181"
+        }
+      ]
+    },
+    {
+      "identifier": "DemoIntegrationTests/testHTTPMP3SilenceAcceleration()",
+      "status": "Success",
+      "duration": "4.180393099784851",
+      "attachments": [
+        {
+          "file": "testHTTPMP3SilenceAcceleration-public.plain-text_0_703BC7CD-C43F-468E-8A9B-D32700A8AD84.txt",
+          "sha256": "7b99901695dfff06657221724a16b5729fb0c0f33099ff313338ec2fedceff2f",
+          "type": "public.plain-text",
+          "text": "HTTP mp3: target=3.0, media/uptime=3.000001449812072"
+        }
+      ]
+    },
+    {
+      "identifier": "DemoIntegrationTests/testSilenceRateMatchesAVPlayerAndMediaClock()",
+      "status": "Success",
+      "duration": "3.8219090700149536",
+      "attachments": [
+        {
+          "file": "testSilenceRateMatchesAVPlayerAndMediaClock-public.plain-text_0_4E4C2631-B108-475D-BA00-E3EA2F333D74.txt",
+          "sha256": "f75789cba8a9a050e32df172639ea2c48616e128e5236bb11829b2d1ff935166",
+          "type": "public.plain-text",
+          "text": "local WAV: target=3.0, AVPlayer.rate=3.0, media/uptime=2.9999655359381525"
+        }
+      ]
+    }
+  ],
+  "source_snapshot": {
+    "captured_at": "2026-10-29T18:41:43.670336+08:00",
+    "repository": "/Users/lee/Documents/Code/Github/AudioPlayer",
+    "head": "2e3ebcf02add3c536ac177a34242bef19564a5eb",
+    "device": "00008140-000D1962348A801C",
+    "files": [
+      {
+        "path": "Demo/Demo.xcodeproj/project.pbxproj",
+        "sha256": "61dee8cf0c726697011fcd421f20398b9a971690bd7bb2eae7fa537eb8b5bd1e"
+      },
+      {
+        "path": "Demo/Demo.xcodeproj/xcshareddata/xcschemes/Demo.xcscheme",
+        "sha256": "9682f866d8e62be004fe55c4fc4cee53fa3dc37f024682d3649a53bf69824e5f"
+      },
+      {
+        "path": "Demo/Demo/AudioProcessing/AudioMixSilenceAcceleration.swift",
+        "sha256": "d6a1ca3b9ba215aeaebe9399b17add9973f60412bf92ca25ab7813babdf42887"
+      },
+      {
+        "path": "Demo/Demo/AudioProcessing/AudioMixVolumeBoost.c",
+        "sha256": "f2dc51b0f22942fba30a6cd5ebc5d55d7bf4c46f9af42fad06bbdf991fa9f78b"
+      },
+      {
+        "path": "Demo/Demo/AudioProcessing/AudioMixVolumeBoost.h",
+        "sha256": "6a8cf2595ed7bbf5af8be2d896b2bb7b45d93b1a4c709f865d0b9d76cee19ce6"
+      },
+      {
+        "path": "Demo/Demo/AudioProcessing/AudioMixVolumeBoost.swift",
+        "sha256": "a59f3ef5bd0a3188d5633e7880795d1c002c91e2f074a0baa052c4c3d213050f"
+      },
+      {
+        "path": "Demo/Podfile",
+        "sha256": "24ff5900edbe12bd2fac416e421a4532785341fd39802a0e5fa256a5ef923f0e"
+      },
+      {
+        "path": "Demo/Podfile.lock",
+        "sha256": "7ec3ded7a09e2420d1030ae7edee60ddf3f9fc681acc7486bbde3ab5533820b8"
+      },
+      {
+        "path": "Demo/Pods/Manifest.lock",
+        "sha256": "7ec3ded7a09e2420d1030ae7edee60ddf3f9fc681acc7486bbde3ab5533820b8"
+      },
+      {
+        "path": "Demo/Tests/DEVICE-VALIDATION.md",
+        "sha256": "0ed099a36b557171706fb3a66e7548917c4abc93031625a7de4f9c7530230f7a"
+      },
+      {
+        "path": "Demo/Tests/DemoIntegrationTests.swift",
+        "sha256": "89b1850c7d610a19f8d9d9bbd88fa0610339396a994ff94a6d7eef1af70ad7b2"
+      },
+      {
+        "path": "Demo/Tests/Fixtures/segment00.ts",
+        "sha256": "02d035f0c99a85fac049cb8e742a868dd40b6d29a52c96768922d12ef008a5ad"
+      },
+      {
+        "path": "Demo/Tests/Fixtures/segment01.ts",
+        "sha256": "efc58dde21841dffc8460e1c74ced15af4570253bcb6eaf9db3c39e57dee0942"
+      },
+      {
+        "path": "Demo/Tests/Fixtures/segment02.ts",
+        "sha256": "2463f26e2efc6e7436909479a18963681d10e232a556d9a406aae4986f8f2899"
+      },
+      {
+        "path": "Demo/Tests/Fixtures/segment03.ts",
+        "sha256": "113ca3ab5f931647dc1118d3ca7b7253818849b407e497f50b37f42f3a41c0cd"
+      },
+      {
+        "path": "Demo/Tests/Fixtures/segment04.ts",
+        "sha256": "4d238ff5f27bb00a51b4e6a5ce675ee6b6c057cf8b3ca4b5d13eb459e805b643"
+      },
+      {
+        "path": "Demo/Tests/Fixtures/silence.m4a",
+        "sha256": "c7a32d5af877c2f3ea1175ebc32646fbb89ede15e26bb76c17f24fa6d71732d1"
+      },
+      {
+        "path": "Demo/Tests/Fixtures/silence.mp3",
+        "sha256": "3c288cd66c9aa8a76708a6c45facc783f71ab749eacf473bb337baced5034c37"
+      },
+      {
+        "path": "Demo/Tests/Fixtures/tone.m3u8",
+        "sha256": "6845e126cd5ecc60a28b0842eb81b8555cbe859578bd6db1283154feef2b8b85"
+      },
+      {
+        "path": "Demo/Tests/Fixtures/tone.mp3",
+        "sha256": "b190a68c6184b9b363c5005580e2392592745b45818b6ff1bc1a3c52432be8dd"
+      },
+      {
+        "path": "Demo/Tests/HTTPPlaybackTests.swift",
+        "sha256": "663ebd1ea10319ad508d3d4e2c680ce147c6ec0826dad2f44807253209852972"
+      },
+      {
+        "path": "Demo/Tests/PlaybackTestCase.swift",
+        "sha256": "d21f4502675e0920453b10955a847d703bb92b99e54e0c33b3de0fa3d8a0a71b"
+      },
+      {
+        "path": "Demo/Tests/PlaybackTests.swift",
+        "sha256": "077fae599d2fef877178fcc282624e9a2a319521ae21a6ef1125361ab021eff2"
+      },
+      {
+        "path": "Demo/Tests/README.md",
+        "sha256": "68eb52fa90671f268e05bb5f8c7ddd832ea01c5b0426fc714ed1a9a1c56159e0"
+      },
+      {
+        "path": "Demo/Tests/SeekLifecycleTests.swift",
+        "sha256": "191b476656d5a5617f1619a8462c64d183b9bb06324e629ab94a5b1d47f079d3"
+      },
+      {
+        "path": "Demo/Tests/SessionAndRemoteTests.swift",
+        "sha256": "2fdd3f87a22d738a30e207cf2bb1ed33ea820d082a8313d969aa83284ba0c4ee"
+      },
+      {
+        "path": "Demo/Tests/generate-media.sh",
+        "sha256": "b0fb88b2024892106bbb8924babef4e4fe9bf67dc44f866a61e59eb3329b1747"
+      },
+      {
+        "path": "Demo/Tests/verify-device-background.py",
+        "sha256": "eec2655457720409c19eb767e100ad5838950783ab3c88c2b02515ec5695b18a"
+      },
+      {
+        "path": "Sources/AV/AVAudioPlayer.swift",
+        "sha256": "6e6c49be02e0142c860be1eeb877c7a65f1b23e0c678779e7c7ecd973f946af6"
+      },
+      {
+        "path": "Sources/AV/AVAudioPlayerResource.swift",
+        "sha256": "fb41b37c9fbc9c5b504bc383c6ece4ed926c1cd24d01537ef81284f472bfe816"
+      },
+      {
+        "path": "Sources/AudioPlayer.h",
+        "sha256": "2bc15134c1892fc8c1e8e10ecf0bd7e08103a4938bc8375aa7ab10304dc47c07"
+      },
+      {
+        "path": "Sources/Core/AudioPlayer.swift",
+        "sha256": "fb6b838d1c86735be3359745ce2e3f7cc8c785d5d3ef8ce7e827b0b18282edca"
+      },
+      {
+        "path": "Sources/Core/AudioPlayerConfiguration.swift",
+        "sha256": "f0fbd5c154b2f3bb1fbed153122b8831155ab1c7b7856a0415e66e516343fb06"
+      },
+      {
+        "path": "Sources/Core/AudioPlayerDelegate.swift",
+        "sha256": "0a803b710c2d2d7a94d4a66edace94a8289bb51b8e9d7b0826425850783743ff"
+      },
+      {
+        "path": "Sources/Core/AudioPlayerDelegates.swift",
+        "sha256": "5a47948976f54fa6892faead278217fc6d4974225d60160dd2b95acab744d1bb"
+      },
+      {
+        "path": "Sources/Core/AudioPlayerRemoteControl.swift",
+        "sha256": "de3eb17fbd01a219050f3d73e67874f07a8afa018967723e3ede2f2841ea07fd"
+      },
+      {
+        "path": "Sources/Core/AudioPlayerable.swift",
+        "sha256": "e043449cdef5b9447b32bf01339fd1249614db1a839c332ea1d13625e606780d"
+      },
+      {
+        "path": "Sources/Info.plist",
+        "sha256": "f8fd1a1ae993861c4a8a659e206fde064e5a5fec1d761a704fa4f84fe636cc06"
+      },
+      {
+        "path": "Sources/PrivacyInfo.xcprivacy",
+        "sha256": "4aae5752b3038da4149c66235c42c20f86c6e50a79a1c5caeac2c7d995a7daf4"
+      }
+    ],
+    "configuration": "Debug",
+    "parallel_testing": false,
+    "automatic_failure_retry": false,
+    "explicit_random_seed": null,
+    "order_policy": "Original scheme default; no randomExecutionOrdering or random seed configured; actual order will be compared with original 135 log."
+  },
+  "result_bundle": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/result.xcresult",
+  "original_failure": {
+    "result": "/private/tmp/audioplayer-castbox-sdk-20261029/device-full-serial.xcresult",
+    "passed": 134,
+    "failed": 1,
+    "measured_http_aac_rate": 1.3184387360841687,
+    "target": 3.0,
+    "root_cause_resolved": false
+  },
+  "risk": "Single original-configuration run does not establish root cause or eliminate the prior intermittent failure. Native item clocks and PCM callbacks do not prove physical audio output.",
+  "evidence": [
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/before.json",
+      "sha256": "d401e3c57e9ce44eea00833f42df39cb98027f8d3c760d56fb73f49a80f0a1d9"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/original-order.json",
+      "sha256": "218e0e7058f8ccedc919a82abaeaf8a355f945f03b5efede3b2f30688de4fccb"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/testBoostTapActuallyProcessesOriginalAndDoubleGain-summary.json",
+      "sha256": "dbfeaa95a24a17deb96290a28a95a017d25938ec6ff770f6df7e2867da2cabfd"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/Demo_iphoneos27.1-arm64.xctestrun",
+      "sha256": "1e9c87a7d1123f8258fd5ee4539be94162add4dc49a35debce5000d44bd90627"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/test.log",
+      "sha256": "f536b7a1f13b2d2ce7b166a6257afa4b8ac6a9af73044255d8a249e197cfcaa7"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/result-root.json",
+      "sha256": "d17401521dca7fba9f36fbe60e04a3170f009135c7dd3dabf25a943d3656f3c6"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/testHTTPMP3SilenceAcceleration-public.plain-text_0_703BC7CD-C43F-468E-8A9B-D32700A8AD84.txt",
+      "sha256": "7b99901695dfff06657221724a16b5729fb0c0f33099ff313338ec2fedceff2f"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/verification-summary.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/xcode-version.txt",
+      "sha256": "ee3fe26035862d2b9653c1a570be3eca4ee5be2815f0ce99ff2d8ffa3399e4c8"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/testSilenceRateMatchesAVPlayerAndMediaClock-public.plain-text_0_4E4C2631-B108-475D-BA00-E3EA2F333D74.txt",
+      "sha256": "f75789cba8a9a050e32df172639ea2c48616e128e5236bb11829b2d1ff935166"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/test-plan.json",
+      "sha256": "0ebaa09b67c98c391ce373e133843b96173f0e66a726301f0e28a0e7f8ff5b7e"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/testHTTPAACSilenceAcceleration-public.plain-text_0_6C55ADEF-8127-4CC7-9F34-7BD5E5C12D36.txt",
+      "sha256": "f1f5f42a2e47022d5455502d73465bf265a3eb16a5a4bf4c66a07361931e069c"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/testHTTPMP3SilenceAcceleration-summary.json",
+      "sha256": "535afe7d6ff607db915fd6285f6bdd0b6e65674be495c6b0cfb1f247dc1d4202"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/testSilenceRateMatchesAVPlayerAndMediaClock-summary.json",
+      "sha256": "a177dbb25f916b0fb64ac490241de9de679b2da42c421016741f31fccbcb9ad6"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/source.diff",
+      "sha256": "9839cd6a1f7d4ce58615292b934ae9cfe9ee2c51d8542c2110410534579c7c75"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/testHTTPAACSilenceAcceleration-summary.json",
+      "sha256": "eef4cb4f782a76a0dcd7ccda3d5fd84e50b727a19254d1f91ac8a37b90da646a"
+    },
+    {
+      "path": "/private/tmp/audioplayer-castbox-sdk-20261029/original135-rerun/build.log",
+      "sha256": "b88298a650857ea5847b41565e3f49c0731ec4d52ca101e7273f0e0820b764f6"
+    }
+  ],
+  "device_released": true,
+  "test_process_exit_code": 0,
+  "source_configuration_mutations": {
+    "installed_pods": false,
+    "signing_source_configuration": false,
+    "allowProvisioningUpdates": false,
+    "release_or_publish": false,
+    "test_assertions": false
+  }
+}

@@ -168,6 +168,7 @@ final class PlaybackController: NSObject, AudioPlayerDelegate {
 
 | 配置项 | 默认值 | 含义 |
 | --- | --- | --- |
+| `handlesAudioSessionNotifications` | `true` | 是否处理音频会话的中断、路由变化和服务重置；宿主统一管理时设为 false |
 | `isAutoplay` | `true` | 准备完成后是否自动播放 |
 | `preferredBufferDuration` | `0` | 期望前向缓冲时长，单位秒；0 交给系统决定 |
 | `currentTimeCallbackPeriodicInterval` | `10` | 每秒进度回调次数，**不是回调间隔秒数** |
@@ -199,7 +200,7 @@ player.stop()
 
 `volume` 使用 0…1 范围，设置为 2 不能实现两倍音量增强。倍速能否实际生效取决于媒体与系统能力。暂停期间修改倍速不会启动播放；非循环资源播放结束后调用 `play()` 会从头重播。
 
-准备期间可以提交 seek；连续请求以最后一次为准。被覆盖或取消的请求会以 `false` 完成一次。时间属性 `current`、`duration` 的单位为秒，`buffer` 为 0…1 的缓冲进度。
+准备期间可以提交 seek；真实 EOF 后也可以保持暂停直接 seek（包含显式 0），无需先 play，生命周期回到已就绪的 `.playing`。连续请求以最后一次为准。被覆盖或取消的请求会以 `false` 完成一次。时间属性 `current`、`duration` 的单位为秒，`buffer` 为 0…1 的缓冲进度。
 
 ### 正确理解状态
 
@@ -249,6 +250,22 @@ remoteControl.set(
 ```
 
 上面的 `mediaURL` 是当前资源 URL。可在 `audioPlayerState(_:state:)` 的 `.playing` 分支中设置元信息。该对象会同步进度、时长与倍速，默认注册播放／暂停命令；上一首、下一首等业务命令需自行扩展。远程命令及 Now Playing 属于系统全局资源，应只让当前主播放器接管。
+
+### 宿主管理音频会话与原生监控
+
+```swift
+var configuration = AudioPlayerConfiguration()
+configuration.handlesAudioSessionNotifications = false
+let player = AudioPlayer.av.instance(configuration)
+if let monitoring = player as? AVAudioNativePlaybackMonitoring {
+    let sample = monitoring.nativePlaybackSample // 主线程读取
+    print(sample.position as Any, sample.seekPending, sample.rate, sample.sampledAt)
+}
+```
+
+关闭后由宿主处理 interruption、route change、media services reset 的暂停、恢复及资源重建；应用前后台通知和 `allowedBackgroundPlayback` 仍然生效。默认 true 保留独立使用行为，SDK 始终不配置或激活会话。
+
+`position` 直接来自已就绪 item 的 `currentTime()`，不读取 `current` 中的目标或校准值；无资源、未就绪、seek 排队或执行期间为 nil。`seekPending` 包含准备阶段与显式 0 请求。`rate` 是实际 `AVPlayer.rate`（暂停为 0），用户设置的倍速仍读取 `player.rate`。`sampledAt` 为单调系统时钟秒数，表示采样时间。监控不公开可变 player/item，也不能证明扬声器的物理输出；可选能力协议不增加通用后端的实现要求。
 
 ## 音频混合与音量增强
 

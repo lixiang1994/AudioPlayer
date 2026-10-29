@@ -6,6 +6,71 @@ import UIKit
 
 /// 使用系统通知验证中断策略，锁屏速率必须反映实际播放状态。
 final class SessionAndRemoteTests: PlaybackTestCase {
+    func testHostManagedSessionIgnoresInterruptionAndDoesNotAutoResume() {
+        useHostManagedSession()
+        engine.play()
+        eventually("先播放") { self.engine.control == .playing }
+        interruption(.began)
+        pump(0.1)
+        XCTAssertEqual(engine.control, .playing)
+        XCTAssertGreaterThan(engine.nativePlaybackSample.rate, 0)
+        engine.pause()
+        interruption(.ended, options: .shouldResume)
+        pump(0.1)
+        XCTAssertEqual(engine.control, .pausing)
+        XCTAssertEqual(engine.nativePlaybackSample.rate, 0)
+        engine.play()
+        eventually("通知没有遗留中断锁") { self.engine.control == .playing }
+    }
+
+    func testHostManagedSessionIgnoresRouteChange() {
+        useHostManagedSession()
+        engine.play()
+        eventually("先播放") { self.engine.control == .playing }
+        NotificationCenter.default.post(name: AVAudioSession.routeChangeNotification, object: AVAudioSession.sharedInstance(), userInfo: [AVAudioSessionRouteChangeReasonKey: AVAudioSession.RouteChangeReason.oldDeviceUnavailable.rawValue])
+        pump(0.1)
+        XCTAssertEqual(engine.control, .playing)
+        XCTAssertGreaterThan(engine.nativePlaybackSample.rate, 0)
+    }
+
+    func testHostManagedSessionIgnoresMediaServicesReset() {
+        useHostManagedSession()
+        engine.play()
+        eventually("先播放") { self.engine.control == .playing }
+        eventually("先确认媒体时钟实际起步") { (self.engine.nativePlaybackSample.position ?? 0) > 0.1 }
+        let position = engine.nativePlaybackSample.position ?? 0
+        NotificationCenter.default.post(name: AVAudioSession.mediaServicesWereResetNotification, object: AVAudioSession.sharedInstance())
+        pump(0.03)
+        XCTAssertEqual(engine.resource?.value, audio)
+        if case .playing = engine.state {} else { XCTFail("宿主自行处理重置时 SDK 不清理资源") }
+        eventually("忽略通知后实际媒体时钟应继续推进") {
+            (self.engine.nativePlaybackSample.position ?? 0) > position + 0.05
+        }
+    }
+
+    func testHostManagedSessionStillHonorsBackgroundPolicy() {
+        useHostManagedSession()
+        engine.allowedBackgroundPlayback = false
+        engine.play()
+        eventually("先播放") { self.engine.control == .playing }
+        NotificationCenter.default.post(name: UIApplication.didEnterBackgroundNotification, object: nil)
+        XCTAssertEqual(engine.control, .pausing)
+        XCTAssertEqual(engine.nativePlaybackSample.rate, 0)
+        NotificationCenter.default.post(name: UIApplication.willEnterForegroundNotification, object: nil)
+        eventually("前后台通知仍应恢复") { self.engine.control == .playing }
+    }
+
+    private func useHostManagedSession() {
+        XCTAssertTrue(AudioPlayerConfiguration().handlesAudioSessionNotifications)
+        engine.stop()
+        var configuration = AudioPlayerConfiguration()
+        configuration.isAutoplay = false
+        configuration.handlesAudioSessionNotifications = false
+        engine = AudioPlayerAVEngine(configuration)
+        engine.add(delegate: recorder)
+        prepare()
+    }
+
     /// 系统 timeControlStatus 迟到仍为 playing 时，后台策略也不能向业务层报告正在播放。
     func testBackgroundPolicyOverridesStaleSystemPlayingStatus() {
         engine.stop()

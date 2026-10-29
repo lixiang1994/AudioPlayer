@@ -194,3 +194,7 @@ PCM 输入/输出峰值改为一个 64 位无锁原子快照；强弱相邻块�
 [最终 122 项结果](/private/tmp/audioplayer-review-fixes-exclusive.xcresult) · [最终日志](/private/tmp/audioplayer-review-fixes-exclusive.log) · [测量与中断附件](/private/tmp/audioplayer-review-fixes-exclusive-attachments/manifest.json) · [修复后 Review](/private/tmp/audioplayer-review-fixes-review.md)
 
 [首轮 114/122](/private/tmp/audioplayer-review-fixes-full.xcresult) · [第二轮 115/122](/private/tmp/audioplayer-review-fixes-final.xcresult)
+
+## Castbox SDK 迁移增量（2026-10-29）
+
+新增 13 项回归后共 135 项；新增范围为会话通知 opt-out、原生只读采样、真实 EOF 后暂停 seek 和显式 0 生命周期及代理重入。测试 target 编译与 iOS/watchOS lint（Xcode 27 的临时 iOS 15 构建覆盖）通过。最新原配置单轮 iPhone16e 真机全量 135/135 通过、0 失败、0 跳过，实际顺序与此前失败轮一致、无自动重试；此前 134/135 的 HTTP AAC 失败仍保留为未归因风险，本轮未复现不代表根因已解决。新增 13 项全部通过。包括新建专用设备在内的模拟器均因 DTServiceHub 服务权限问题未执行用例。证据、复现命令和未验证项见 [仓库报告](../../docs/testing/castbox-sdk-migration-2026-10-29.md)。

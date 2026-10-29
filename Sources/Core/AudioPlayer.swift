@@ -16,7 +16,7 @@ public enum AudioPlayer {
     public enum State {
         /// 准备播放: 调用`prepare(resource:)`后的状态.
         case prepare
-        /// 已准备好: 可播放或暂停，实际是否播放请看 control；finished 后再次 play 也会回到该状态。
+        /// 已准备好: 可播放或暂停，实际是否播放请看 control；finished 后 play 或 seek 也会回到该状态。
         case playing
         /// 播放停止: 默认的初始状态, 调用`stop()`后的状态.
         case stopped
